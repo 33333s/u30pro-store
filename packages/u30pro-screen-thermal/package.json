@@ -1,0 +1,5 @@
+{
+  "version": "1.0-r1",
+  "arch": "noarch",
+  "description": "Screen function page: temperatures of the processor, battery, board, charger, radio and ambient sensors"
+}

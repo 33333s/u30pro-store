@@ -1,0 +1,11 @@
+#!/bin/sh
+# Mobile data switch of the screen's function page: "state" prints 1 while the cellular data session is wanted up, "toggle" switches it
+# (u30pro-celld --ctl disconnect | reconnect; the choice stays until it is switched again here or in Cellular > Dial).
+S=/run/u30pro-cellular/status.json
+up() { grep -q '"desired_up":true' "$S" 2>/dev/null; }
+case "$1" in
+state) up && echo 1 || echo 0 ;;
+toggle) if up; then u30pro-celld --ctl disconnect; else u30pro-celld --ctl reconnect; fi >/dev/null 2>&1 ;;
+*) echo "usage: $0 state|toggle" >&2; exit 2 ;;
+esac
+exit 0

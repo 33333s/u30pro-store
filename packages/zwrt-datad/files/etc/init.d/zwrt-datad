@@ -1,0 +1,41 @@
+#!/bin/sh /etc/rc.common
+# zwrt-datad: the device's data and control service (HTTP + SSE, https://github.com/33333s/zwrt-datad), with its U30 Pro backend
+# (everything through ubus and uci).  Port 9460 on the loopback without login; port 9461 on the LAN address with a login: the
+# token in /etc/zwrt-datad/auth.token, or POST /auth/login with the router's root account.  Settings: /etc/config/zwrt-datad.
+START=95
+STOP=10
+USE_PROCD=1
+PROG=/usr/sbin/zwrt-datad
+DIR=/etc/zwrt-datad
+
+start_service() {
+	local enabled interval lan lan_port lan_ip
+	config_load zwrt-datad
+	config_get_bool enabled main enabled 1
+	[ "$enabled" = 1 ] || return 0
+	config_get interval main interval 1000
+	config_get_bool lan main lan 1
+	config_get lan_port main lan_port 9461
+	mkdir -p "$DIR"
+	chmod 700 "$DIR"
+	if [ ! -s "$DIR/auth.token" ]; then
+		(umask 077; hexdump -v -n 32 -e '/1 "%02x"' /dev/urandom >"$DIR/auth.token")
+	fi
+	procd_open_instance
+	procd_set_param command "$PROG" -i "$interval" -b 127.0.0.1 -p 9460 --data-dir "$DIR" --auth-token-file "$DIR/auth.token"
+	if [ "$lan" = 1 ]; then
+		# the LAN address only: not reachable from the cellular side or a Wi-Fi uplink
+		lan_ip=$(uci -q get network.lan.ipaddr)
+		procd_append_param command --lan-bind "${lan_ip%%/*}" --lan-port "$lan_port"
+	fi
+	# datad's own updater would install the ZWRT release: this one is updated with apk
+	procd_set_param env ZWRT_DATAD_OTA_DISABLE_AUTO=1 ZWRT_DATAD_COOLING_CONFIG="$DIR/cooling.conf" \
+		ZWRT_DATAD_NEIGHBOR_CONFIG="$DIR/neighbor.json" ZWRT_DATAD_WIFI_RUNTIME_DIR=/tmp/zwrt-datad-wifi
+	procd_set_param respawn 3600 5 0
+	procd_set_param stderr 1
+	procd_close_instance
+}
+
+service_triggers() {
+	procd_add_reload_trigger zwrt-datad network
+}

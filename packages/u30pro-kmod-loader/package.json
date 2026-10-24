@@ -1,0 +1,6 @@
+{
+  "version": "1.0-r1",
+  "arch": "noarch",
+  "description": "Loads the kernel modules of installed kmod packages at boot (this system's boot does not run /etc/init.d/boot)",
+  "scripts": { "post-install": "scripts/enable", "post-upgrade": "scripts/enable", "pre-deinstall": "scripts/disable" }
+}

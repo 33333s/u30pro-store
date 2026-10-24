@@ -1,0 +1,7 @@
+# the devices on the router (hotspot and USB) by name and address
+title=设备列表
+icon=wifi
+type=info
+cmd=/usr/libexec/u30pro-screen/clients
+refresh=5
+order=25

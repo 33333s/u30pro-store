@@ -1,0 +1,5 @@
+{
+  "version": "1.0-r2",
+  "arch": "noarch",
+  "description": "The U30 Pro package feed: its signing key and its repository entry (/etc/apk/repositories.d/u30pro.list)"
+}

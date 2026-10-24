@@ -1,0 +1,7 @@
+# mobile data on/off: the cellular data session, as Cellular > Dial "disconnect" / "connect"
+title=移动数据
+icon=globe
+type=toggle
+state_cmd=/usr/libexec/u30pro-screen/data state
+cmd=/usr/libexec/u30pro-screen/data toggle
+order=20

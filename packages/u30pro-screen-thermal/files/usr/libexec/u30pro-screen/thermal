@@ -1,0 +1,17 @@
+#!/bin/sh
+# Temperatures for the screen's info page, one sensor per line.  Only the zones that read true: the skin, front, wcn and usb zones of
+# this board read a constant ~60-87 C (the stock kernel too) and are left out.
+t() {
+	for z in /sys/class/thermal/thermal_zone*; do
+		[ "$(cat "$z/type" 2>/dev/null)" = "$1" ] || continue
+		v=$(cat "$z/temp" 2>/dev/null) || return
+		echo "$2 $((v / 1000))°C"
+		return
+	done
+}
+t soc-thmzone 处理器
+t u30pro-battery 电池
+t board-thmzone 主板
+t chg-thmzone 充电
+t pa-thmzone 射频
+t ambient-thmzone 环境

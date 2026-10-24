@@ -1,0 +1,6 @@
+# one download speed test, the result as a message
+title=测速
+icon=chart
+type=action
+cmd=/usr/libexec/u30pro-screen/speedtest
+order=35

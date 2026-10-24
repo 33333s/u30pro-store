@@ -1,0 +1,7 @@
+config datad 'main'
+	option enabled '1'
+	# sampling and SSE period in ms (500..5000)
+	option interval '1000'
+	# also listen on the LAN address (login required)
+	option lan '1'
+	option lan_port '9461'

@@ -1,0 +1,8 @@
+{
+  "arch": "aarch64_generic",
+  "description": "zwrt-datad: the device's data and control service (HTTP/SSE on ports 9460/9461) with its U30 Pro backend",
+  "external": { "usr/sbin/zwrt-datad": "build/zwrt-datad/zwrt-datad" },
+  "version_file": "build/zwrt-datad/version",
+  "release": "r1",
+  "scripts": { "post-install": "scripts/start", "post-upgrade": "scripts/restart", "pre-deinstall": "scripts/stop" }
+}

@@ -1,0 +1,5 @@
+{
+  "version": "1.0-r1",
+  "arch": "noarch",
+  "description": "Screen function page: the devices that use the router (hotspot and USB), from the DHCP leases"
+}

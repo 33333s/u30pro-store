@@ -1,0 +1,4 @@
+#!/bin/sh
+/etc/init.d/zwrt-datad stop
+/etc/init.d/zwrt-datad disable
+exit 0

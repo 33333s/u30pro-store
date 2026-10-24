@@ -1,0 +1,11 @@
+#!/bin/sh
+# Download speed test for the screen: 10 MB from Cloudflare's speed test service over the router's own uplink, the rate in Mbit/s
+# (time from /proc/uptime, 10 ms steps).  Uses about 10 MB of mobile data.
+URL='https://speed.cloudflare.com/__down?bytes=10000000'
+t0=$(cut -d' ' -f1 /proc/uptime)
+if ! uclient-fetch -q -T 30 -O /dev/null "$URL" 2>/dev/null; then
+	echo 测速失败，网络不通
+	exit 0
+fi
+t1=$(cut -d' ' -f1 /proc/uptime)
+awk -v a="$t0" -v b="$t1" 'BEGIN { d = b - a; if (d < 0.01) d = 0.01; printf "下行 %.1f Mbps\n", 80 / d }'

@@ -1,0 +1,7 @@
+# temperatures of the reliable sensors (processor, battery, board, charger, radio, ambient)
+title=温度
+icon=sun
+type=info
+cmd=/usr/libexec/u30pro-screen/thermal
+refresh=5
+order=30

@@ -1,0 +1,4 @@
+#!/bin/sh
+/etc/init.d/zwrt-datad enable
+/etc/init.d/zwrt-datad start
+exit 0

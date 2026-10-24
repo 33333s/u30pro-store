@@ -1,0 +1,8 @@
+#!/bin/sh
+# Devices on the router for the screen's info page: the count, then name and address (".184" on the router's own subnet) of up to five,
+# from the DHCP leases of dnsmasq (hotspot and USB clients alike); the page shows six lines of about 18 characters.
+L=/tmp/dhcp.leases
+n=$(grep -c . "$L" 2>/dev/null || echo 0)
+echo "$n 台设备"
+[ "$n" -gt 0 ] || exit 0
+awk '{ name = ($4 == "*" ? "未知设备" : $4); ip = $3; sub(/^192\.168\.25\./, ".", ip); printf "%.12s %s\n", name, ip }' "$L" | head -5

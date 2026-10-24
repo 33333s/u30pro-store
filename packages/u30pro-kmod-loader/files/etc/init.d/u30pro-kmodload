@@ -1,0 +1,7 @@
+#!/bin/sh /etc/rc.common
+# Loads the modules listed in /etc/modules.d by installed kmod packages (kmodloader); the U30 Pro boot (rcS) starts the services of
+# installed packages but does not run /etc/init.d/boot, where OpenWrt calls kmodloader.
+START=12
+start() {
+	[ -d /etc/modules.d ] && /sbin/kmodloader
+}

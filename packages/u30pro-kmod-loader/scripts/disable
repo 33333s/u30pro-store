@@ -1,0 +1,3 @@
+#!/bin/sh
+/etc/init.d/u30pro-kmodload disable
+exit 0
