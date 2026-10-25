@@ -9,9 +9,9 @@
  },
  "packages": [
   {
-   "file": "luci-app-zwrt-datad-1.0-r1.apk",
-   "bytes": 7208,
-   "sha256": "9ad4f7a8604869f21df406d4f983831f538f48d8cf49c0a85ddec6200aacd848"
+   "file": "luci-app-zwrt-datad-1.0-r2.apk",
+   "bytes": 7190,
+   "sha256": "515438d0cb103d895e6814732891e8a2aa403bee4406af41618d5577bebface3"
   },
   {
    "file": "u30pro-feed-1.0-r2.apk",

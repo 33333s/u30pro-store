@@ -1,14 +1,15 @@
 #!/usr/bin/ucode
 /* rpcd exec plugin of luci-app-zwrt-datad: the cloud management (NMS) of zwrt-datad, through its local API on 127.0.0.1:9460
- * (GET/POST /cloud/config, GET /cloud/status, POST /cloud/quick-connect; docs/CLOUD.md of zwrt-datad).  The request is sent with
- * busybox nc as HTTP/1.0, so that the body of an error reply (400 with {"error": ...}) reaches the page too.  The MQTT password
- * never comes back from datad.
+ * (GET/POST /cloud/config, GET /cloud/status, POST /cloud/quick-connect; docs/CLOUD.md of zwrt-datad).  The request is plain
+ * HTTP/1.0 over a socket (ucode-mod-socket): uclient-fetch drops the body of an error reply (400 with {"error": ...}), which has
+ * to reach the page, and busybox nc quits before the reply comes.  The MQTT password never comes back from datad.
  *   get            {datad: running, version}, status, config (no password), password_configured
  *   quick_connect  credential: the MQTT user name and password as NMS shows them (base64 of {"username","password"}), or
  *                  username + password
  *   set            config: the whole configuration (JSON text); an empty password keeps the stored one
  *   disable        switch the cloud connection off, nothing else changes */
-import { readfile, readlink, popen, mkstemp } from 'fs';
+import { readfile } from 'fs';
+import * as socket from 'socket';
 
 const HOST = '127.0.0.1', PORT = getenv('ZWRT_DATAD_LOCAL_PORT') || '9460';
 
@@ -17,19 +18,17 @@ function out(v) { printf('%J\n', v); }
 /* one request to datad: {code, body} or {error} */
 function datad(method, path, body) {
 	let data = body == null ? '' : sprintf('%J', body);
-	let req = mkstemp('/tmp/luci-zwrt-datad.XXXXXX');
-	if (!req)
-		return { error: 'cannot create a temporary file' };
-	req.write(sprintf('%s %s HTTP/1.0\r\nHost: %s:%s\r\nContent-Type: application/json\r\nContent-Length: %d\r\n\r\n%s',
+	let s = socket.connect(HOST, PORT, { socktype: socket.SOCK_STREAM }, 5000);
+	if (!s)
+		return { error: 'zwrt-datad does not answer on 127.0.0.1:' + PORT };
+	s.send(sprintf('%s %s HTTP/1.0\r\nHost: %s:%s\r\nContent-Type: application/json\r\nContent-Length: %d\r\n\r\n%s',
 		method, path, HOST, PORT, length(data), data));
-	req.seek(0);
-	/* mkstemp() files are already unlinked (the request may hold the MQTT password): nc reads this one through this process's
-	 * descriptor in /proc */
-	let p = popen(sprintf('nc %s %s </proc/%s/fd/%d 2>/dev/null', HOST, PORT, readlink('/proc/self'), req.fileno()), 'r');
-	let raw = p ? p.read('all') : null;
-	if (p) p.close();
-	req.close();
-	if (!raw)
+	/* HTTP/1.0: datad closes the connection after the reply */
+	let raw = '', chunk;
+	while (length(chunk = s.recv(4096)) && length(raw) < 1048576)
+		raw += chunk;
+	s.close();
+	if (!length(raw))
 		return { error: 'zwrt-datad does not answer on 127.0.0.1:' + PORT };
 	let m = match(raw, /^HTTP\/1\.[01] ([0-9]{3})[^\n]*\n/);
 	let sep = index(raw, '\r\n\r\n');
