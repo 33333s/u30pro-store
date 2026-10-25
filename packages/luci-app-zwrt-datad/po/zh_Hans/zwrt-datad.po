@@ -146,3 +146,36 @@ msgstr "这不是 NMS 显示的接入凭据（MQTT 用户名和密码的 base64 
 
 msgid "zwrt-datad sent an invalid reply"
 msgstr "zwrt-datad 的回复无效"
+
+msgid "Terminal"
+msgstr "终端"
+
+msgid "A shell on the device through zwrt-datad (as root). It ends after 15 minutes without input; at most four at a time."
+msgstr "通过 zwrt-datad 打开设备上的命令行（root 身份）。15 分钟没有输入会自动断开，最多同时开 4 个。"
+
+msgid "Reconnect"
+msgstr "重新连接"
+
+msgid "Connecting…"
+msgstr "正在连接…"
+
+msgid "The shell ended"
+msgstr "命令行已退出"
+
+msgid "Disconnected"
+msgstr "已断开"
+
+msgid "The terminal could not be loaded"
+msgstr "终端加载失败"
+
+msgid "zwrt-datad gave no token"
+msgstr "zwrt-datad 没有给出令牌"
+
+msgid "This zwrt-datad cannot give a token for the terminal; update it"
+msgstr "这个版本的 zwrt-datad 不能为终端提供令牌，请升级"
+
+msgid "The web shell of zwrt-datad is off (uci zwrt-datad.main.webshell)"
+msgstr "zwrt-datad 的网页终端已关闭（uci zwrt-datad.main.webshell）"
+
+msgid "zwrt-datad does not listen on the LAN address (uci zwrt-datad.main.lan)"
+msgstr "zwrt-datad 没有监听局域网地址（uci zwrt-datad.main.lan）"

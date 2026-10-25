@@ -5,3 +5,5 @@ config datad 'main'
 	# also listen on the LAN address (login required)
 	option lan '1'
 	option lan_port '9461'
+	# the web shell (/webshell on the LAN port; LuCI Services > zwrt-datad > Terminal, and NMS's remote terminal when allowed there)
+	option webshell '1'

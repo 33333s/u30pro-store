@@ -9,9 +9,29 @@
  },
  "packages": [
   {
-   "file": "luci-app-zwrt-datad-1.0-r2.apk",
-   "bytes": 7190,
-   "sha256": "515438d0cb103d895e6814732891e8a2aa403bee4406af41618d5577bebface3"
+   "file": "luci-app-argon-config-3.1.0-r1.apk",
+   "bytes": 848,
+   "sha256": "dc05accede56ad1349f144d52362bfaf31a4cc546b07322b9bc87e08bbede6f9"
+  },
+  {
+   "file": "luci-i18n-argon-config-zh-cn-3.1.0-r1.apk",
+   "bytes": 4009,
+   "sha256": "88bbed2b5feba346c38b34a8ee113368f3d6c5528e0912ee2eb4c1ef66850164"
+  },
+  {
+   "file": "luci-theme-argon-3.1.0-r1.apk",
+   "bytes": 296063,
+   "sha256": "82c36abe5dbd958f733b620c4c66b160f1b3470feaf248921baae77b2b5d0f44"
+  },
+  {
+   "file": "luci-theme-aurora-1.4.0-r20260920.apk",
+   "bytes": 184843,
+   "sha256": "05f9015e0a4e2859f6a153f69e472f2984481490d4ce6db19b8a41bba7264f1e"
+  },
+  {
+   "file": "luci-app-zwrt-datad-1.0-r3.apk",
+   "bytes": 79754,
+   "sha256": "e5480bafffafe29f4e2d893627b86f622663ce203a0bee225bdc9d8bf7d1023e"
   },
   {
    "file": "u30pro-feed-1.0-r2.apk",
@@ -44,9 +64,9 @@
    "sha256": "82a00f61211dcdcc0ad4a08c2861da09ac06d00e57c19f6573486b2fe826ad10"
   },
   {
-   "file": "zwrt-datad-0.10.79_p202610250937-r1.apk",
-   "bytes": 4182405,
-   "sha256": "86f4edb617f2982a1c42918f9196454e71e22c2dfc35ba3eeb7616f09daeb888"
+   "file": "zwrt-datad-0.10.79_p202610251143-r1.apk",
+   "bytes": 4183352,
+   "sha256": "7b921b4eb18e0642415681f536725e4dc032930731da5fac81b3cd0b8b6080f3"
   },
   {
    "file": "kmod-act-gate-6.12.94_p536-r1.apk",
@@ -1073,5 +1093,6 @@
    "bytes": 3985,
    "sha256": "7806f5c0c060bf38da98a4ffc12d33f74568ff3245c4d51eb2b345e8b10d52ae"
   }
- ]
+ ],
+ "third_party": "the luci-* theme packages are other projects' builds, unchanged (U30pro-openwrt feed/third-party.json)"
 }

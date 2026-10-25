@@ -7,22 +7,25 @@
  *   quick_connect  credential: the MQTT user name and password as NMS shows them (base64 of {"username","password"}), or
  *                  username + password
  *   set            config: the whole configuration (JSON text); an empty password keeps the stored one
- *   disable        switch the cloud connection off, nothing else changes */
+ *   disable        switch the cloud connection off, nothing else changes
+ *   terminal       for the Terminal page: a temporary datad token (POST /auth/local, 12 h) for the web shell on the LAN port, the port,
+ *                  and whether the shell is on (uci zwrt-datad.main.webshell, lan) */
 import { readfile } from 'fs';
+import { cursor } from 'uci';
 import * as socket from 'socket';
 
 const HOST = '127.0.0.1', PORT = getenv('ZWRT_DATAD_LOCAL_PORT') || '9460';
 
 function out(v) { printf('%J\n', v); }
 
-/* one request to datad: {code, body} or {error} */
-function datad(method, path, body) {
+/* one request to datad: {code, body} or {error}; auth: a datad token */
+function datad(method, path, body, auth) {
 	let data = body == null ? '' : sprintf('%J', body);
 	let s = socket.connect(HOST, PORT, { socktype: socket.SOCK_STREAM }, 5000);
 	if (!s)
 		return { error: 'zwrt-datad does not answer on 127.0.0.1:' + PORT };
-	s.send(sprintf('%s %s HTTP/1.0\r\nHost: %s:%s\r\nContent-Type: application/json\r\nContent-Length: %d\r\n\r\n%s',
-		method, path, HOST, PORT, length(data), data));
+	s.send(sprintf('%s %s HTTP/1.0\r\nHost: %s:%s\r\n%sContent-Type: application/json\r\nContent-Length: %d\r\n\r\n%s',
+		method, path, HOST, PORT, auth ? 'Authorization: Bearer ' + auth + '\r\n' : '', length(data), data));
 	/* HTTP/1.0: datad closes the connection after the reply */
 	let raw = '', chunk;
 	while (length(chunk = s.recv(4096)) && length(raw) < 1048576)
@@ -102,7 +105,21 @@ function disable() {
 	return result(datad('POST', '/cloud/config', config));
 }
 
-const METHODS = { get: {}, quick_connect: { credential: '', username: '', password: '' }, set: { config: '' }, disable: {} };
+function terminal() {
+	let u = cursor();
+	let lan = u.get('zwrt-datad', 'main', 'lan') != '0', port = int(u.get('zwrt-datad', 'main', 'lan_port') || '9461');
+	let tok = datad('POST', '/auth/local', {});
+	if (tok.error)
+		return { error: tok.error };
+	let token = tok.body?.access_token;
+	if (tok.code != 200 || type(token) != 'string')
+		return { error: 'This zwrt-datad cannot give a token for the terminal; update it' };
+	let st = datad('GET', '/webshell/status', null, token);
+	return { enabled: st.code == 200 && st.body?.enabled === true, lan: lan, port: port, token: token,
+		expires_in: tok.body.expires_in, max_sessions: st.body?.max_sessions, active_sessions: st.body?.active_sessions };
+}
+
+const METHODS = { get: {}, quick_connect: { credential: '', username: '', password: '' }, set: { config: '' }, disable: {}, terminal: {} };
 
 if (ARGV[0] == 'list')
 	out(METHODS);
@@ -113,6 +130,7 @@ else if (ARGV[0] == 'call') {
 	case 'quick_connect': out(quick_connect(req)); break;
 	case 'set': out(set(req)); break;
 	case 'disable': out(disable()); break;
+	case 'terminal': out(terminal()); break;
 	default: out({ error: 'unknown method' });
 	}
 }

@@ -30,7 +30,9 @@ apk update
 | `u30pro-screen-thermal` | 屏幕插件：处理器、电池、主板、充电芯片、射频和环境温度 |
 | `u30pro-screen-speedtest` | 屏幕插件：下载测速（10 MB） |
 | `zwrt-datad` | 设备状态与控制服务（HTTP/SSE，端口 9460 仅本机，9461 局域网需登录），源码在 [zwrt-datad](https://github.com/33333s/zwrt-datad) 的 `u30pro` 分支 |
-| `luci-app-zwrt-datad` | LuCI 页面“服务 → 云管理”：zwrt-datad 接入 NMS 的状态、用 NMS 显示的凭据快速接入、连接设置（依赖 `zwrt-datad`） |
+| `luci-app-zwrt-datad` | LuCI 页面“服务 → zwrt-datad”：云管理（接入 NMS 的状态、用 NMS 显示的凭据快速接入、连接设置）和网页终端（依赖 `zwrt-datad`） |
+| `luci-theme-argon` | LuCI 主题 Argon 3.1.0（[jerrykuku/luci-theme-argon](https://github.com/jerrykuku/luci-theme-argon)，Apache-2.0，作者编好的包原样收录）；设置页 `luci-app-argon-config`，中文 `luci-i18n-argon-config-zh-cn` |
+| `luci-theme-aurora` | LuCI 主题 Aurora 1.4.0（[eamonxg/luci-theme-aurora](https://github.com/eamonxg/luci-theme-aurora)，Apache-2.0，作者编好的包原样收录） |
 | `u30pro-kmod-loader` | 开机加载已装的内核模块包 |
 | `kmod-*` | 内核模块，205 个，包名和 OpenWrt 25.12 一致（文件系统、存储、隧道、流量控制、netfilter 扩展、加密等） |
 

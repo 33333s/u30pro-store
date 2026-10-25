@@ -1,7 +1,7 @@
 {
-  "version": "1.0-r2",
+  "version": "1.0-r3",
   "arch": "noarch",
-  "description": "LuCI page Services > Cloud management for zwrt-datad: the NMS connection, quick connect with the credential NMS shows, settings",
+  "description": "LuCI pages Services > zwrt-datad: Cloud management (NMS connection, quick connect, settings) and Terminal (the web shell in xterm.js)",
   "depends": [
     "zwrt-datad",
     "luci-base",
