@@ -1,0 +1,7 @@
+{
+  "version": "1.0-r1",
+  "arch": "noarch",
+  "description": "LuCI page Services > Cloud management for zwrt-datad: the NMS connection, quick connect with the credential NMS shows, settings",
+  "depends": ["zwrt-datad", "luci-base", "rpcd"],
+  "scripts": { "post-install": "scripts/reload", "post-upgrade": "scripts/reload", "post-deinstall": "scripts/reload" }
+}

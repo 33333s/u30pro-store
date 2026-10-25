@@ -9,6 +9,11 @@
  },
  "packages": [
   {
+   "file": "luci-app-zwrt-datad-1.0-r1.apk",
+   "bytes": 7208,
+   "sha256": "9ad4f7a8604869f21df406d4f983831f538f48d8cf49c0a85ddec6200aacd848"
+  },
+  {
    "file": "u30pro-feed-1.0-r2.apk",
    "bytes": 723,
    "sha256": "dfd7edc4c396ab09b66171c8a0badbfb593e34626334977f0408214c8cbff2fe"
@@ -39,9 +44,9 @@
    "sha256": "82a00f61211dcdcc0ad4a08c2861da09ac06d00e57c19f6573486b2fe826ad10"
   },
   {
-   "file": "zwrt-datad-0.10.79_p202610250919-r1.apk",
-   "bytes": 4181492,
-   "sha256": "58e655948d652e1255f75f44f747bafcef88b9e8ad24a11617e91be57cddac12"
+   "file": "zwrt-datad-0.10.79_p202610250937-r1.apk",
+   "bytes": 4182405,
+   "sha256": "86f4edb617f2982a1c42918f9196454e71e22c2dfc35ba3eeb7616f09daeb888"
   },
   {
    "file": "kmod-act-gate-6.12.94_p536-r1.apk",

@@ -1,0 +1,148 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-app-zwrt-datad\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Cloud management"
+msgstr "云管理"
+
+msgid "zwrt-datad connects the device to the NMS cloud platform over MQTT: status reports, remote access to this web interface and a remote terminal. Connected only means the MQTT link is up; the binding is confirmed in NMS."
+msgstr "zwrt-datad 通过 MQTT 把设备接入 NMS 云平台：上报状态、远程访问本网页后台和远程终端。“已连接”只表示 MQTT 连上了，设备绑定要在 NMS 里确认。"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Off"
+msgstr "已关闭"
+
+msgid "Starting"
+msgstr "正在启动"
+
+msgid "Connecting"
+msgstr "正在连接"
+
+msgid "Connected, waiting for the binding in NMS"
+msgstr "已连接，等待在 NMS 里绑定"
+
+msgid "Connected"
+msgstr "已连接"
+
+msgid "Retrying"
+msgstr "正在重试"
+
+msgid "Applying the settings"
+msgstr "正在应用设置"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "zwrt-datad"
+msgstr "zwrt-datad"
+
+msgid "Running"
+msgstr "运行中"
+
+msgid "Not running"
+msgstr "没有运行"
+
+msgid "Connection"
+msgstr "连接"
+
+msgid "Last report"
+msgstr "上次上报"
+
+msgid "NMS address"
+msgstr "NMS 地址"
+
+msgid "MQTT broker"
+msgstr "MQTT 服务器"
+
+msgid "MQTT user"
+msgstr "MQTT 用户名"
+
+msgid "MQTT password"
+msgstr "MQTT 密码"
+
+msgid "Device identity"
+msgstr "设备标识"
+
+msgid "Model"
+msgstr "型号"
+
+msgid "Quick connect"
+msgstr "快速接入"
+
+msgid "Create the device in NMS, then paste the credential it shows once (the MQTT user name and password). The device identity is made from the board serial number."
+msgstr "先在 NMS 里创建设备，再把 NMS 只显示一次的接入凭据（MQTT 用户名和密码）粘贴到这里。设备标识由板子序列号生成。"
+
+msgid "Paste the credential NMS shows for the new device"
+msgstr "粘贴 NMS 为新设备显示的接入凭据"
+
+msgid "Connect"
+msgstr "接入"
+
+msgid "Paste the credential first"
+msgstr "请先粘贴接入凭据"
+
+msgid "Connecting to NMS; confirm the device in NMS"
+msgstr "正在接入 NMS，请在 NMS 里确认设备"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Connect to NMS"
+msgstr "接入 NMS"
+
+msgid "Unchanged (a password is stored)"
+msgstr "不修改（已保存密码）"
+
+msgid "None stored"
+msgstr "未保存"
+
+msgid "Report interval (seconds)"
+msgstr "上报间隔（秒）"
+
+msgid "Remote access"
+msgstr "远程访问"
+
+msgid "Remote panel control"
+msgstr "远程面板控制"
+
+msgid "Remote terminal"
+msgstr "远程终端"
+
+msgid "Remote web back ends"
+msgstr "可远程访问的网页后台"
+
+msgid "port"
+msgstr "端口"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Saved; the connection is set up again"
+msgstr "已保存，正在重新建立连接"
+
+msgid "Disconnect"
+msgstr "断开"
+
+msgid "Switch the cloud connection off? Remote access through NMS stops."
+msgstr "关闭云端连接？通过 NMS 的远程访问会停止。"
+
+msgid "The cloud connection is off"
+msgstr "云端连接已关闭"
+
+msgid "The request failed"
+msgstr "请求失败"
+
+msgid "Invalid configuration"
+msgstr "配置无效"
+
+msgid "The credential is not the text NMS shows (base64 of the MQTT user name and password)"
+msgstr "这不是 NMS 显示的接入凭据（MQTT 用户名和密码的 base64 文本）"
+
+msgid "zwrt-datad sent an invalid reply"
+msgstr "zwrt-datad 的回复无效"

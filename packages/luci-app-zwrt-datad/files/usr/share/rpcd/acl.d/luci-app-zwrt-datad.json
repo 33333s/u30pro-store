@@ -1,0 +1,7 @@
+{
+  "luci-app-zwrt-datad": {
+    "description": "Cloud management (NMS) of zwrt-datad",
+    "read": { "ubus": { "luci.zwrt-datad": ["get"] } },
+    "write": { "ubus": { "luci.zwrt-datad": ["quick_connect", "set", "disable"] } }
+  }
+}

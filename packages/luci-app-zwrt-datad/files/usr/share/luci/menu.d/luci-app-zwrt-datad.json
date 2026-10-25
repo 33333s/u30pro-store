@@ -1,0 +1,8 @@
+{
+  "admin/services/zwrt-datad": {
+    "title": "Cloud management",
+    "order": 60,
+    "action": { "type": "view", "path": "zwrt-datad/cloud" },
+    "depends": { "acl": ["luci-app-zwrt-datad"] }
+  }
+}

@@ -1,0 +1,119 @@
+#!/usr/bin/ucode
+/* rpcd exec plugin of luci-app-zwrt-datad: the cloud management (NMS) of zwrt-datad, through its local API on 127.0.0.1:9460
+ * (GET/POST /cloud/config, GET /cloud/status, POST /cloud/quick-connect; docs/CLOUD.md of zwrt-datad).  The request is sent with
+ * busybox nc as HTTP/1.0, so that the body of an error reply (400 with {"error": ...}) reaches the page too.  The MQTT password
+ * never comes back from datad.
+ *   get            {datad: running, version}, status, config (no password), password_configured
+ *   quick_connect  credential: the MQTT user name and password as NMS shows them (base64 of {"username","password"}), or
+ *                  username + password
+ *   set            config: the whole configuration (JSON text); an empty password keeps the stored one
+ *   disable        switch the cloud connection off, nothing else changes */
+import { readfile, readlink, popen, mkstemp } from 'fs';
+
+const HOST = '127.0.0.1', PORT = getenv('ZWRT_DATAD_LOCAL_PORT') || '9460';
+
+function out(v) { printf('%J\n', v); }
+
+/* one request to datad: {code, body} or {error} */
+function datad(method, path, body) {
+	let data = body == null ? '' : sprintf('%J', body);
+	let req = mkstemp('/tmp/luci-zwrt-datad.XXXXXX');
+	if (!req)
+		return { error: 'cannot create a temporary file' };
+	req.write(sprintf('%s %s HTTP/1.0\r\nHost: %s:%s\r\nContent-Type: application/json\r\nContent-Length: %d\r\n\r\n%s',
+		method, path, HOST, PORT, length(data), data));
+	req.seek(0);
+	/* mkstemp() files are already unlinked (the request may hold the MQTT password): nc reads this one through this process's
+	 * descriptor in /proc */
+	let p = popen(sprintf('nc %s %s </proc/%s/fd/%d 2>/dev/null', HOST, PORT, readlink('/proc/self'), req.fileno()), 'r');
+	let raw = p ? p.read('all') : null;
+	if (p) p.close();
+	req.close();
+	if (!raw)
+		return { error: 'zwrt-datad does not answer on 127.0.0.1:' + PORT };
+	let m = match(raw, /^HTTP\/1\.[01] ([0-9]{3})[^\n]*\n/);
+	let sep = index(raw, '\r\n\r\n');
+	if (!m || sep < 0)
+		return { error: 'zwrt-datad sent an invalid reply' };
+	let reply = null;
+	try { reply = json(substr(raw, sep + 4)); } catch (e) { reply = null; }
+	return { code: int(m[1]), body: reply };
+}
+
+/* the reply of a request that changes something: the body on success, {error} otherwise */
+function result(r) {
+	if (r.error)
+		return { error: r.error };
+	if (r.code == 200 && type(r.body) == 'object')
+		return r.body;
+	return { error: (type(r.body) == 'object' && type(r.body.error) == 'string') ? r.body.error : sprintf('zwrt-datad: HTTP %d', r.code) };
+}
+
+function input() {
+	let s = readfile('/dev/stdin');
+	try { return json(s || '{}') ?? {}; } catch (e) { return {}; }
+}
+
+/* the credential NMS shows: base64 of {"username": "enr_...", "password": "..."} (the JSON itself is taken too) */
+function credential(text) {
+	text = trim(text ?? '');
+	let raw = substr(text, 0, 1) == '{' ? text : b64dec(replace(text, /\s+/g, ''));
+	let c = null;
+	try { c = json(raw ?? ''); } catch (e) { c = null; }
+	if (type(c) != 'object' || type(c.username) != 'string' || type(c.password) != 'string')
+		return null;
+	return { username: c.username, password: c.password };
+}
+
+function get() {
+	let st = datad('GET', '/cloud/status'), cfg = datad('GET', '/cloud/config'), ver = datad('GET', '/version');
+	if (st.error)
+		return { datad: { running: false }, error: st.error };
+	let config = cfg.code == 200 && type(cfg.body) == 'object' ? cfg.body : {};
+	return {
+		datad: { running: true, version: type(ver.body) == 'object' ? ver.body.version : null },
+		status: type(st.body) == 'object' ? st.body : {},
+		config: config.config ?? {},
+		password_configured: config.password_configured === true
+	};
+}
+
+function quick_connect(req) {
+	let c = type(req.credential) == 'string' && length(req.credential) ? credential(req.credential)
+		: { username: trim(req.username ?? ''), password: req.password ?? '' };
+	if (!c)
+		return { error: 'The credential is not the text NMS shows (base64 of the MQTT user name and password)' };
+	return result(datad('POST', '/cloud/quick-connect', { username: c.username, password: c.password }));
+}
+
+function set(req) {
+	let config = null;
+	try { config = json(req.config ?? ''); } catch (e) { config = null; }
+	if (type(config) != 'object')
+		return { error: 'Invalid configuration' };
+	return result(datad('POST', '/cloud/config', config));
+}
+
+function disable() {
+	let cfg = datad('GET', '/cloud/config');
+	if (cfg.error || cfg.code != 200 || type(cfg.body?.config) != 'object')
+		return { error: cfg.error ?? 'zwrt-datad did not return its configuration' };
+	let config = cfg.body.config;
+	config.enabled = false;
+	return result(datad('POST', '/cloud/config', config));
+}
+
+const METHODS = { get: {}, quick_connect: { credential: '', username: '', password: '' }, set: { config: '' }, disable: {} };
+
+if (ARGV[0] == 'list')
+	out(METHODS);
+else if (ARGV[0] == 'call') {
+	let req = input();
+	switch (ARGV[1]) {
+	case 'get': out(get()); break;
+	case 'quick_connect': out(quick_connect(req)); break;
+	case 'set': out(set(req)); break;
+	case 'disable': out(disable()); break;
+	default: out({ error: 'unknown method' });
+	}
+}
