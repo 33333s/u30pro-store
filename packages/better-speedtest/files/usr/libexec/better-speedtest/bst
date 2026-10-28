@@ -1,0 +1,75 @@
+#!/usr/bin/ucode
+/* The better-speedtest job from the command line (/usr/share/better-speedtest/job.uc):
+ *   bst start | stop | status     the test with the saved settings (uci better-speedtest.main); status as JSON
+ *   bst finish                    the end of a job: its result into the history (the job runs it)
+ *   bst screen                    the screen's info page (u30pro-screen-better-speedtest, run every 2 s while it is open): opening the
+ *                                 page starts a test, then up to 6 lines of progress or the result */
+import { stat, writefile, mkdir } from 'fs';
+import * as job from '/usr/share/better-speedtest/job.uc';
+
+const RUN = '/run/better-speedtest', SEEN = RUN + '/screen.seen';
+/* a line of the info page holds about 16 half-widths (16 px font in the round window) */
+const W = 16;
+
+/* s cut to about w half-widths (a CJK character counts 2), on character boundaries */
+function fit(s, w) {
+	let out = '', n = 0;
+	for (let c in match('' + s, /[\x01-\x7f]|[\xc0-\xff][\x80-\xbf]*/g) ?? []) {
+		c = c[0];
+		let cw = length(c) > 1 ? 2 : 1;
+		if (n + cw > w) return out + '…';
+		out += c; n += cw;
+	}
+	return out;
+}
+function mbps(v) { return sprintf('%.1f Mbps', v ?? 0); }
+
+function screen() {
+	/* the plugin runs this every 2 s while the page is open: a longer gap means the page was opened again */
+	let st = stat(SEEN), opened = !st || time() - st.mtime > 8;
+	mkdir(RUN, 0755);
+	writefile(SEEN, '');
+	if (opened && !job.running()) {
+		let r = job.start();
+		if (r.error) { print('无法开始测速\n', fit(r.error, W), '\n'); return; }
+	}
+	let s = job.status(), ev = s.events, last = { download: null, upload: null }, msg = null;
+	for (let e in ev) {
+		if (e.phase == 'download' || e.phase == 'upload') last[e.phase] = e;
+		else if (e.msg && e.phase != 'start') msg = e.msg;
+	}
+	if (s.running) {
+		let cur = length(ev) ? ev[-1].phase : null;
+		if (cur == 'download' || cur == 'upload') {
+			print(cur == 'download' ? '下行 ' : '上行 ', mbps(last[cur].mbps), '\n');
+			print('峰值 ', mbps(last[cur].peak), '\n');
+			if (cur == 'upload' && last.download) print('下行峰值 ', mbps(last.download.peak), '\n');
+		} else print('正在准备…\n');
+		if (msg) print(fit(msg, W), '\n');
+		print('测速很耗流量\n');
+		return;
+	}
+	let r = s.result, dir = s.job?.settings?.direction ?? 'both';
+	if (r) {
+		/* only the directions that were measured */
+		if (dir != 'up') print('下行 ', mbps(r.dl_avg), '\n');
+		if (dir != 'down') print(r.ul_msg ? fit('上行 ' + r.ul_msg, W) : '上行 ' + mbps(r.ul_avg), '\n');
+		print(sprintf('延迟 %.0f ms', r.ping ?? 0), '\n');
+		print(sprintf('抖动 %.0f ms', r.jitter ?? 0), '\n');
+		print(fit(replace(r.node ?? '', / \(Ookla\)$/, ''), W), '\n');
+		print('重进本页再测\n');
+		return;
+	}
+	print('测速失败\n', fit(s.error == 'Stopped' ? '已停止' : (s.error ?? ''), W), '\n');
+}
+
+switch (ARGV[0]) {
+case 'start': printf('%J\n', job.start()); break;
+case 'stop': printf('%J\n', job.stop()); break;
+case 'status': printf('%J\n', job.status()); break;
+case 'finish': job.finish(); break;
+case 'screen': screen(); break;
+default:
+	warn('usage: bst start|stop|status|finish|screen\n');
+	exit(2);
+}

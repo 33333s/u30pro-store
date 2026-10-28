@@ -1,0 +1,5 @@
+{
+  "version": "25.12.2-r1",
+  "arch": "noarch",
+  "description": "ImmortalWrt 25.12.2's LuCI and packages feeds (more LuCI applications) and their signing key; apk del removes the feed again"
+}

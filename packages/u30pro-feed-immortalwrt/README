@@ -1,0 +1,4 @@
+The key is immortalwrt-25.12.pem from ImmortalWrt's own keyring package
+https://downloads.immortalwrt.org/releases/25.12.2/packages/aarch64_generic/base/openwrt-keyring-2025.12.11~14e1f88b-r1.apk
+(SHA256 c7cc4f0a9ffa4c33..., fetched over HTTPS on 2026-10-25).  Base packages of these feeds had the same versions as OpenWrt 25.12.5,
+so nothing official was replaced (checked with apk upgrade --simulate against the device's package database).

@@ -1,0 +1,5 @@
+#!/bin/sh
+# better-speedtest with this device's configuration (/etc/better-speedtest/config.json, merged over the built-in one; the MCC-MNC table
+# it refreshes goes next to it)
+export BETTER_SPEEDTEST_CONFIG=${BETTER_SPEEDTEST_CONFIG:-/etc/better-speedtest/config.json}
+exec /usr/libexec/better-speedtest/better-speedtest "$@"

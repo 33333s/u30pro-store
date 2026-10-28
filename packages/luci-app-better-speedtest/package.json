@@ -1,0 +1,11 @@
+{
+  "version": "1.0-r1",
+  "arch": "noarch",
+  "description": "LuCI page Services > Speed test: better-speedtest with source and node choice, live chart, result and history",
+  "depends": [ "better-speedtest", "luci-base", "rpcd" ],
+  "scripts": {
+    "post-install": "scripts/reload",
+    "post-upgrade": "scripts/reload",
+    "post-deinstall": "scripts/reload"
+  }
+}

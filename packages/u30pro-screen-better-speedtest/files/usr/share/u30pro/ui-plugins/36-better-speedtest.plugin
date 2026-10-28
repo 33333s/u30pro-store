@@ -1,0 +1,7 @@
+# better-speedtest: opening the page starts a test (the settings of Services > Speed test), the page shows its progress and result
+title=多源测速
+icon=chart
+type=info
+cmd=/usr/libexec/better-speedtest/bst screen
+refresh=2
+order=36

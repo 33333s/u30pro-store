@@ -1,0 +1,11 @@
+{
+  "arch": "aarch64_generic",
+  "description": "better-speedtest (https://github.com/Gaimoydev/better-speedtest, MIT): multi-source speed test (China mainland per-carrier nodes, CDNs, Speedtest.net) with a background job for the web page and the screen",
+  "external": {
+    "usr/libexec/better-speedtest/better-speedtest": "build/better-speedtest/better-speedtest",
+    "usr/share/licenses/better-speedtest/LICENSE": "build/better-speedtest/LICENSE"
+  },
+  "version_file": "build/better-speedtest/version",
+  "release": "r1",
+  "depends": [ "ucode", "ucode-mod-fs", "ucode-mod-uci" ]
+}

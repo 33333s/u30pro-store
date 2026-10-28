@@ -1,0 +1,5 @@
+#!/bin/sh
+# rpcd picks up the new back end and access rules, LuCI its menu
+/etc/init.d/rpcd reload 2>/dev/null
+rm -rf /tmp/luci-indexcache* /tmp/luci-modulecache
+exit 0

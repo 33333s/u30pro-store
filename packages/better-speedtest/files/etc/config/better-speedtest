@@ -1,0 +1,8 @@
+# the test the web page and the screen start: source auto|cnspeed|cdn|ookla, node (a name, city or IP; empty = the fastest),
+# direction both|down|up, duration in seconds per direction (5-60), multi = how many sources at once (1-4)
+config better-speedtest 'main'
+	option src 'auto'
+	option node ''
+	option direction 'both'
+	option duration '10'
+	option multi '1'

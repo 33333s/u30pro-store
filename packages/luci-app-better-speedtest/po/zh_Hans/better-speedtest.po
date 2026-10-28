@@ -1,0 +1,160 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-app-better-speedtest\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Speed test"
+msgstr "测速"
+
+msgid "Automatic (mainland China: per-carrier nodes; elsewhere: the fastest CDN or Speedtest.net server)"
+msgstr "自动（中国大陆用分运营商节点，其他地区选最快的 CDN 或 Speedtest.net 服务器）"
+
+msgid "Mainland China per-carrier nodes (cnspeed)"
+msgstr "中国大陆分运营商节点（全球网测）"
+
+msgid "CDN download sources"
+msgstr "CDN 下载源"
+
+msgid "Speedtest.net servers"
+msgstr "Speedtest.net 服务器"
+
+msgid "Download and upload"
+msgstr "上下行"
+
+msgid "Download only"
+msgstr "仅下行"
+
+msgid "Upload only"
+msgstr "仅上行"
+
+msgid "Scale: %d Mbps"
+msgstr "刻度：%d Mbps"
+
+msgid "Start test"
+msgstr "开始测速"
+
+msgid "Stop"
+msgstr "停止"
+
+msgid "Finding the location…"
+msgstr "正在定位…"
+
+msgid "The fastest (automatic)"
+msgstr "最快的（自动）"
+
+msgid "Loading the nodes…"
+msgstr "正在读取节点…"
+
+msgid "%d nodes"
+msgstr "%d 个节点"
+
+msgid "Peak %s"
+msgstr "峰值 %s"
+
+msgid "Running since %s"
+msgstr "测速中，开始于 %s"
+
+msgid "Last test: %s"
+msgstr "上次测速：%s"
+
+msgid "No test yet"
+msgstr "还没有测过"
+
+msgid "The test was stopped."
+msgstr "测速已停止。"
+
+msgid "Download"
+msgstr "下行"
+
+msgid "Upload"
+msgstr "上行"
+
+msgid "Latency"
+msgstr "延迟"
+
+msgid "Jitter"
+msgstr "抖动"
+
+msgid "Server"
+msgstr "服务器"
+
+msgid "%d connections"
+msgstr "%d 个连接"
+
+msgid "Time"
+msgstr "时间"
+
+msgid "No results yet"
+msgstr "还没有结果"
+
+msgid "Public address %s · %s"
+msgstr "公网地址 %s · %s"
+
+msgid "Measures the router's own uplink with better-speedtest. A test downloads and uploads as fast as the link allows: on mobile data one test can use several hundred MB, more with a longer duration or several sources at once."
+msgstr "用 better-speedtest 测本机的上网带宽。测速时会尽量跑满链路：用移动数据时一次测速可能消耗几百 MB 流量，时长更长或多源同时测时更多。"
+
+msgid "Source"
+msgstr "测速源"
+
+msgid "Only for a chosen source; automatic picks the fastest one."
+msgstr "只在指定测速源时可选；自动会挑最快的。"
+
+msgid "Direction"
+msgstr "方向"
+
+msgid "Duration"
+msgstr "时长"
+
+msgid "seconds per direction"
+msgstr "秒（每个方向）"
+
+msgid "5 to 60. A short probe of the sources comes first."
+msgstr "5–60。正式测速前会先短暂探测各个源。"
+
+msgid "Sources at once"
+msgstr "同时使用的源"
+
+msgid "More than one adds up the throughput of the fastest sources, for links one server cannot fill."
+msgstr "多于 1 个时把最快几个源的吞吐相加，用于单个服务器跑不满的链路。"
+
+msgid "Test"
+msgstr "测速"
+
+msgid "History"
+msgstr "历史"
+
+msgid "Clear history"
+msgstr "清除历史"
+
+msgid "A test is already running"
+msgstr "已经有一次测速在进行"
+
+msgid "Unknown test source"
+msgstr "未知的测速源"
+
+msgid "Unknown test direction"
+msgstr "未知的测速方向"
+
+msgid "The duration must be 5 to 60 seconds"
+msgstr "时长必须是 5 到 60 秒"
+
+msgid "Use 1 to 4 sources at once"
+msgstr "同时使用的源必须是 1 到 4 个"
+
+msgid "Invalid node"
+msgstr "节点无效"
+
+msgid "The test could not be started"
+msgstr "无法开始测速"
+
+msgid "The test ended without a result"
+msgstr "测速结束了，但没有结果"
+
+msgid "The node list could not be fetched"
+msgstr "无法获取节点列表"
+
+msgid "The location could not be found"
+msgstr "无法定位"

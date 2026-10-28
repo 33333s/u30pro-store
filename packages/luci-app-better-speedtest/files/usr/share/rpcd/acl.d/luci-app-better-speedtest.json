@@ -1,0 +1,7 @@
+{
+  "luci-app-better-speedtest": {
+    "description": "Speed tests with better-speedtest",
+    "read": { "ubus": { "luci.better-speedtest": ["get", "status", "nodes", "location"] } },
+    "write": { "ubus": { "luci.better-speedtest": ["start", "stop", "clear_history"] } }
+  }
+}

@@ -9,6 +9,11 @@
   },
   "packages": [
     {
+      "file": "better-speedtest-0.0.3_git20260703-r1.apk",
+      "bytes": 3045373,
+      "sha256": "8c80208139c53369f75060273da462e2de1da36aed4b2f7a6342ac629c65bff4"
+    },
+    {
       "file": "kmod-act-gate-6.12.94_p540-r1.apk",
       "bytes": 8000,
       "sha256": "f2bad8788d77c8ead1f04e07d67d8b4e6c925b188e8697485482b4ebe40c07bb"
@@ -1039,6 +1044,11 @@
       "sha256": "dc05accede56ad1349f144d52362bfaf31a4cc546b07322b9bc87e08bbede6f9"
     },
     {
+      "file": "luci-app-better-speedtest-1.0-r1.apk",
+      "bytes": 7617,
+      "sha256": "0961d192a41783638ad7838d66389b6f3b67e32dcc5e0f7b3efdde65c331fef2"
+    },
+    {
       "file": "luci-app-zwrt-datad-1.0-r3.apk",
       "bytes": 79754,
       "sha256": "e5480bafffafe29f4e2d893627b86f622663ce203a0bee225bdc9d8bf7d1023e"
@@ -1067,6 +1077,11 @@
       "file": "u30pro-kmod-loader-1.0-r1.apk",
       "bytes": 565,
       "sha256": "7fd97b3d74b41b1ff2073d4f660ef1696835afa7e40c98184a8a6424fe0ab5fa"
+    },
+    {
+      "file": "u30pro-screen-better-speedtest-1.0-r1.apk",
+      "bytes": 577,
+      "sha256": "f6dffa805d13d4cd8d87b5646c74427e33c5381da76040f2f25600a7d9b5e768"
     },
     {
       "file": "u30pro-screen-clients-1.0-r1.apk",

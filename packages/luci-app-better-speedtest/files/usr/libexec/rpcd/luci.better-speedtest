@@ -1,0 +1,37 @@
+#!/usr/bin/ucode
+/* rpcd exec plugin of luci-app-better-speedtest, over the job of the better-speedtest package (/usr/share/better-speedtest/job.uc):
+ *   get            the saved settings, the job's status and the history
+ *   status         the job: running, its settings and start time, the events so far (progress and messages), the result, an error
+ *   start          src, node, direction, duration, multi: saved as the settings, then a test with them
+ *   stop           ends the running test
+ *   nodes          src: the nodes of one source (cnspeed, cdn, ookla), cached 10 min
+ *   location       the public address, carrier and place as the program finds them, cached 10 min
+ *   clear_history  forgets the past results */
+import { readfile } from 'fs';
+import * as job from '/usr/share/better-speedtest/job.uc';
+
+function out(v) { printf('%J\n', v); }
+function input() { try { let v = json(readfile('/dev/stdin') || '{}'); return type(v) == 'object' ? v : {}; } catch (e) { return {}; } }
+
+const METHODS = { get: {}, status: {}, start: { src: '', node: '', direction: '', duration: 0, multi: 0 }, stop: {}, nodes: { src: '' },
+	location: {}, clear_history: {} };
+
+if (ARGV[0] == 'list')
+	out(METHODS);
+else if (ARGV[0] == 'call') {
+	let req = input();
+	switch (ARGV[1]) {
+	case 'get': out({ settings: job.settings(), status: job.status(), history: job.history() }); break;
+	case 'status': out(job.status()); break;
+	case 'start': {
+		let s = job.save(req);
+		out(s.error ? s : job.start(s));
+		break;
+	}
+	case 'stop': out(job.stop()); break;
+	case 'nodes': out(job.nodes(req.src)); break;
+	case 'location': out(job.location()); break;
+	case 'clear_history': out(job.clear_history()); break;
+	default: out({ error: 'unknown method' });
+	}
+}
