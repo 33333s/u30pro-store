@@ -2,8 +2,9 @@
 /* The better-speedtest job from the command line (/usr/share/better-speedtest/job.uc):
  *   bst start | stop | status     the test with the saved settings (uci better-speedtest.main); status as JSON
  *   bst finish                    the end of a job: its result into the history (the job runs it)
- *   bst screen                    the screen's info page (u30pro-screen-better-speedtest, run every 2 s while it is open): opening the
- *                                 page starts a test, then up to 6 lines of progress or the result */
+ *   bst screen                    the screen's page (u30pro-screen-better-speedtest, run every 2 s while it is open): opening the page
+ *                                 starts a test, then its progress or the result: a gauge, the speed and a chart of it for a screen
+ *                                 program that draws view pages (U30PRO_PANEL_VIEW=1), else up to 6 lines of text */
 import { stat, writefile, mkdir } from 'fs';
 import * as job from '/usr/share/better-speedtest/job.uc';
 
@@ -23,17 +24,68 @@ function fit(s, w) {
 	return out;
 }
 function mbps(v) { return sprintf('%.1f Mbps', v ?? 0); }
+/* the gauge's full scale: a round number above v */
+function scale(v) {
+	for (let s in [ 50, 100, 200, 300, 500, 1000, 2000 ]) if (v <= s) return s;
+	return 5000;
+}
+function series(ev, phase) { let r = []; for (let e in ev) if (e.phase == phase) push(r, e.mbps ?? 0); return slice(r, -60); }
+
+/* the view page (plugins.h of the screen program): gauge, label, big, spark, row, text */
+function view(s, opened_error) {
+	if (opened_error) { print('label 无法开始测速\n', 'text ', fit(opened_error, 20), '\n'); return; }
+	let ev = s.events, dl = series(ev, 'download'), ul = series(ev, 'upload'), node = null;
+	for (let e in ev) if (e.phase == 'node' && e.msg) node = replace(split(e.msg, ' ping=')[0], / \(Ookla\)$/, '');
+	let top = 0;
+	for (let a in [ dl, ul ]) for (let v in a) if (v > top) top = v;
+	let sc = scale(top), spark = () => {
+		if (length(dl) > 1) print('spark a ', sc, ' ', join(' ', dl), '\n');
+		if (length(ul) > 1) print('spark b ', sc, ' ', join(' ', ul), '\n');
+	};
+	if (s.running) {
+		let cur = length(ev) ? ev[-1] : null, up = cur?.phase == 'upload';
+		if (cur?.phase != 'download' && !up) {
+			print('gauge 0 100 a\n', 'label 正在准备…\n', 'big -- Mbps\n');
+			if (cur?.msg && cur.phase != 'start') print('text ', fit(cur.msg, 20), '\n');
+			print('text 测速很耗流量\n');
+			return;
+		}
+		print('gauge ', cur.mbps ?? 0, ' ', sc, up ? ' b' : ' a', '\n');
+		print('label ', up ? '上行测速中' : '下行测速中', '\n');
+		print(sprintf('big %.1f Mbps\n', cur.mbps ?? 0));
+		spark();
+		print('row 峰值|', mbps(cur.peak), '\n');
+		if (node) print('text ', fit(node, 20), '\n');
+		return;
+	}
+	let r = s.result, dir = s.job?.settings?.direction ?? 'both';
+	if (!r) {
+		print('gauge 0 100 bad\n', 'label 测速失败\n', 'text ', fit(s.error == 'Stopped' ? '已停止' : (s.error ?? ''), 20), '\n', 'text 重进本页再测\n');
+		return;
+	}
+	let main = dir == 'up' ? r.ul_avg : r.dl_avg;
+	print('gauge ', main ?? 0, ' ', scale(main ?? 0), ' ok\n');
+	print('label ', fit(replace(r.node ?? '', / \(Ookla\)$/, ''), 20), '\n');
+	print(sprintf('big %.1f Mbps\n', main ?? 0));
+	spark();
+	if (dir == 'both') print(r.ul_msg ? 'row 上行|' + fit(r.ul_msg, 12) : 'row ↑ 上行|' + mbps(r.ul_avg), '\n');
+	print(sprintf('row 延迟/抖动|%.0f/%.0f ms\n', r.ping ?? 0, r.jitter ?? 0));
+	print('text 重进本页再测\n');
+}
 
 function screen() {
 	/* the plugin runs this every 2 s while the page is open: a longer gap means the page was opened again */
 	let st = stat(SEEN), opened = !st || time() - st.mtime > 8;
 	mkdir(RUN, 0755);
 	writefile(SEEN, '');
+	let as_view = getenv('U30PRO_PANEL_VIEW') == '1';
 	if (opened && !job.running()) {
 		let r = job.start();
-		if (r.error) { print('无法开始测速\n', fit(r.error, W), '\n'); return; }
+		if (r.error) { if (as_view) view(null, r.error); else print('无法开始测速\n', fit(r.error, W), '\n'); return; }
 	}
-	let s = job.status(), ev = s.events, last = { download: null, upload: null }, msg = null;
+	let s = job.status();
+	if (as_view) { view(s); return; }
+	let ev = s.events, last = { download: null, upload: null }, msg = null;
 	for (let e in ev) {
 		if (e.phase == 'download' || e.phase == 'upload') last[e.phase] = e;
 		else if (e.msg && e.phase != 'start') msg = e.msg;

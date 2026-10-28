@@ -1,7 +1,8 @@
-# better-speedtest: opening the page starts a test (the settings of Services > Speed test), the page shows its progress and result
+# better-speedtest: opening the page starts a test (the settings of Services > Speed test), the page shows its progress and result: a gauge,
+# the speed and its chart on a screen program that draws view pages (firmware p542-s117 and later), the same as text lines on older ones
 title=多源测速
 icon=chart
-type=info
+type=view
 cmd=/usr/libexec/better-speedtest/bst screen
 refresh=2
 order=36

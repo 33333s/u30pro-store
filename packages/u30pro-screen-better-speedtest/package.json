@@ -1,5 +1,5 @@
 {
-  "version": "1.0-r1",
+  "version": "1.0-r2",
   "arch": "noarch",
   "description": "Screen function page: multi-source speed test (better-speedtest); opening the page starts a test with the settings of the web page",
   "depends": [ "better-speedtest" ]

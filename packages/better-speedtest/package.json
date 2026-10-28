@@ -6,6 +6,6 @@
     "usr/share/licenses/better-speedtest/LICENSE": "build/better-speedtest/LICENSE"
   },
   "version_file": "build/better-speedtest/version",
-  "release": "r1",
+  "release": "r2",
   "depends": [ "ucode", "ucode-mod-fs", "ucode-mod-uci" ]
 }

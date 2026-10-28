@@ -9,9 +9,9 @@
   },
   "packages": [
     {
-      "file": "better-speedtest-0.0.3_git20260703-r1.apk",
-      "bytes": 3045373,
-      "sha256": "8c80208139c53369f75060273da462e2de1da36aed4b2f7a6342ac629c65bff4"
+      "file": "better-speedtest-0.0.3_git20260703-r2.apk",
+      "bytes": 3046173,
+      "sha256": "b581293fc4b66f0e2284d5df3602e8de257c3a7118ea7350745d835569436833"
     },
     {
       "file": "kmod-act-gate-6.12.94_p540-r1.apk",
@@ -1079,9 +1079,9 @@
       "sha256": "7fd97b3d74b41b1ff2073d4f660ef1696835afa7e40c98184a8a6424fe0ab5fa"
     },
     {
-      "file": "u30pro-screen-better-speedtest-1.0-r1.apk",
-      "bytes": 577,
-      "sha256": "f6dffa805d13d4cd8d87b5646c74427e33c5381da76040f2f25600a7d9b5e768"
+      "file": "u30pro-screen-better-speedtest-1.0-r2.apk",
+      "bytes": 661,
+      "sha256": "4142d7da9e1a92c3eacd955223dc438304d81b9f5baf3df95c29d1e3fb11a9f7"
     },
     {
       "file": "u30pro-screen-clients-1.0-r1.apk",
