@@ -1,0 +1,17 @@
+{#
+ U30 Pro theme for LuCI: the login page, a plain form (no script needed).  The account is root, as on the router itself.
+-#}
+
+{% include('header', { blank_page: true }) %}
+
+<form method="post" class="u-login">
+	<span class="u-login-logo"></span>
+	<h1>{{ striptags(ubus.call('system', 'board')?.hostname ?? 'U30 Pro') }}</h1>
+	<input type="hidden" name="luci_username" value="{{ entityencode(duser ?? 'root', true) }}">
+	<input class="u-login-field" name="luci_password" id="luci_password" type="password" autocomplete="current-password"
+		placeholder="{{ _('Password') }}" aria-label="{{ _('Password') }}" autofocus>
+	<button class="btn cbi-button-positive important u-login-btn" type="submit">{{ _('Log in') }}</button>
+	<div class="u-login-err">{% if (fuser): %}{{ _('Invalid username and/or password! Please try again.') }}{% endif %}</div>
+</form>
+
+{% include('footer', { blank_page: true }) %}

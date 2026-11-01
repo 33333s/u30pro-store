@@ -33,6 +33,7 @@ apk update
 | `luci-app-zwrt-datad` | LuCI 页面“服务 → zwrt-datad”：云管理（接入 NMS 的状态、用 NMS 显示的凭据快速接入、连接设置）和网页终端（依赖 `zwrt-datad`） |
 | `luci-theme-argon` | LuCI 主题 Argon 3.1.0（[jerrykuku/luci-theme-argon](https://github.com/jerrykuku/luci-theme-argon)，Apache-2.0，作者编好的包原样收录）；设置页 `luci-app-argon-config`，中文 `luci-i18n-argon-config-zh-cn` |
 | `luci-theme-aurora` | LuCI 主题 Aurora 1.4.0（[eamonxg/luci-theme-aurora](https://github.com/eamonxg/luci-theme-aurora)，Apache-2.0，作者编好的包原样收录） |
+| `luci-theme-u30pro` | 本机专用的 LuCI 主题：极简外观、带图标的侧边菜单（手机上是抽屉）、深浅色，带机身示意图的“概览”首页（屏幕主页实时画面，卡片带开关）。装上即切换到它，需要 p542-s120 起的固件。样式底层是 Bootstrap 主题（Apache-2.0），图标是 Lucide 子集（ISC） |
 | `u30pro-kmod-loader` | 开机加载已装的内核模块包 |
 | `kmod-*` | 内核模块，205 个，包名和 OpenWrt 25.12 一致（文件系统、存储、隧道、流量控制、netfilter 扩展、加密等） |
 

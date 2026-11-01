@@ -1,0 +1,91 @@
+{#
+ U30 Pro theme for LuCI: a side menu with icons (a drawer on phones), light and dark, the stylesheet of the Bootstrap theme with the U30 Pro
+ design on top (u30pro.css).  Derived from the Bootstrap theme templates (Apache License 2.0).
+-#}
+
+{%
+	import { getuid, getspnam } from 'luci.core';
+
+	const boardinfo = ubus.call('system', 'board');
+
+	http.prepare_content('text/html; charset=UTF-8');
+-%}
+
+<!DOCTYPE html>
+<html lang="{{ dispatcher.lang }}">
+	<head>
+		<meta charset="utf-8">
+		<title>{{ striptags(`${boardinfo.hostname ?? '?'}${dispatched?.title ? ` | ${_(dispatched.title)}` : ''}`) }}</title>
+		<script>
+			/* light or dark: the choice of the menu's button (localStorage u30.theme: auto, light, dark), "auto" follows the system;
+			 * the accent: the colour of the on-device screen theme, kept by the overview page */
+			(function() {
+				var root = document.documentElement, mq = window.matchMedia('(prefers-color-scheme: dark)');
+				function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+				window.u30Appearance = function() {
+					var t = get('u30.theme') || 'auto';
+					root.setAttribute('data-darkmode', t === 'dark' || (t === 'auto' && mq.matches) ? 'true' : 'false');
+					root.setAttribute('data-appearance', t);
+				};
+				mq.addEventListener('change', window.u30Appearance);
+				window.u30Appearance();
+				var a = get('u30.accent');
+				if (a && /^\d+$/.test(a)) root.setAttribute('data-accent', a);
+			})();
+		</script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+		<meta name="darkreader-lock">
+		<meta name="color-scheme" content="light dark">
+		<link rel="stylesheet" href="{{ media }}/cascade.css?v={{ version.luciversion }}">
+		<link rel="stylesheet" media="only screen and (max-device-width: 854px)" href="{{ media }}/mobile.css?v={{ version.luciversion }}">
+		<link rel="stylesheet" href="{{ media }}/u30pro.css?v=1.0-r1">
+		<link rel="icon" href="{{ media }}/logo.svg" sizes="any">
+		{% if (node?.css): %}
+		<link rel="stylesheet" href="{{ resource }}/{{ node.css }}">
+		{% endif %}
+		{% if (css): %}
+		<style title="text/css">{{ css }}</style>
+		{% endif %}
+		<script src="{{ media }}/icons.js?v=1.0-r1"></script>
+		<script src="{{ dispatcher.build_url('admin/translations', dispatcher.lang) }}"></script>
+		<script src="{{ resource }}/cbi.js?v={{ version.luciversion }}"></script>
+	</head>
+
+	<body class="lang_{{ dispatcher.lang }} {{ entityencode(striptags(node?.title ?? ''), true) }}{{ blank_page ? ' u-blank' : '' }}" data-page="{{ entityencode(join('-', ctx.request_path), true) }}">
+		{% if (!blank_page): %}
+		<div class="u-app">
+			<aside class="u-rail" id="u-rail">
+				<a class="u-brand" href="{{ dispatcher.build_url('admin') }}">
+					<span class="u-brand-dot"></span>
+					<span class="u-brand-name">{{ striptags(boardinfo.hostname ?? '?') }}</span>
+				</a>
+				<nav class="u-menu" id="u-menu"></nav>
+				<div class="u-rail-foot" id="u-rail-foot"></div>
+			</aside>
+			<div class="u-backdrop" id="u-backdrop"></div>
+			<div class="u-main">
+				<div class="u-top">
+					<button class="u-menubtn" id="u-menubtn" type="button" aria-label="{{ _('Menu') }}"></button>
+					<span class="u-top-title">{{ dispatched?.title ? _(dispatched.title) : '' }}</span>
+					<div id="indicators"></div>
+				</div>
+				<div id="maincontent" class="container">
+					{% if (getuid() == 0 && getspnam('root')?.pwdp === ''): %}
+						<div class="alert-message warning">
+							<h4>{{ _('No password set!') }}</h4>
+							<p>{{ _('There is no password set on this router. Please configure a root password to protect the web interface.') }}</p>
+							{% if (dispatcher.lookup("admin/system/admin")): %}
+							  <div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/admin") }}">{{ _('Go to password configuration...') }}</a></div>
+							{% endif %}
+						</div>
+					{% endif %}
+
+					<noscript>
+						<div class="alert-message warning">
+							<h4>{{ _('JavaScript required!') }}</h4>
+							<p>{{ _('You must enable JavaScript in your browser or LuCI will not work properly.') }}</p>
+						</div>
+					</noscript>
+
+					<div id="tabmenu" style="display:none"></div>
+		{% endif %}

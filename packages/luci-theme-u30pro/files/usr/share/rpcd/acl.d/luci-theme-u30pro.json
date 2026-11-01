@@ -1,0 +1,7 @@
+{
+  "luci-theme-u30pro": {
+    "description": "U30 Pro theme overview page: device state and its switches",
+    "read": { "ubus": { "u30pro-dashboard": ["state"], "u30pro-native-control": ["get"] } },
+    "write": { "ubus": { "u30pro-dashboard": ["nfc_set"], "u30pro-native-control": ["wifi_toggle", "set_screen_power", "cellular_action"] } }
+  }
+}

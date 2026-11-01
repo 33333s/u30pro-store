@@ -1,0 +1,8 @@
+{
+  "admin/u30pro": {
+    "title": "Overview",
+    "order": 1,
+    "action": { "type": "view", "path": "u30pro/overview" },
+    "depends": { "acl": [ "luci-theme-u30pro" ] }
+  }
+}

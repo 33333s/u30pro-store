@@ -1,0 +1,11 @@
+{#
+ U30 Pro theme for LuCI (see header.ut).  Derived from the Bootstrap theme templates (Apache License 2.0).
+-#}
+		{% if (!blank_page): %}
+				</div>
+			</div>
+		</div>
+		<script>L.require('menu-u30pro')</script>
+		{% endif %}
+	</body>
+</html>

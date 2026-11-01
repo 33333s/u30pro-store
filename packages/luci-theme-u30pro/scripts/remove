@@ -1,0 +1,7 @@
+#!/bin/sh
+# back to Bootstrap when this theme was the active one
+[ "$(uci -q get luci.main.mediaurlbase)" = /luci-static/u30pro ] && uci -q set luci.main.mediaurlbase=/luci-static/bootstrap
+uci -q delete luci.themes.U30Pro
+uci -q commit luci
+rm -rf /tmp/luci-indexcache* /tmp/luci-modulecache
+exit 0

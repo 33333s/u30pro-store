@@ -1,0 +1,10 @@
+#!/bin/sh
+# registers the theme and switches LuCI to it (Argon and the other installed themes stay selectable in System > System > Language and Style)
+uci -q batch <<UCI
+set luci.themes.U30Pro=/luci-static/u30pro
+set luci.main.mediaurlbase=/luci-static/u30pro
+commit luci
+UCI
+/etc/init.d/rpcd reload 2>/dev/null
+rm -rf /tmp/luci-indexcache* /tmp/luci-modulecache
+exit 0

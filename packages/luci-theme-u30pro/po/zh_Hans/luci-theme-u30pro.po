@@ -1,0 +1,76 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: zh_Hans\n"
+
+msgid "%d d %d h"
+msgstr "%d 天 %d 小时"
+
+msgid "%d h %d min"
+msgstr "%d 小时 %d 分"
+
+msgid "%d min"
+msgstr "%d 分"
+
+msgid "Auto"
+msgstr "自动"
+
+msgid "Battery"
+msgstr "电池"
+
+msgid "Charging"
+msgstr "充电中"
+
+msgid "Charging paused"
+msgstr "暂停充电"
+
+msgid "Dark"
+msgstr "深色"
+
+msgid "Empty"
+msgstr "空"
+
+msgid "External power"
+msgstr "已接电源"
+
+msgid "Failed"
+msgstr "失败"
+
+msgid "Full"
+msgstr "已充满"
+
+msgid "Function"
+msgstr "功能"
+
+msgid "Function key"
+msgstr "功能键"
+
+msgid "Light"
+msgstr "浅色"
+
+msgid "Messages"
+msgstr "短信"
+
+msgid "On battery"
+msgstr "电池供电"
+
+msgid "Open"
+msgstr "开放"
+
+msgid "Power"
+msgstr "电源"
+
+msgid "Screen"
+msgstr "屏幕"
+
+msgid "Screen off"
+msgstr "熄屏"
+
+msgid "Screen on"
+msgstr "亮屏"
+
+msgid "Security"
+msgstr "安全"
+
+msgid "Tap to connect"
+msgstr "碰一碰连接"
