@@ -18,15 +18,15 @@
 }
 .u-ov .u-ic { width: 18px; height: 18px; flex: none; display: inline-block; }
 .u-ov .u-ic svg { width: 100%; height: 100%; display: block; }
-.u-ov-grid { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 36px; align-items: start; }
-.u-ov-hero { position: sticky; top: 24px; }
-@media (max-width: 1099px) { .u-ov-grid { grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: 24px; } }
-@media (max-width: 719px) { .u-ov-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; } .u-ov-hero { position: static; } }
+.u-ov-grid { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 40px; align-items: center; --fig-body: 260px; }
+@media (max-width: 1099px) { .u-ov-grid { gap: 28px; --fig-body: 210px; } }
+@media (max-width: 719px) { .u-ov-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; --fig-body: 170px; } }
 
-/* the device: a box with the drawing's aspect ratio (940 x 1490), the canvas placed in per cent of it */
-.u-dev { width: 100%; max-width: 340px; margin: 0 auto; }
-@media (max-width: 719px) { .u-dev { max-width: 220px; } }
-.u-dev-box { position: relative; width: 100%; height: 0; padding-top: 158.5106%; }
+/* the device: a box with the aspect ratio of the drawing as cut (--fig-w x 1490 units, the body 702 units wide), the canvas placed in per
+ * cent of it; --fig-body is the body's width on screen */
+.u-dev { width: calc(var(--fig-body) * var(--fig-w) / 702); max-width: 100%; }
+@media (max-width: 719px) { .u-dev { margin: 0 auto; } }
+.u-dev-box { position: relative; width: 100%; height: 0; padding-top: calc(149000% / var(--fig-w)); }
 .u-dev-box > svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
 .u-dev-box > canvas { position: absolute; border-radius: 50%; clip-path: circle(45% at 50% 50%); pointer-events: none; }
 .u-ov .u-body { fill: var(--o-surface); stroke: var(--o-text-3); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
@@ -48,12 +48,20 @@
 .u-ov .u-hot-screen:hover .u-hl { fill: transparent; }
 
 /* tiles */
-.u-tiles { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.u-tiles { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 379px) { .u-tiles { grid-template-columns: minmax(0, 1fr); } }
 .u-tiles .wide { grid-column: 1 / -1; }
 .u-tile {
 	background: var(--o-surface); border-radius: 20px; box-shadow: var(--o-shadow); border: 1px solid transparent; padding: 18px 20px;
-	min-width: 0; color: var(--o-text); transition: transform .15s;
+	min-width: 0; color: var(--o-text); transition: transform .15s; display: flex; flex-direction: column;
 }
+/* the value and the line under it: the same sizes in every tile, so the tiles of a row line up */
+.u-val { font-size: 24px; font-weight: 650; letter-spacing: -.02em; line-height: 32px; font-variant-numeric: tabular-nums; margin-top: auto; }
+.u-meta { display: flex; align-items: center; gap: 6px; height: 22px; margin-top: 6px; font-size: 13px; color: var(--o-text-2); min-width: 0; }
+.u-meta .u-ic { width: 15px; height: 15px; }
+.u-meta > span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.u-meta .u-meter { flex: 1; margin: 0 6px 0 0; min-width: 40px; }
+.u-meta .u-ok { color: var(--o-ok); }
 [data-darkmode="true"] .u-tile { border-color: var(--o-line); }
 .u-tile.tap { cursor: pointer; }
 .u-tile.tap:hover { transform: translateY(-1px); }
@@ -72,8 +80,9 @@
 .u-bars { display: inline-flex; align-items: flex-end; gap: 3px; height: 18px; }
 .u-bars i { width: 4px; border-radius: 2px; background: var(--o-surface-3); }
 .u-bars i.on { background: var(--o-accent); }
-.u-net { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-end; justify-content: space-between; }
-.u-net-l { display: grid; gap: 8px; flex: 1 1 180px; min-width: 0; }
+.u-net { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-end; justify-content: space-between; margin-top: auto; }
+.u-net-l { flex: 1 1 180px; min-width: 0; }
+.u-net .u-rates { height: 22px; align-items: center; }
 .u-rates { display: flex; gap: 24px; flex-wrap: wrap; }
 .u-rate { display: inline-flex; align-items: baseline; gap: 5px; font-variant-numeric: tabular-nums; }
 .u-rate b { font-size: 20px; font-weight: 650; }

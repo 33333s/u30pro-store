@@ -14,6 +14,9 @@ var callCell = rpc.declare({ object: 'u30pro-native-control', method: 'cellular_
 var callWifi = rpc.declare({ object: 'u30pro-native-control', method: 'wifi_toggle' });
 var callScreen = rpc.declare({ object: 'u30pro-native-control', method: 'set_screen_power', params: [ 'action' ] });
 var callNfc = rpc.declare({ object: 'u30pro-dashboard', method: 'nfc_set', params: [ 'enabled' ] });
+/* the wallpaper of the screen (System > Screen wallpaper; firmware with u30pro-wallpaper) */
+var callWp = rpc.declare({ object: 'u30pro-wallpaper', method: 'get' });
+var callWpImage = rpc.declare({ object: 'u30pro-wallpaper', method: 'image' });
 
 var LINK = { network: 'admin/modem/overview', wifi: 'admin/network/wireless', battery: 'admin/status/u30pro-battery',
 	screen: 'admin/system/u30pro-device', key: 'admin/system/u30pro-device', sms: 'admin/modem/sms', system: 'admin/status/overview' };
@@ -34,6 +37,11 @@ function fmtRate(bps) {
 	if (bps < 1e6) { var k = bps / 1e3; return [ k < 10 ? k.toFixed(1) : k.toFixed(0), 'KB/s' ]; }
 	if (bps < 1e9) { var m = bps / 1e6; return [ m < 10 ? m.toFixed(1) : m.toFixed(0), 'MB/s' ]; }
 	return [ (bps / 1e9).toFixed(1), 'GB/s' ];
+}
+function fmtSleep(s) {
+	if (s == null) return '–';
+	if (s === 0) return _('Always on');
+	return s < 60 ? _('%d s').format(s) : _('%d min').format(s / 60);
 }
 function fmtDur(s) {
 	if (s == null) return '–';
@@ -94,6 +102,34 @@ function rrect(ctx, x, y, w, h, r) { ctx.beginPath(); if (ctx.roundRect) ctx.rou
 function tri(ctx, p, col) { ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(p[2], p[3]); ctx.lineTo(p[4], p[5]); ctx.closePath(); ctx.fillStyle = css(col); ctx.fill(); }
 function font(px, bold) { return (bold ? '700 ' : '500 ') + px + 'px ' + FONT; }
 
+/* the wallpaper as tools/ui/wall.h shows it on the home page: dimmed, and the dial on a disc of thin glass (the blurred wallpaper under a
+ * tinted pane, a rim lit from above).  The blur here is a down- and up-scale, which every browser's canvas can do. */
+var TINT = [ '#161E2C', '#1C1C1E', '#E1E8F0', null ];
+function wallpaper(ctx, wp, A) {
+	var s = wp.settings || {}, dim = (s.dim != null ? s.dim : 30) / 100, clear = (s.glass != null ? s.glass : 50) / 100;
+	var tint = TINT[s.tint || 0] ? rgb(TINT[s.tint || 0]) : A.map(function(v) { return Math.round(v * 2 / 5); });
+	if (!wp.soft) {
+		var n = Math.max(4, Math.round(240 / (4 + (s.blur != null ? s.blur : 50) / 5))), small = document.createElement('canvas');
+		small.width = small.height = n;
+		small.getContext('2d').drawImage(wp.img, 0, 0, n, n);
+		wp.soft = small;
+	}
+	ctx.drawImage(wp.img, 0, 0, 240, 240);
+	ctx.fillStyle = 'rgba(0,0,0,' + dim + ')'; ctx.fillRect(0, 0, 240, 240);
+	ctx.save();
+	ctx.beginPath(); ctx.arc(120, 120, 98, 0, 7); ctx.clip();
+	ctx.imageSmoothingEnabled = true;
+	ctx.drawImage(wp.soft, -6, -6, 252, 252);
+	ctx.fillStyle = 'rgba(0,0,0,' + dim + ')'; ctx.fillRect(0, 0, 240, 240);
+	var pane = (1 - clear) * .65 * .94;
+	ctx.fillStyle = css(tint, Math.round(pane * 255)); ctx.fillRect(0, 0, 240, 240);
+	ctx.fillStyle = 'rgba(255,255,255,.06)'; ctx.fillRect(0, 0, 240, 240);
+	ctx.restore();
+	var rim = ctx.createLinearGradient(0, 22, 0, 218);
+	rim.addColorStop(0, 'rgba(255,255,255,.5)'); rim.addColorStop(.5, 'rgba(255,255,255,.12)'); rim.addColorStop(1, 'rgba(255,255,255,.08)');
+	ctx.beginPath(); ctx.arc(120, 120, 97.3, 0, 7); ctx.lineWidth = 1.4; ctx.strokeStyle = rim; ctx.stroke();
+}
+
 function drawScreen(cv) {
 	var dpr = Math.min(window.devicePixelRatio || 1, 3), size = Math.round(cv.getBoundingClientRect().width * dpr);
 	if (!size) return;
@@ -101,10 +137,15 @@ function drawScreen(cv) {
 	var ctx = cv.getContext('2d'), th = THEMES[S.theme] || THEMES[1], A = rgb(th.a), B = rgb(th.b), i;
 	ctx.setTransform(size / 240, 0, 0, size / 240, 0, 0);
 	ctx.clearRect(0, 0, 240, 240);
-	/* bg_build(): a radial gradient around (120, 112) falling off with d^2 over 150 px */
-	var centre = mix(rgb('#152238'), A, 26), edge = rgb('#04070D'), g = ctx.createRadialGradient(120, 112, 0, 120, 112, 150);
-	for (i = 0; i <= 10; i++) g.addColorStop(i / 10, css(mix(centre, edge, Math.round(i * i / 100 * 255))));
-	ctx.fillStyle = g; ctx.fillRect(0, 0, 240, 240);
+	ctx.shadowColor = 'transparent';
+	var wp = S.wp && S.wp.img && S.wp.img.complete && S.wp.img.naturalWidth ? S.wp : null;
+	if (wp) wallpaper(ctx, wp, A);
+	else {
+		/* bg_build(): a radial gradient around (120, 112) falling off with d^2 over 150 px */
+		var centre = mix(rgb('#152238'), A, 26), edge = rgb('#04070D'), g = ctx.createRadialGradient(120, 112, 0, 120, 112, 150);
+		for (i = 0; i <= 10; i++) g.addColorStop(i / 10, css(mix(centre, edge, Math.round(i * i / 100 * 255))));
+		ctx.fillStyle = g; ctx.fillRect(0, 0, 240, 240);
+	}
 	if (!S.st || S.st.now == null) return;
 
 	var b = battery(), pct = b ? b.pct : null, charging = b && b.charging;
@@ -119,6 +160,8 @@ function drawScreen(cv) {
 			}
 		}
 	}
+	/* over a wallpaper light text gets a one-pixel shadow (gx_shadow) */
+	if (wp) { ctx.shadowColor = 'rgba(0,0,0,.53)'; ctx.shadowOffsetY = 1; ctx.shadowBlur = 0; }
 	var t = new Date(Date.now() + S.skew + (S.st.tz_offset_s || 0) * 1000);
 	ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
 	ctx.fillStyle = css(C_TXT); ctx.font = font(52, true);
@@ -154,21 +197,22 @@ function drawScreen(cv) {
 	ctx.fillStyle = css(C_TXT); ctx.font = font(16, true); ctx.fillText(r2[0], x, 175); x += n2 + 2;
 	ctx.fillStyle = css(C_DIM); ctx.font = font(13); ctx.fillText(r2[1], x, 175);
 
+	/* the footer: icons centred on the digits (189 .. 199 on baseline 199), as page_home draws them */
 	var wifiOn = feed('wifi_active') == '1', wc = wifiOn ? A : C_FAINT;
-	for (i = 1; i <= 3; i++) arc(ctx, 80, 195.4, 3.36 * i, 1.36, -45, 45, wc, 255, false);
-	ctx.beginPath(); ctx.arc(80, 195.4, .96, 0, 7); ctx.fillStyle = css(wc); ctx.fill();
+	for (i = 1; i <= 3; i++) arc(ctx, 80, 198.9, 3.36 * i, 1.36, -45, 45, wc, 255, false);
+	ctx.beginPath(); ctx.arc(80, 198.9, .96, 0, 7); ctx.fillStyle = css(wc); ctx.fill();
 	ctx.font = font(14); ctx.fillStyle = css(wifiOn ? C_TXT : C_FAINT); ctx.fillText(String(feedNum('nclients') || 0), 91, 199);
 	var bc = pct == null ? C_FAINT : pct <= 15 ? C_BAD : pct <= 30 ? C_WARN : C_OK;
-	rrect(ctx, 109, 191, 13, 9, 3); ctx.lineWidth = 1.5; ctx.strokeStyle = css(C_TXT, 190); ctx.stroke();
-	rrect(ctx, 123, 193.7, 2, 3.6, 1); ctx.fillStyle = css(C_TXT, 190); ctx.fill();
-	if (pct > 0) { rrect(ctx, 111, 193, 9 * Math.min(pct, 100) / 100, 5, 1.5); ctx.fillStyle = css(bc); ctx.fill(); }
+	rrect(ctx, 109.75, 189.75, 11.5, 8.5, 2.25); ctx.lineWidth = 1.5; ctx.strokeStyle = css(C_TXT, 190); ctx.stroke();
+	rrect(ctx, 122, 192, 2.5, 4, 1); ctx.fillStyle = css(C_TXT, 190); ctx.fill();
+	if (pct > 0) { rrect(ctx, 111, 191, 9 * Math.min(pct, 100) / 100, 6, 1.5); ctx.fillStyle = css(bc); ctx.fill(); }
 	ctx.fillStyle = css(C_TXT); ctx.fillText(pct != null ? pct + '%' : '--', 128, 199);
 	if (charging) {
-		tri(ctx, [ 168.9, 187, 164.7, 193.6, 168.6, 193.6 ], C_OK);
-		tri(ctx, [ 167.1, 199, 171.3, 192.4, 167.4, 192.4 ], C_OK);
+		tri(ctx, [ 168.9, 188, 164.7, 194.6, 168.6, 194.6 ], C_OK);
+		tri(ctx, [ 167.1, 200, 171.3, 193.4, 167.4, 193.4 ], C_OK);
 	} else if (feedNum('sms_unread') > 0) {
-		rrect(ctx, 168, 188.8, 12, 8.4, 1.2); ctx.lineWidth = 1.8; ctx.strokeStyle = css(B); ctx.stroke();
-		ctx.beginPath(); ctx.moveTo(168.6, 189.7); ctx.lineTo(174, 193.9); ctx.lineTo(179.4, 189.7); ctx.stroke();
+		rrect(ctx, 168.9, 190.7, 10.2, 6.6, 1.2); ctx.lineWidth = 1.8; ctx.strokeStyle = css(B); ctx.stroke();
+		ctx.beginPath(); ctx.moveTo(168.6, 190.7); ctx.lineTo(174, 194.9); ctx.lineTo(179.4, 190.7); ctx.stroke();
 	}
 }
 
@@ -176,7 +220,7 @@ function drawScreen(cv) {
 /* MU5358 outline, 10 units per mm: body 69.8 x 149 mm, the round window in the upper third, the function key above the power key on the
  * right edge, the NFC mark in the lower half.  The screen canvas sits in the same box as the drawing (the box keeps the drawing's
  * aspect ratio, so the canvas, placed in per cent of the box, stays on the window). */
-var FIG = { w: 940, h: 1490, cx: 470, cy: 330, disc: 250, ring: 282 };
+var FIG = { w: 940, h: 1490, cx: 470, cy: 330, disc: 250, ring: 282, left: 120 };
 function figure(go, nfc) {
 	var ns = 'http://www.w3.org/2000/svg';
 	function s(tag, attrs, kids) {
@@ -188,7 +232,7 @@ function figure(go, nfc) {
 		(kids || []).forEach(function(c) { if (c) el.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
 		return el;
 	}
-	function layer(kids) { return s('svg', { viewBox: '0 0 ' + FIG.w + ' ' + FIG.h, preserveAspectRatio: 'none', 'aria-hidden': 'true' }, kids); }
+	function layer(kids) { return s('svg', { preserveAspectRatio: 'none', 'aria-hidden': 'true' }, kids); }
 	function hot(cls, label, fn, kids) {
 		var g = s('g', { 'class': 'u-hot ' + cls, tabindex: '0', role: 'button', 'aria-label': label, onclick: fn,
 			onkeydown: function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } } }, kids);
@@ -223,11 +267,28 @@ function figure(go, nfc) {
 	]);
 	front.removeAttribute('aria-hidden');
 	var cv = E('canvas', { 'aria-hidden': 'true' }), R = FIG.disc * 240 / 216;
-	cv.style.left = ((FIG.cx - R) / FIG.w * 100) + '%';
-	cv.style.top = ((FIG.cy - R) / FIG.h * 100) + '%';
-	cv.style.width = (2 * R / FIG.w * 100) + '%';
-	cv.style.height = (2 * R / FIG.h * 100) + '%';
-	return { el: E('div', { 'class': 'u-dev' }, [ E('div', { 'class': 'u-dev-box' }, [ back, cv, front ]) ]), canvas: cv };
+	var box = E('div', { 'class': 'u-dev-box' }, [ back, cv, front ]), dev = E('div', { 'class': 'u-dev' }, [ box ]);
+	/* The drawing is cut to the body's left edge and the end of the key labels on the right (their width depends on the language), so the
+	 * figure's box is exactly what is drawn and lines up with the title and the tiles.  The box's size goes through custom properties on
+	 * the outer div: a styled div right above an svg gets a background from the Bootstrap cascade. */
+	function fit(right) {
+		var w = right - FIG.left;
+		[ back, front ].forEach(function(l) { l.setAttribute('viewBox', FIG.left + ' 0 ' + w + ' ' + FIG.h); });
+		dev.style.setProperty('--fig-w', String(w));
+		cv.style.left = ((FIG.cx - R - FIG.left) / w * 100) + '%';
+		cv.style.top = ((FIG.cy - R) / FIG.h * 100) + '%';
+		cv.style.width = (2 * R / w * 100) + '%';
+		cv.style.height = (2 * R / FIG.h * 100) + '%';
+	}
+	function centre() {
+		var right = 822;
+		Array.prototype.forEach.call(box.querySelectorAll('.u-lbl'), function(t) {
+			try { var b = t.getBBox(); if (b.width && b.x > 600 && b.x + b.width > right) right = b.x + b.width; } catch (e) {}
+		});
+		fit(Math.ceil(right) + 4);
+	}
+	fit(1030);
+	return { el: dev, canvas: cv, centre: centre };
 }
 
 /* ------------------------------------------------------------------ switches */
@@ -246,6 +307,24 @@ function sw(onchange) {
 }
 var refreshSoon = function() {};
 
+/* the wallpaper and its look; the picture is fetched again when it changes */
+function wpRefresh() {
+	return L.resolveDefault(callWp(), null).then(function(w) {
+		if (!w || !w.picture) { S.wp = null; return; }
+		var key = w.mtime + ':' + (w.settings ? [ w.settings.dim, w.settings.glass, w.settings.blur, w.settings.tint ].join(',') : '');
+		if (S.wp && S.wp.key === key) return;
+		if (S.wp && S.wp.mtime === w.mtime) { S.wp = { key: key, mtime: w.mtime, settings: w.settings, img: S.wp.img }; return; }
+		return L.resolveDefault(callWpImage(), null).then(function(im) {
+			if (!im || !im.data) { S.wp = null; return; }
+			var img = new Image();
+			return new Promise(function(resolve) {
+				img.onload = img.onerror = resolve;
+				img.src = 'data:' + (im.type || 'image/jpeg') + ';base64,' + im.data;
+			}).then(function() { S.wp = { key: key, mtime: w.mtime, settings: w.settings, img: img }; });
+		});
+	});
+}
+
 return view.extend({
 	load: function() {
 		var p = [];
@@ -258,7 +337,7 @@ return view.extend({
 				document.head.appendChild(s);
 			}));
 		}
-		p.push(L.resolveDefault(callState(), null), L.resolveDefault(callGet(), null));
+		p.push(wpRefresh(), L.resolveDefault(callState(), null), L.resolveDefault(callGet(), null));
 		return Promise.all(p);
 	},
 
@@ -266,49 +345,53 @@ return view.extend({
 		var self = this;
 		S.st = data[data.length - 2]; S.nc = data[data.length - 1];
 		if (S.st) S.skew = S.st.now * 1000 - Date.now();
-		document.head.appendChild(E('link', { 'rel': 'stylesheet', 'href': L.resource('../u30pro/overview.css') + '?v=1.0-r1' }));
+		document.head.appendChild(E('link', { 'rel': 'stylesheet', 'href': L.resource('../u30pro/overview.css') + '?v=1.0-r2' }));
 		var go = function(k) { location.href = L.url(LINK[k]); };
 		var fig = figure(go, function() { self.nfcDialog(); });
 		var E2 = {};
+		/* every small tile has the same three rows: the header (icon, name, switch), one value, one line under it */
 		function tile(cls, ic, title, extra, body, to) {
 			var t = E('div', { 'class': 'u-tile ' + (cls || '') + (to ? ' tap' : ''), 'tabindex': to ? '0' : null, 'role': to ? 'link' : null }, [
-				E('div', { 'class': 'u-tile-h' }, [ icon(ic), E('span', {}, [ title ]), E('span', { 'class': 'u-sp' }), extra || '' ]), body ]);
+				E('div', { 'class': 'u-tile-h' }, [ icon(ic), E('span', {}, [ title ]), E('span', { 'class': 'u-sp' }), extra || '' ]) ].concat(body));
 			if (to) {
 				t.addEventListener('click', function() { typeof to === 'function' ? to() : go(to); });
 				t.addEventListener('keydown', function(e) { if (e.key === 'Enter' && e.target === t) (typeof to === 'function' ? to() : go(to)); });
 			}
 			return t;
 		}
+		function val() { return E('div', { 'class': 'u-val u-ellip' }); }
+		function line(ic, kids) { return E('div', { 'class': 'u-meta' }, [ ic ? icon(ic) : '' ].concat(kids)); }
 		E2.data = sw(function(on) { return callCell(on ? 'reconnect' : 'disconnect'); });
 		E2.wifi = sw(function(on) { if (on === (feed('wifi_active') == '1')) return; return callWifi(); });
 		E2.screen = sw(function(on) { return callScreen(on ? 'on' : 'off'); });
 		E2.nfc = sw(function(on) { return callNfc(on ? '1' : '0'); });
 		E2.rat = E('span', { 'class': 'u-pill' });
 		E2.bars = E('span', { 'class': 'u-bars' }, [ 0, 1, 2, 3 ].map(function(i) { return E('i', { 'style': 'height:%d%%'.format(35 + 65 * i / 3) }); }));
-		E2.op = E('div', { 'class': 'u-big u-ellip' });
+		E2.op = val();
 		E2.rx = E('b'); E2.rxu = E('small'); E2.tx = E('b'); E2.txu = E('small');
-		E2.ssid = E('div', { 'class': 'u-mid u-ellip' }); E2.clients = E('span');
-		E2.bat = E('div', { 'class': 'u-big' }); E2.batState = E('span', { 'class': 'u-chip' }); E2.batBar = E('i');
-		E2.scr = E('div', { 'class': 'u-mid' }); E2.nfcText = E('div', { 'class': 'u-mid u-ellip' });
-		E2.sms = E('div', { 'class': 'u-big' }); E2.temp = E('div', { 'class': 'u-big' }); E2.up = E('span', { 'class': 'u-dim' });
+		E2.ssid = val(); E2.clients = E('span');
+		E2.bat = val(); E2.batState = E('span', { 'class': 'u-ellip' }); E2.batBar = E('i');
+		E2.scr = val(); E2.sleep = E('span');
+		E2.nfcText = val(); E2.nfcAuth = E('span');
+		E2.sms = val(); E2.smsTotal = E('span');
+		E2.temp = val(); E2.up = E('span');
 
 		var view = E('div', { 'class': 'u-ov' }, [
 			E('h2', {}, [ _('Overview') ]),
 			E('div', { 'class': 'u-ov-grid' }, [
 				E('div', { 'class': 'u-ov-hero' }, [ fig.el ]),
 				E('div', { 'class': 'u-tiles' }, [
-					tile('wide', 'signal', _('Network'), E2.data, E('div', { 'class': 'u-net' }, [
-						E('div', { 'class': 'u-net-l' }, [ E('div', { 'class': 'u-row' }, [ E2.rat, E2.bars ]), E2.op ]),
+					tile('wide', 'signal', _('Network'), E2.data, [ E('div', { 'class': 'u-net' }, [
+						E('div', { 'class': 'u-net-l' }, [ E2.op, E('div', { 'class': 'u-meta' }, [ E2.rat, E2.bars ]) ]),
 						E('div', { 'class': 'u-rates' }, [
 							E('span', { 'class': 'u-rate down' }, [ icon('arrow-down'), E2.rx, E2.rxu ]),
-							E('span', { 'class': 'u-rate up' }, [ icon('arrow-up'), E2.tx, E2.txu ]) ]) ]), 'network'),
-					tile('', 'wifi', 'Wi-Fi', E2.wifi, E('div', {}, [ E2.ssid, E('div', { 'class': 'u-row u-dim' }, [ icon('users'), E2.clients ]) ]), 'wifi'),
-					tile('', 'battery', _('Battery'), null, E('div', {}, [ E('div', { 'class': 'u-row' }, [ E2.bat, E('span', { 'class': 'u-sp' }), E2.batState ]),
-						E('div', { 'class': 'u-meter' }, [ E2.batBar ]) ]), 'battery'),
-					tile('', 'monitor', _('Screen'), E2.screen, E2.scr, 'screen'),
-					tile('', 'nfc', 'NFC', E2.nfc, E2.nfcText, function() { self.nfcDialog(); }),
-					tile('', 'message-square', _('Messages'), null, E2.sms, 'sms'),
-					tile('', 'cpu', _('System'), null, E('div', { 'class': 'u-row' }, [ E2.temp, E('span', { 'class': 'u-sp' }), E2.up ]), 'system')
+							E('span', { 'class': 'u-rate up' }, [ icon('arrow-up'), E2.tx, E2.txu ]) ]) ]) ], 'network'),
+					tile('', 'wifi', 'Wi-Fi', E2.wifi, [ E2.ssid, line('users', [ E2.clients ]) ], 'wifi'),
+					tile('', 'battery', _('Battery'), null, [ E2.bat, line(null, [ E('div', { 'class': 'u-meter' }, [ E2.batBar ]), E2.batState ]) ], 'battery'),
+					tile('', 'monitor', _('Screen'), E2.screen, [ E2.scr, line('moon', [ E2.sleep ]) ], 'screen'),
+					tile('', 'nfc', 'NFC', E2.nfc, [ E2.nfcText, line('lock', [ E2.nfcAuth ]) ], function() { self.nfcDialog(); }),
+					tile('', 'message-square', _('Messages'), null, [ E2.sms, line('inbox', [ E2.smsTotal ]) ], 'sms'),
+					tile('', 'cpu', _('System'), null, [ E2.temp, line('clock', [ E2.up ]) ], 'system')
 				])
 			])
 		]);
@@ -328,27 +411,26 @@ return view.extend({
 			var wifiOn = feed('wifi_active') == '1';
 			E2.wifi.set(wifiOn);
 			txt(E2.ssid, wifiOn ? (feed('ssid') || 'Wi-Fi') : _('Off'));
-			txt(E2.clients, feedNum('nclients') || 0);
+			txt(E2.clients, _('%d clients').format(feedNum('nclients') || 0));
 			var bt = battery();
 			txt(E2.bat, bt && bt.pct != null ? bt.pct + '%' : '–');
 			txt(E2.batState, batteryState(bt));
-			E2.batState.className = 'u-chip' + (bt && (bt.charging || bt.full) ? ' ok' : '');
+			E2.batState.className = 'u-ellip' + (bt && (bt.charging || bt.full) ? ' u-ok' : '');
 			E2.batBar.style.width = ((bt && bt.pct) || 0) + '%';
 			E2.batBar.className = bt && bt.pct <= 15 ? 'bad' : bt && bt.pct <= 30 ? 'warn' : '';
 			var d = S.nc && S.nc.display;
 			E2.screen.set(d ? d.screen_on : false, d ? !d.screen_control_available : true);
-			txt(E2.scr, d ? (d.screen_on ? _('Screen on') : _('Screen off')) : '–');
+			txt(E2.scr, d ? (d.screen_on ? _('On') : _('Off')) : '–');
+			txt(E2.sleep, fmtSleep(d && d.settings ? d.settings.sleep_s : null));
 			var n = S.st && S.st.nfc;
 			E2.nfc.set(n && n.enabled);
 			txt(E2.nfcText, n && n.enabled ? ((n.tag && n.tag.ssid) || _('Empty')) : _('Off'));
+			txt(E2.nfcAuth, n && n.enabled && n.tag && n.tag.ssid ? (n.tag.open ? _('Open') : 'WPA2') : '–');
 			var unread = feedNum('sms_unread') || 0, total = feedNum('sms_total');
-			E2.sms.innerHTML = '';
-			E2.sms.appendChild(document.createTextNode(String(unread)));
-			if (total != null) E2.sms.appendChild(E('small', {}, [ ' / ' + total ]));
+			txt(E2.sms, unread ? _('%d unread').format(unread) : _('No new messages'));
+			txt(E2.smsTotal, total != null ? _('%d in total').format(total) : '–');
 			var tc = S.nc && num(S.nc.soc_temperature_c);
-			E2.temp.innerHTML = '';
-			E2.temp.appendChild(document.createTextNode(tc != null ? tc.toFixed(0) : '–'));
-			E2.temp.appendChild(E('small', {}, [ '°C' ]));
+			txt(E2.temp, tc != null ? tc.toFixed(0) + ' °C' : '–');
 			txt(E2.up, fmtDur(S.st && S.st.uptime_s));
 			drawScreen(fig.canvas);
 		}
@@ -364,8 +446,8 @@ return view.extend({
 		}
 		var tick = 0;
 		function poll1() {
-			var withGet = tick++ % 2 === 0;
-			return Promise.all([ L.resolveDefault(callState(), null), withGet ? L.resolveDefault(callGet(), null) : null ]).then(function(r) {
+			var withGet = tick % 2 === 0, withWp = tick++ % 5 === 4;
+			return Promise.all([ L.resolveDefault(callState(), null), withGet ? L.resolveDefault(callGet(), null) : null, withWp ? wpRefresh() : null ]).then(function(r) {
 				if (r[0]) { S.st = r[0]; S.skew = r[0].now * 1000 - Date.now(); }
 				if (r[1]) S.nc = r[1];
 				theme(); update();
@@ -385,7 +467,8 @@ return view.extend({
 			timer = b && b.charging && !document.hidden ? requestAnimationFrame(loop) : setTimeout(loop, 1000 - (Date.now() + S.skew) % 1000 + 20);
 		}
 		setTimeout(loop, 50);
-		window.addEventListener('resize', function() { drawScreen(fig.canvas); });
+		requestAnimationFrame(fig.centre);
+		window.addEventListener('resize', function() { drawScreen(fig.canvas); fig.centre(); });
 		return view;
 	},
 

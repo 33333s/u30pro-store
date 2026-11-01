@@ -63,14 +63,28 @@ msgstr "电源"
 msgid "Screen"
 msgstr "屏幕"
 
-msgid "Screen off"
-msgstr "熄屏"
 
-msgid "Screen on"
-msgstr "亮屏"
 
 msgid "Security"
 msgstr "安全"
 
 msgid "Tap to connect"
 msgstr "碰一碰连接"
+
+msgid "Always on"
+msgstr "常亮"
+
+msgid "%d s"
+msgstr "%d 秒"
+
+msgid "%d clients"
+msgstr "%d 台设备"
+
+msgid "%d unread"
+msgstr "%d 条未读"
+
+msgid "No new messages"
+msgstr "无新短信"
+
+msgid "%d in total"
+msgstr "共 %d 条"
