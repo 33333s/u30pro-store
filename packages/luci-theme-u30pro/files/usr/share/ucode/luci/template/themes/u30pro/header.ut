@@ -38,7 +38,7 @@
 		<meta name="color-scheme" content="light dark">
 		<link rel="stylesheet" href="{{ media }}/cascade.css?v={{ version.luciversion }}">
 		<link rel="stylesheet" media="only screen and (max-device-width: 854px)" href="{{ media }}/mobile.css?v={{ version.luciversion }}">
-		<link rel="stylesheet" href="{{ media }}/u30pro.css?v=1.0-r2">
+		<link rel="stylesheet" href="{{ media }}/u30pro.css?v=1.0-r5">
 		<link rel="icon" href="{{ media }}/logo.svg" sizes="any">
 		{% if (node?.css): %}
 		<link rel="stylesheet" href="{{ resource }}/{{ node.css }}">
@@ -46,7 +46,7 @@
 		{% if (css): %}
 		<style title="text/css">{{ css }}</style>
 		{% endif %}
-		<script src="{{ media }}/icons.js?v=1.0-r2"></script>
+		<script src="{{ media }}/icons.js?v=1.0-r5"></script>
 		<script src="{{ dispatcher.build_url('admin/translations', dispatcher.lang) }}"></script>
 		<script src="{{ resource }}/cbi.js?v={{ version.luciversion }}"></script>
 	</head>
