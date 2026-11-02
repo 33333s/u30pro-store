@@ -20,6 +20,21 @@ var callWpImage = rpc.declare({ object: 'u30pro-wallpaper', method: 'image' });
 
 var LINK = { network: 'admin/modem/overview', wifi: 'admin/network/wireless', battery: 'admin/status/u30pro-battery',
 	screen: 'admin/system/u30pro-screen', key: 'admin/system/u30pro-buttons', sms: 'admin/modem/sms', system: 'admin/status/overview' };
+/* the firmware release (p542-sN) that brought a page or back end: on an older firmware the tile or key says so instead of opening a
+ * missing page (the pages and the NFC back end are part of the firmware, not packages) */
+var SINCE = { battery: 116, nfc: 120, screen: 126, key: 126 };
+
+function menuHas(tree, path) {
+	var n = tree;
+	path.split('/').forEach(function(p) { n = n && n.children && n.children[p]; });
+	return !!n;
+}
+
+function needFirmware(k) {
+	ui.addNotification(null, E('p', SINCE[k]
+		? _('This needs the U30 Pro OpenWrt firmware p542-s%d or newer (System > Firmware Update).').format(SINCE[k])
+		: _('This page is not part of the installed firmware.')), 'warning');
+}
 
 /* ------------------------------------------------------------------ helpers */
 function icon(name) {
@@ -417,16 +432,19 @@ return view.extend({
 				document.head.appendChild(s);
 			}));
 		}
-		p.push(wpRefresh(), L.resolveDefault(callState(), null), L.resolveDefault(callGet(), null));
+		p.push(wpRefresh(), L.resolveDefault(callState(), null), L.resolveDefault(callGet(), null), L.resolveDefault(ui.menu.load(), null));
 		return Promise.all(p);
 	},
 
 	render: function(data) {
 		var self = this;
-		S.st = data[data.length - 2]; S.nc = data[data.length - 1];
+		S.st = data[data.length - 3]; S.nc = data[data.length - 2]; S.menu = data[data.length - 1];
 		if (S.st) S.skew = S.st.now * 1000 - Date.now();
-		document.head.appendChild(E('link', { 'rel': 'stylesheet', 'href': L.resource('../u30pro/overview.css') + '?v=1.0-r6' }));
-		var go = function(k) { location.href = L.url(LINK[k]); };
+		document.head.appendChild(E('link', { 'rel': 'stylesheet', 'href': L.resource('../u30pro/overview.css') + '?v=1.0-r7' }));
+		var go = function(k) {
+			if (S.menu && !menuHas(S.menu, LINK[k])) return needFirmware(k);
+			location.href = L.url(LINK[k]);
+		};
 		var fig = figure(go, function() { self.nfcDialog(); });
 		var E2 = {};
 		/* every small tile has the same three rows: the header (icon, name, switch), one value, one line under it */
@@ -503,8 +521,8 @@ return view.extend({
 			txt(E2.scr, d ? (d.screen_on ? _('On') : _('Off')) : '–');
 			txt(E2.sleep, fmtSleep(d && d.settings ? d.settings.sleep_s : null));
 			var n = S.st && S.st.nfc;
-			E2.nfc.set(n && n.enabled);
-			txt(E2.nfcText, n && n.enabled ? ((n.tag && n.tag.ssid) || _('Empty')) : _('Off'));
+			E2.nfc.set(n && n.enabled, !n);
+			txt(E2.nfcText, !n ? _('Needs newer firmware') : n.enabled ? ((n.tag && n.tag.ssid) || _('Empty')) : _('Off'));
 			txt(E2.nfcAuth, n && n.enabled && n.tag && n.tag.ssid ? (n.tag.open ? _('Open') : 'WPA2') : '–');
 			var unread = feedNum('sms_unread') || 0, total = feedNum('sms_total');
 			txt(E2.sms, unread ? _('%d unread').format(unread) : _('No new messages'));
@@ -564,6 +582,7 @@ return view.extend({
 	},
 
 	nfcDialog: function() {
+		if (!(S.st && S.st.nfc)) return needFirmware('nfc');
 		var n = (S.st && S.st.nfc) || {}, t = n.tag || {};
 		var s = sw(function(on) {
 			return callNfc(on ? '1' : '0').then(function(r) { if (r && r.tag) { S.st.nfc = { enabled: r.enabled, tag: r.tag }; paint(); } return r; });

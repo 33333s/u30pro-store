@@ -88,3 +88,12 @@ msgstr "无新短信"
 
 msgid "%d in total"
 msgstr "共 %d 条"
+
+msgid "This needs the U30 Pro OpenWrt firmware p542-s%d or newer (System > Firmware Update)."
+msgstr "需要 U30 Pro OpenWrt 固件 p542-s%d 或更新版本（系统 → 固件更新）。"
+
+msgid "This page is not part of the installed firmware."
+msgstr "当前固件没有这个页面。"
+
+msgid "Needs newer firmware"
+msgstr "需要更新固件"

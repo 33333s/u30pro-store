@@ -7,4 +7,11 @@ commit luci
 UCI
 /etc/init.d/rpcd reload 2>/dev/null
 rm -rf /tmp/luci-indexcache* /tmp/luci-modulecache
+# the overview's NFC switch, the function key and screen pages come with the firmware (not packages): name what an older one lacks
+rel=$(sed -n 's/.*u30pro\.kernel_trial=p[0-9]*-s\([0-9]*\).*/\1/p' /proc/cmdline)
+if [ -z "$rel" ]; then
+	echo "luci-theme-u30pro: the overview's device functions need the U30 Pro OpenWrt firmware"
+elif [ "$rel" -lt 126 ]; then
+	echo "luci-theme-u30pro: firmware s$rel; the overview's NFC needs p542-s120 or newer, System > Buttons and Screen need p542-s126 or newer (System > Firmware Update)"
+fi
 exit 0
