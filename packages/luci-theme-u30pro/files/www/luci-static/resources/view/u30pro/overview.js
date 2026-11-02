@@ -103,16 +103,41 @@ function tri(ctx, p, col) { ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(
 function font(px, bold) { return (bold ? '700 ' : '500 ') + px + 'px ' + FONT; }
 
 /* the wallpaper as tools/ui/wall.h shows it on the home page: dimmed, and the dial on a disc of thin glass (the blurred wallpaper under a
- * tinted pane, a rim lit from above).  The blur here is a down- and up-scale, which every browser's canvas can do. */
+ * tinted pane, a rim lit from above). */
 var TINT = [ '#161E2C', '#1C1C1E', '#E1E8F0', null ];
+
+/* The glass's blur as on the screen (wp_blur): glass_blur 0..100 spreads 0..30 px of radius over three box passes, close to a Gaussian
+ * of sigma sqrt(r(r+1)) with r a third of it; 0 is no blur at all.  It is drawn with the canvas filter at the picture's own resolution,
+ * from a copy with a margin of the stretched picture so the edges do not fade; without canvas filters a down- and up-scale stands in.
+ * Returns {c: canvas or the picture, m: the margin as a share of the picture's width}. */
+function blurred(wp, blur) {
+	var r = blur * 30 / 100 / 3, sigma = Math.sqrt(r * (r + 1)), S = wp.img.naturalWidth || wp.img.width, px = sigma * S / 240;
+	if (sigma < .3) return { c: wp.img, m: 0 };
+	var pad = Math.ceil(px * 3), W = S + 2 * pad;
+	var src = wp.padC = wp.padC || document.createElement('canvas'), sx;
+	src.width = src.height = W;
+	sx = src.getContext('2d');
+	sx.drawImage(wp.img, 0, 0, W, W);
+	sx.drawImage(wp.img, pad, pad, S, S);
+	var out = wp.softC = wp.softC || document.createElement('canvas'), o = out.getContext('2d');
+	if ('filter' in o) {
+		out.width = out.height = W;
+		o.filter = 'blur(' + px.toFixed(2) + 'px)';
+		o.drawImage(src, 0, 0);
+		o.filter = 'none';
+	} else {
+		var n = Math.max(8, Math.round(W / Math.max(1, px * 1.5)));
+		out.width = out.height = n;
+		o.drawImage(src, 0, 0, n, n);
+	}
+	return { c: out, m: pad / S };
+}
+
 function wallpaper(ctx, wp, A) {
 	var s = wp.settings || {}, dim = (s.dim != null ? s.dim : 30) / 100, clear = (s.glass != null ? s.glass : 50) / 100;
 	var tint = TINT[s.tint || 0] ? rgb(TINT[s.tint || 0]) : A.map(function(v) { return Math.round(v * 2 / 5); });
 	if (wp.softOf !== wp.img) {
-		var n = Math.max(4, Math.round(240 / (4 + (s.blur != null ? s.blur : 50) / 5)));
-		wp.soft = wp.soft || document.createElement('canvas');
-		wp.soft.width = wp.soft.height = n;
-		wp.soft.getContext('2d').drawImage(wp.img, 0, 0, n, n);
+		wp.soft = blurred(wp, s.blur != null ? s.blur : 50);
 		wp.softOf = wp.img;
 	}
 	ctx.imageSmoothingQuality = 'high';
@@ -121,7 +146,9 @@ function wallpaper(ctx, wp, A) {
 	ctx.save();
 	ctx.beginPath(); ctx.arc(120, 120, 98, 0, 7); ctx.clip();
 	ctx.imageSmoothingEnabled = true;
-	ctx.drawImage(wp.soft, -6, -6, 252, 252);
+	/* the glass shows the picture where it is (glass_px only bends it at the rim) */
+	var m = wp.soft.m * 240;
+	ctx.drawImage(wp.soft.c, -m, -m, 240 + 2 * m, 240 + 2 * m);
 	ctx.fillStyle = 'rgba(0,0,0,' + dim + ')'; ctx.fillRect(0, 0, 240, 240);
 	var pane = (1 - clear) * .65 * .94;
 	ctx.fillStyle = css(tint, Math.round(pane * 255)); ctx.fillRect(0, 0, 240, 240);
