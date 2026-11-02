@@ -215,9 +215,9 @@ input[disabled], select[disabled], textarea[disabled] { opacity: .55; }
 input[readonly] { background: transparent; }
 ::placeholder { color: var(--u-text-3); opacity: 1; }
 .cbi-input-invalid, .cbi-input-invalid.cbi-dropdown:not(.btn):not(.cbi-button) { border-color: var(--u-bad) !important; color: var(--u-bad); }
-/* the drop-down widget (multiple choice, interface and zone pickers) */
+/* the drop-down widget (multiple choice, interface and zone pickers); LuCI itself shows only the chosen items while it is closed (li[display]) */
 .cbi-dropdown:not(.btn):not(.cbi-button) { padding: 0 !important; line-height: normal; min-width: 260px; }
-.cbi-dropdown:not(.btn):not(.cbi-button) > ul > li { padding: 0 12px; min-height: 36px; display: flex; align-items: center; gap: 6px; }
+.cbi-dropdown:not(.btn):not(.cbi-button) > ul > li { padding: 0 12px; min-height: 36px; align-items: center; gap: 6px; }
 .cbi-dropdown > .open { border-left: 1px solid var(--u-line); color: var(--u-text-2); padding: 0 12px; display: flex; align-items: center; }
 .cbi-dropdown > ul.dropdown, .cbi-dropdown[open] > ul.dropdown {
 	background: var(--u-surface); border: 1px solid var(--u-line); border-radius: 14px; box-shadow: 0 14px 40px rgba(0, 0, 0, .18); padding: 6px; overflow: auto;

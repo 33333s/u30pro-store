@@ -1069,9 +1069,9 @@
       "sha256": "05f9015e0a4e2859f6a153f69e472f2984481490d4ce6db19b8a41bba7264f1e"
     },
     {
-      "file": "luci-theme-u30pro-1.0-r5.apk",
-      "bytes": 40625,
-      "sha256": "0ca7ae26fa27f3b0dd5f1339324885ab35f8d897c0fc41c8ba58ca5e72296d08"
+      "file": "luci-theme-u30pro-1.0-r6.apk",
+      "bytes": 40662,
+      "sha256": "55da8239b43336fe177b585b70067037ae7779a001ecbb43606b4f963543c0c4"
     },
     {
       "file": "u30pro-feed-1.0-r2.apk",

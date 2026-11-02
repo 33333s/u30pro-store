@@ -425,7 +425,7 @@ return view.extend({
 		var self = this;
 		S.st = data[data.length - 2]; S.nc = data[data.length - 1];
 		if (S.st) S.skew = S.st.now * 1000 - Date.now();
-		document.head.appendChild(E('link', { 'rel': 'stylesheet', 'href': L.resource('../u30pro/overview.css') + '?v=1.0-r5' }));
+		document.head.appendChild(E('link', { 'rel': 'stylesheet', 'href': L.resource('../u30pro/overview.css') + '?v=1.0-r6' }));
 		var go = function(k) { location.href = L.url(LINK[k]); };
 		var fig = figure(go, function() { self.nfcDialog(); });
 		var E2 = {};

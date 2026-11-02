@@ -1,5 +1,5 @@
 {
-  "version": "1.0-r5",
+  "version": "1.0-r6",
   "arch": "noarch",
   "description": "LuCI theme U30 Pro: side menu with icons, light and dark, phone/tablet/desktop layouts, and an overview page with the device front and its live screen",
   "depends": [ "luci-base", "rpcd" ],
