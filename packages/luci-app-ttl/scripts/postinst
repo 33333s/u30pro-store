@@ -1,0 +1,6 @@
+#!/bin/sh
+/etc/init.d/ttl enable 2>/dev/null
+/etc/init.d/ttl restart 2>/dev/null
+/etc/init.d/rpcd reload 2>/dev/null
+rm -rf /tmp/luci-indexcache* /tmp/luci-modulecache
+exit 0

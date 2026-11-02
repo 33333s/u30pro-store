@@ -1,0 +1,5 @@
+# Network > TTL & Hop Limit: the IPv4 TTL and IPv6 hop limit of packets leaving through the cellular side (see /etc/init.d/ttl)
+config ttl 'main'
+	option enabled '0'
+	option ttl '64'
+	option hoplimit '64'

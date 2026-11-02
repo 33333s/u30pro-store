@@ -1,0 +1,4 @@
+#!/bin/sh
+/etc/init.d/ttl stop 2>/dev/null
+/etc/init.d/ttl disable 2>/dev/null
+exit 0

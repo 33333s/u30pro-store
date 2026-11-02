@@ -1,0 +1,4 @@
+#!/bin/sh
+/etc/init.d/sms-forward stop 2>/dev/null
+/etc/init.d/sms-forward disable 2>/dev/null
+exit 0

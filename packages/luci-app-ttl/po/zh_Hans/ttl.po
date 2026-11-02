@@ -1,0 +1,64 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-app-ttl\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "TTL & Hop Limit"
+msgstr "TTL 与跳数限制"
+
+msgid "Rules"
+msgstr "规则"
+
+msgid "Active"
+msgstr "已生效"
+
+msgid "Off"
+msgstr "关"
+
+msgid "On"
+msgstr "开"
+
+msgid "No device"
+msgstr "无网卡"
+
+msgid "No device has the rules"
+msgstr "没有网卡加载规则"
+
+msgid "Packets changed"
+msgstr "已修改的包"
+
+msgid "Since the rules were loaded"
+msgstr "自规则加载以来"
+
+msgid "IPv4 TTL"
+msgstr "IPv4 TTL"
+
+msgid "unchanged"
+msgstr "不修改"
+
+msgid "IPv6 hop limit"
+msgstr "IPv6 跳数限制"
+
+msgid "Sets the TTL (IPv4) and hop limit (IPv6) of every packet that leaves through the chosen networks, so that the carrier sees the same value for the router and for the devices behind it. Flow offloading keeps working."
+msgstr "把从所选网络发出的每个包的 TTL（IPv4）和跳数限制（IPv6）设为固定值，让运营商看到路由器和后面设备的值一致。流量卸载照常工作。"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Empty: leave the TTL as it is. Common values: 64 (Android, iOS, Linux) or 128 (Windows)."
+msgstr "留空表示不修改 TTL。常用值：64（安卓、iOS、Linux）或 128（Windows）。"
+
+msgid "Empty: leave the hop limit as it is."
+msgstr "留空表示不修改跳数限制。"
+
+msgid "Networks"
+msgstr "网络"
+
+msgid "Empty: the networks of the firewall zone wan (cellular, additional APNs, Wi-Fi uplink)."
+msgstr "留空表示防火墙 wan 区域的网络（蜂窝、附加 APN、Wi-Fi 中继）。"

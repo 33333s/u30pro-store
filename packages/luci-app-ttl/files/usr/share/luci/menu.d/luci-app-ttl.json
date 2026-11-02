@@ -1,0 +1,8 @@
+{
+  "admin/network/ttl": {
+    "title": "TTL & Hop Limit",
+    "order": 62,
+    "action": { "type": "view", "path": "ttl/ttl" },
+    "depends": { "acl": ["luci-app-ttl"] }
+  }
+}

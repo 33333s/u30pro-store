@@ -1049,6 +1049,16 @@
       "sha256": "0961d192a41783638ad7838d66389b6f3b67e32dcc5e0f7b3efdde65c331fef2"
     },
     {
+      "file": "luci-app-sms-forward-1.0-r1.apk",
+      "bytes": 12990,
+      "sha256": "7a6419647f0c2f2a0c1874c20c63f96cc32051e690abb4ae63fbda88d21547f2"
+    },
+    {
+      "file": "luci-app-ttl-1.0-r1.apk",
+      "bytes": 4684,
+      "sha256": "015099f0c84fbd7283be2e74dcc1e4e236b2b3878701915562aad5aa20024e39"
+    },
+    {
       "file": "luci-app-zwrt-datad-1.0-r3.apk",
       "bytes": 79754,
       "sha256": "e5480bafffafe29f4e2d893627b86f622663ce203a0bee225bdc9d8bf7d1023e"

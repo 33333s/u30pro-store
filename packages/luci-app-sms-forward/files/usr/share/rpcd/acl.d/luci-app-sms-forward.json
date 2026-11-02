@@ -1,0 +1,7 @@
+{
+  "luci-app-sms-forward": {
+    "description": "SMS forwarding: settings, channels, status and test messages",
+    "read": { "uci": ["sms_forward"], "ubus": { "sms_forward": ["status"] } },
+    "write": { "uci": ["sms_forward"], "ubus": { "sms_forward": ["test", "poll"] } }
+  }
+}

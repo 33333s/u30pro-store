@@ -1,0 +1,8 @@
+{
+  "admin/modem/sms-forward": {
+    "title": "SMS Forwarding",
+    "order": 3,
+    "action": { "type": "view", "path": "sms-forward/forward" },
+    "depends": { "acl": ["luci-app-sms-forward"] }
+  }
+}

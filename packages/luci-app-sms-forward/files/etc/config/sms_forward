@@ -1,0 +1,7 @@
+# SMS forwarding (Cellular > SMS forwarding).  Channels are sections of type channel; option type is one of webhook, telegram, bark,
+# pushplus, serverchan, dingtalk, wecom, feishu, sms.
+config main 'main'
+	option enabled '0'
+	option interval '30'
+	option partial_wait '180'
+	option retries '3'

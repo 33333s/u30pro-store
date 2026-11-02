@@ -1,0 +1,5 @@
+#!/bin/sh
+# Network > TTL & Hop Limit: a network came up or went down, so its device may be new; the egress rules are made again
+[ "$ACTION" = ifup ] || [ "$ACTION" = ifdown ] || exit 0
+[ "$(uci -q get ttl.main.enabled)" = 1 ] || exit 0
+/etc/init.d/ttl enabled && /etc/init.d/ttl reload

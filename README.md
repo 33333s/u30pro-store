@@ -34,6 +34,8 @@ apk update
 | `luci-theme-argon` | LuCI 主题 Argon 3.1.0（[jerrykuku/luci-theme-argon](https://github.com/jerrykuku/luci-theme-argon)，Apache-2.0，作者编好的包原样收录）；设置页 `luci-app-argon-config`，中文 `luci-i18n-argon-config-zh-cn` |
 | `luci-theme-aurora` | LuCI 主题 Aurora 1.4.0（[eamonxg/luci-theme-aurora](https://github.com/eamonxg/luci-theme-aurora)，Apache-2.0，作者编好的包原样收录） |
 | `luci-theme-u30pro` | 本机专用的 LuCI 主题：极简外观、带图标的侧边菜单（手机上是抽屉）、深浅色，带机身示意图的“概览”首页（屏幕主页实时画面，设了屏幕壁纸时一并画出，动态壁纸也会播放，卡片带开关）。装上即切换到它，需要 p542-s120 起的固件（屏幕壁纸要 p542-s124 起）。样式底层是 Bootstrap 主题（Apache-2.0），图标是 Lucide 子集（ISC） |
+| `luci-app-sms-forward` | 短信转发：收到的短信转发到 Telegram、Bark、PushPlus、Server 酱、钉钉、企业微信、飞书机器人、自定义 Webhook 或另一个手机号；可按发件人、内容过滤，长短信等分段到齐再发，失败重试，开启前已有的短信不发。页面在「蜂窝基带 → 短信转发」。依赖 curl |
+| `luci-app-ttl` | 固定从蜂窝侧发出的包的 IPv4 TTL 和 IPv6 跳数限制（nftables 网卡 egress 规则，流量卸载开着也生效）。页面在「网络 → TTL 与跳数限制」 |
 | `u30pro-kmod-loader` | 开机加载已装的内核模块包 |
 | `kmod-*` | 内核模块，205 个，包名和 OpenWrt 25.12 一致（文件系统、存储、隧道、流量控制、netfilter 扩展、加密等） |
 

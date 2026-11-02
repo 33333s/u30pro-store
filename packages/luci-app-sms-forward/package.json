@@ -1,0 +1,12 @@
+{
+  "version": "1.0-r1",
+  "arch": "noarch",
+  "description": "SMS forwarding for the U30 Pro baseband: incoming SMS to Telegram, Bark, PushPlus, ServerChan, DingTalk, WeCom, Feishu, a webhook or another number; LuCI page Cellular > SMS forwarding",
+  "depends": [ "luci-base", "rpcd", "curl", "ucode", "ucode-mod-ubus", "ucode-mod-uloop", "ucode-mod-uci", "ucode-mod-fs", "ucode-mod-digest" ],
+  "scripts": {
+    "post-install": "scripts/postinst",
+    "post-upgrade": "scripts/postinst",
+    "pre-deinstall": "scripts/prerm",
+    "post-deinstall": "scripts/postrm"
+  }
+}

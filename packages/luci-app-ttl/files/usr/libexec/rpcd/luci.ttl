@@ -1,0 +1,14 @@
+#!/bin/sh
+# rpcd plugin of Network > TTL & Hop Limit: status = the devices with rules and their packet counters (nft -j list table netdev ttl)
+case "$1" in
+list) echo '{"status":{}}' ;;
+call)
+	case "$2" in
+	status)
+		j=$(nft -j list table netdev ttl 2>/dev/null)
+		[ -n "$j" ] || j='{"nftables":[]}'
+		printf '{"active":%s,"rules":%s}\n' "$([ -n "$(nft list table netdev ttl 2>/dev/null)" ] && echo true || echo false)" "$j"
+		;;
+	*) echo '{}' ;;
+	esac ;;
+esac

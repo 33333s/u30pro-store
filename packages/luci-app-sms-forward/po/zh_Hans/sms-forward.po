@@ -1,0 +1,253 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-app-sms-forward\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "SMS Forwarding"
+msgstr "短信转发"
+
+msgid "Telegram bot"
+msgstr "Telegram 机器人"
+
+msgid "Bark (iOS)"
+msgstr "Bark（iOS）"
+
+msgid "PushPlus"
+msgstr "PushPlus 推送加"
+
+msgid "ServerChan"
+msgstr "Server 酱"
+
+msgid "DingTalk robot"
+msgstr "钉钉机器人"
+
+msgid "WeCom robot"
+msgstr "企业微信机器人"
+
+msgid "Feishu / Lark robot"
+msgstr "飞书机器人"
+
+msgid "Webhook (custom HTTP)"
+msgstr "Webhook（自定义 HTTP）"
+
+msgid "SMS to another number"
+msgstr "转发到另一个号码"
+
+msgid "never"
+msgstr "从未"
+
+msgid "%d s ago"
+msgstr "%d 秒前"
+
+msgid "%d min ago"
+msgstr "%d 分钟前"
+
+msgid "Expecting: %s"
+msgstr "应为：%s"
+
+msgid "non-empty value"
+msgstr "非空值"
+
+msgid "Forwarder"
+msgstr "转发服务"
+
+msgid "Not running"
+msgstr "未运行"
+
+msgid "Service sms-forward"
+msgstr "服务 sms-forward"
+
+msgid "Forwarding"
+msgstr "转发"
+
+msgid "On"
+msgstr "开"
+
+msgid "Off"
+msgstr "关"
+
+msgid "Running"
+msgstr "运行中"
+
+msgid "Idle"
+msgstr "未启用"
+
+msgid "%d channels · every %d s"
+msgstr "%d 个渠道 · 每 %d 秒"
+
+msgid "Forwarded"
+msgstr "已转发"
+
+msgid "%d failed deliveries"
+msgstr "失败 %d 次"
+
+msgid "Last scan"
+msgstr "上次检查"
+
+msgid "%d scans since start"
+msgstr "启动以来检查 %d 次"
+
+msgid "Last error"
+msgstr "最近错误"
+
+msgid "Error"
+msgstr "有错误"
+
+msgid "None"
+msgstr "无"
+
+msgid "%d messages waiting for a retry"
+msgstr "%d 条等待重试"
+
+msgid "SMS forwarding"
+msgstr "短信转发"
+
+msgid "Incoming SMS are sent on to the channels below. Messages that were already in the modem when forwarding started are not sent."
+msgstr "收到的短信会转发到下面的渠道。开启转发时基带里已有的短信不会发送。"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Forward incoming SMS"
+msgstr "转发收到的短信"
+
+msgid "Check every (s)"
+msgstr "检查间隔（秒）"
+
+msgid "The modem storage is also read at once when the modem reports a new message."
+msgstr "基带报告新短信时也会立即读取。"
+
+msgid "Message format"
+msgstr "消息格式"
+
+msgid "Placeholders: {text} the SMS, {from} the sender, {time} its time, {device} this router's name."
+msgstr "占位符：{text} 短信内容，{from} 发件人，{time} 时间，{device} 本机名称。"
+
+msgid "Only from"
+msgstr "只转发来自"
+
+msgid "Forward only messages whose sender contains one of these. Empty: every sender."
+msgstr "只转发发件人包含其中之一的短信；留空表示全部转发。"
+
+msgid "Never from"
+msgstr "不转发来自"
+
+msgid "Never containing"
+msgstr "不转发包含"
+
+msgid "Wait for missing parts (s)"
+msgstr "等待缺失分段（秒）"
+
+msgid "A long message arrives in parts; when some are still missing after this time it is sent as it is."
+msgstr "长短信分段到达；超过这个时间仍有缺失时按现有内容发送。"
+
+msgid "Retries per channel"
+msgstr "每个渠道重试次数"
+
+msgid "Channels"
+msgstr "转发渠道"
+
+msgid "Save & Apply before testing a new or changed channel."
+msgstr "新增或修改渠道后，先“保存并应用”再测试。"
+
+msgid "Add channel"
+msgstr "添加渠道"
+
+msgid "Enabled"
+msgstr "启用"
+
+msgid "Type"
+msgstr "类型"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "optional"
+msgstr "可选"
+
+msgid "Bot token"
+msgstr "Bot Token"
+
+msgid "Chat ID"
+msgstr "Chat ID"
+
+msgid "API address"
+msgstr "API 地址"
+
+msgid "Change only to use a relay of the Bot API."
+msgstr "只在使用 Bot API 中转时修改。"
+
+msgid "Device key"
+msgstr "设备 Key"
+
+msgid "Server"
+msgstr "服务器"
+
+msgid "Token"
+msgstr "Token"
+
+msgid "SendKey"
+msgstr "SendKey"
+
+msgid "Webhook address"
+msgstr "Webhook 地址"
+
+msgid "Signing secret"
+msgstr "加签密钥"
+
+msgid "Only when the robot uses signature security."
+msgstr "仅当机器人启用了加签时填写。"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "With GET the placeholders {from} {text} {time} {device} {message} can be part of the URL."
+msgstr "GET 方式可以在 URL 里使用占位符 {from} {text} {time} {device} {message}。"
+
+msgid "Method"
+msgstr "请求方式"
+
+msgid "Body format"
+msgstr "请求体格式"
+
+msgid "Form (URL encoded)"
+msgstr "表单（URL 编码）"
+
+msgid "Body template"
+msgstr "请求体模板"
+
+msgid "Empty: all fields. The values are escaped for the chosen format; {message} is the formatted message."
+msgstr "留空则包含全部字段。各值会按所选格式转义；{message} 是按格式生成的消息。"
+
+msgid "Title"
+msgstr "标题"
+
+msgid "Phone number"
+msgstr "手机号码"
+
+msgid "Sent from this SIM; each forwarded message costs an SMS."
+msgstr "用本机 SIM 卡发送，每转发一条要扣一条短信费用。"
+
+msgid "Test"
+msgstr "测试"
+
+msgid "Send test"
+msgstr "发送测试"
+
+msgid "The test message was delivered."
+msgstr "测试消息已送达。"
+
+msgid "Test failed: %s"
+msgstr "测试失败：%s"
+
+msgid "no answer"
+msgstr "无响应"
+
+msgid "Recent events"
+msgstr "最近记录"
+
+msgid "Check now"
+msgstr "立即检查"

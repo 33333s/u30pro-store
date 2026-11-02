@@ -1,0 +1,215 @@
+#!/usr/bin/ucode
+/* sms-forward: forwards incoming SMS of the U30 Pro baseband to the channels of /etc/config/sms_forward.
+ *
+ * It reads the modem's current SMS storage (the firmware's /usr/share/u30pro/sms.uc, AT+CMGL in PDU mode, multipart messages joined)
+ * every `interval` seconds and at once on a +CMTI/+CMT notification of the AT broker (ubus event u30pro.at.urc), while forwarding is
+ * on (switched off it does not touch the modem).  A message is known by a hash of sender, timestamp and text, kept in STATE (on the data
+ * store, so a restart or reboot does not send everything again, and what arrived meanwhile is still sent).  When forwarding is switched
+ * on, and when STATE is lost, the messages already in the modem are only remembered, never sent (no replay).  A multipart message
+ * whose parts are not all there yet is held back for `partial_wait` seconds, then sent as it is.  Failed deliveries are tried again at
+ * the next scans, at most `retries` times per channel.
+ *
+ * ubus object sms_forward: status (counters, last events), poll (scan now), test {channel} (a test message through one channel). */
+'use strict';
+
+import * as uloop from 'uloop';
+import * as ubus from 'ubus';
+import { cursor } from 'uci';
+import { readfile, writefile, rename, mkdir, stat } from 'fs';
+import * as digest from 'digest';
+import * as sms from '/usr/share/u30pro/sms.uc';
+import * as channels from '/usr/share/sms-forward/channels.uc';
+
+const STATE_DIRS = [ '/mnt/data/sms-forward', '/tmp/sms-forward-state' ];
+const MAX_SEEN = 2000, MAX_LOG = 40;
+
+let cfg = {}, chans = [], state = { seen: {}, pending: {} }, state_file = null;
+let counters = { scans: 0, forwarded: 0, failed: 0, last_scan: null, last_error: null };
+let log = [], bus = null, timer = null, busy = false;
+
+function note(level, text) {
+	push(log, { time: time(), level: level, text: text });
+	if (length(log) > MAX_LOG) splice(log, 0, length(log) - MAX_LOG);
+	system([ 'logger', '-t', 'sms-forward', text ]);
+}
+
+/* a UCI list (or a single option) as trimmed non-empty strings */
+function words(v) {
+	return filter(map(type(v) == 'array' ? v : (v != null ? [ v ] : []), (x) => trim(x)), (x) => length(x) > 0);
+}
+
+function load_config() {
+	let c = cursor();
+	let g = c.get_all('sms_forward', 'main') ?? {};
+	cfg = {
+		enabled: g.enabled == '1',
+		interval: max(10, min(3600, int(g.interval ?? 30) || 30)),
+		partial_wait: max(0, min(3600, int(g.partial_wait ?? 180) || 0)),
+		retries: max(0, min(20, int(g.retries ?? 3) || 0)),
+		template: g.template || '{text}\n\n{from} · {time} · {device}',
+		allow_from: words(g.allow_from),
+		deny_from: words(g.deny_from),
+		deny_text: words(g.deny_text)
+	};
+	chans = [];
+	c.foreach('sms_forward', 'channel', (s) => {
+		if (s.enabled != '0') push(chans, s);
+	});
+}
+
+function device_name() {
+	return trim(readfile('/proc/sys/kernel/hostname') ?? '') || 'OpenWrt';
+}
+
+function pick_state_file() {
+	for (let d in STATE_DIRS) {
+		if (d == STATE_DIRS[0] && !stat('/mnt/data')?.type) continue;
+		mkdir(d, 0700);
+		if (stat(d)?.type == 'directory') return d + '/state.json';
+	}
+	return null;
+}
+
+function save_state() {
+	if (!state_file) return;
+	let k = keys(state.seen);
+	if (length(k) > MAX_SEEN) {
+		sort(k, (a, b) => state.seen[a] - state.seen[b]);
+		for (let i = 0; i < length(k) - MAX_SEEN; i++) delete state.seen[k[i]];
+	}
+	if (writefile(state_file + '.new', sprintf('%J', state)))
+		rename(state_file + '.new', state_file);
+}
+
+function key_of(m) {
+	return substr(digest.sha256(sprintf('%s|%s|%s', m.address ?? '', m.ts ?? '', m.text ?? '')), 0, 24);
+}
+
+function wanted(m) {
+	let from = m.address ?? '';
+	if (length(cfg.allow_from) && !length(filter(cfg.allow_from, (p) => index(from, p) >= 0))) return false;
+	if (length(filter(cfg.deny_from, (p) => index(from, p) >= 0))) return false;
+	if (length(filter(cfg.deny_text, (p) => index(m.text ?? '', p) >= 0))) return false;
+	return true;
+}
+
+function deliver(m, key) {
+	let msg = { from: m.address ?? '', text: m.text ?? '', time: m.ts ?? '', device: device_name() };
+	msg.message = channels.fill(cfg.template, msg);
+	let p = state.pending[key] ?? { tries: {}, done: {} };
+	let all = true;
+	for (let ch in chans) {
+		let name = ch['.name'];
+		if (p.done[name]) continue;
+		let r = channels.send(ch, msg, sms.send);
+		if (r.ok) {
+			p.done[name] = true;
+			counters.forwarded++;
+			note('info', sprintf('forwarded the SMS from %s through %s', msg.from, name));
+		} else {
+			p.tries[name] = (p.tries[name] ?? 0) + 1;
+			counters.failed++;
+			counters.last_error = sprintf('%s: %s', name, r.error);
+			note('error', sprintf('channel %s: %s (attempt %d)', name, r.error, p.tries[name]));
+			if (p.tries[name] <= cfg.retries) all = false;
+		}
+	}
+	if (all) delete state.pending[key];
+	else state.pending[key] = p;
+	return all;
+}
+
+function scan() {
+	if (busy) return;
+	busy = true;
+	counters.scans++;
+	counters.last_scan = time();
+	let r = sms.list(null);
+	if (!r?.ok) {
+		counters.last_error = r?.error ?? 'Cannot read the SMS storage';
+		busy = false;
+		return;
+	}
+	let first = !state.armed;
+	let changed = false, now = time();
+	for (let m in r.messages) {
+		if (m.type != 'deliver') continue;
+		let key = key_of(m);
+		if (state.seen[key] && !state.pending[key]) continue;
+		if (first) { state.seen[key] = now; changed = true; continue; }
+		if (!m.complete && !state.pending[key]) {
+			/* parts still missing: wait for them up to partial_wait seconds */
+			let since = state.waiting?.[key] ?? now;
+			state.waiting ??= {};
+			state.waiting[key] = since;
+			if (now - since < cfg.partial_wait) { changed = true; continue; }
+		}
+		if (state.waiting) delete state.waiting[key];
+		state.seen[key] = now;
+		changed = true;
+		if (!cfg.enabled || !length(chans) || !wanted(m)) { delete state.pending[key]; continue; }
+		deliver(m, key);
+	}
+	if (first) {
+		state.armed = true;
+		changed = true;
+		note('info', sprintf('started; %d messages already in the modem are not forwarded', length(r.messages)));
+	}
+	if (changed) save_state();
+	busy = false;
+}
+
+function arm() {
+	if (timer) timer.cancel();
+	timer = uloop.timer(cfg.interval * 1000, () => { scan(); arm(); });
+}
+
+function test(name) {
+	let ch = filter(chans, (c) => c['.name'] == name)[0];
+	if (!ch) {
+		/* a disabled channel can be tested too */
+		let s = cursor().get_all('sms_forward', name);
+		if (!s || s['.type'] != 'channel') return { ok: false, error: 'No such channel' };
+		ch = s;
+	}
+	let t = localtime();
+	let msg = { from: '10086', text: 'Test message from sms-forward / 短信转发测试', device: device_name(),
+		time: sprintf('%04d-%02d-%02d %02d:%02d:%02d', t.year, t.mon, t.mday, t.hour, t.min, t.sec) };
+	msg.message = channels.fill(cfg.template, msg);
+	let r = channels.send(ch, msg, sms.send);
+	note(r.ok ? 'info' : 'error', sprintf('test through %s: %s', name, r.ok ? 'ok' : r.error));
+	return r;
+}
+
+load_config();
+state_file = pick_state_file();
+let saved = null;
+try { saved = json(readfile(state_file) ?? 'null'); } catch (e) { saved = null; }
+if (type(saved) == 'object' && type(saved.seen) == 'object') {
+	state = saved;
+	state.pending ??= {};
+} else
+	state = { seen: {}, pending: {}, armed: false };
+/* switched off: forget being armed, so switching on again does not send what arrived meanwhile */
+if (!cfg.enabled && state.armed) {
+	state.armed = false;
+	save_state();
+}
+
+uloop.init();
+bus = ubus.connect();
+/* ubus_rpc_session: calls through the web server (uhttpd's /ubus) carry it, and ucode refuses a message with a field the policy does not list */
+bus.publish('sms_forward', {
+	status: { args: { ubus_rpc_session: '' }, call: () => ({ ...counters, enabled: cfg.enabled, channels: length(chans), interval: cfg.interval,
+		state_file: state_file, pending: length(keys(state.pending)), log: log }) },
+	poll: { args: { ubus_rpc_session: '' }, call: () => { if (cfg.enabled) scan(); return { ok: cfg.enabled }; } },
+	test: { args: { channel: '', ubus_rpc_session: '' }, call: (req) => test(req.args.channel) }
+});
+if (cfg.enabled) {
+	bus.listener('u30pro.at.urc', (ev, msg) => {
+		if (match(msg?.line ?? '', /^\+(CMTI|CMT):/))
+			uloop.timer(1500, () => scan());
+	});
+	uloop.timer(3000, () => { scan(); arm(); });
+}
+uloop.run();

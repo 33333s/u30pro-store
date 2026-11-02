@@ -1,0 +1,7 @@
+{
+  "luci-app-ttl": {
+    "description": "TTL and IPv6 hop limit of outgoing packets",
+    "read": { "uci": ["ttl", "firewall", "network"], "ubus": { "luci.ttl": ["status"] } },
+    "write": { "uci": ["ttl"] }
+  }
+}

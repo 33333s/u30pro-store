@@ -1,0 +1,12 @@
+{
+  "version": "1.0-r1",
+  "arch": "noarch",
+  "description": "Fixed IPv4 TTL and IPv6 hop limit for packets leaving through the cellular side (nftables egress rules that also catch offloaded flows); LuCI page Network > TTL & Hop Limit",
+  "depends": [ "luci-base", "rpcd" ],
+  "scripts": {
+    "post-install": "scripts/postinst",
+    "post-upgrade": "scripts/postinst",
+    "pre-deinstall": "scripts/prerm",
+    "post-deinstall": "scripts/postrm"
+  }
+}

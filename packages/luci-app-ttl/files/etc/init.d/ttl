@@ -1,0 +1,61 @@
+#!/bin/sh /etc/rc.common
+# Network > TTL & Hop Limit: sets the IPv4 TTL and IPv6 hop limit of every packet that leaves through the devices of the chosen networks
+# (by default those of the firewall zone wan: the cellular link, additional APNs, the Wi-Fi uplink).  The rules sit in the egress hook of
+# each device (table netdev ttl), which runs in dev_queue_xmit, after the firewall's software flow offloading: offloaded flows are changed
+# too, so offloading stays on (measured: an upload whose flow was offloaded passed all its packets through the rule).  The table is made
+# again when a network comes up or goes down (hotplug.d/iface/95-ttl).
+START=95
+USE_PROCD=1
+
+TABLE='netdev ttl'
+
+devices() {
+	local nets dev
+	nets=$(uci -q get ttl.main.network)
+	[ -n "$nets" ] || nets=$(uci -q get firewall.wan.network)
+	. /lib/functions/network.sh
+	for n in $nets; do
+		network_get_device dev "$n" && [ -d "/sys/class/net/$dev" ] && echo "$dev"
+	done | sort -u
+}
+
+apply() {
+	local ttl hop rules dev i=0
+	nft delete table $TABLE 2>/dev/null
+	[ "$(uci -q get ttl.main.enabled)" = 1 ] || return 0
+	ttl=$(uci -q get ttl.main.ttl)
+	hop=$(uci -q get ttl.main.hoplimit)
+	case "$ttl" in ''|*[!0-9]*) ttl= ;; esac
+	case "$hop" in ''|*[!0-9]*) hop= ;; esac
+	[ -n "$ttl" ] && { [ "$ttl" -ge 1 ] && [ "$ttl" -le 255 ] || ttl=; }
+	[ -n "$hop" ] && { [ "$hop" -ge 1 ] && [ "$hop" -le 255 ] || hop=; }
+	[ -n "$ttl$hop" ] || return 0
+	rules=
+	[ -n "$ttl" ] && rules="$rules meta protocol ip ip ttl set $ttl counter;"
+	[ -n "$hop" ] && rules="$rules meta protocol ip6 ip6 hoplimit set $hop counter;"
+	{
+		echo "table $TABLE {"
+		for dev in $(devices); do
+			i=$((i + 1))
+			echo "	chain out$i { type filter hook egress device \"$dev\" priority 0; $rules }"
+		done
+		echo "}"
+	} | nft -f - || logger -t ttl "cannot load the TTL rules"
+}
+
+start_service() {
+	apply
+}
+
+reload_service() {
+	apply
+}
+
+stop_service() {
+	nft delete table $TABLE 2>/dev/null
+	return 0
+}
+
+service_triggers() {
+	procd_add_reload_trigger ttl firewall
+}
