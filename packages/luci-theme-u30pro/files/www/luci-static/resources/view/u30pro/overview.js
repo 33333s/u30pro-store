@@ -6,7 +6,7 @@
 
 /* Overview of the U30 Pro theme: the front of the device, its screen showing the on-device home page (drawn here from the same feed the
  * screen program gets, tools/ui/pages.h page_home, whether the real screen is on or not), and tiles for the network, Wi-Fi, battery,
- * screen, NFC, messages and system.  The screen and the function key open System > Device, the tiles their LuCI pages, NFC a dialog. */
+ * screen, NFC, messages and system.  The screen opens System > Screen, the function key System > Buttons, the tiles their LuCI pages, NFC a dialog. */
 
 var callState = rpc.declare({ object: 'u30pro-dashboard', method: 'state' });
 var callGet = rpc.declare({ object: 'u30pro-native-control', method: 'get' });
@@ -14,12 +14,12 @@ var callCell = rpc.declare({ object: 'u30pro-native-control', method: 'cellular_
 var callWifi = rpc.declare({ object: 'u30pro-native-control', method: 'wifi_toggle' });
 var callScreen = rpc.declare({ object: 'u30pro-native-control', method: 'set_screen_power', params: [ 'action' ] });
 var callNfc = rpc.declare({ object: 'u30pro-dashboard', method: 'nfc_set', params: [ 'enabled' ] });
-/* the wallpaper of the screen (System > Screen wallpaper; firmware with u30pro-wallpaper) */
+/* the wallpaper of the screen (System > Screen > Wallpaper; firmware with u30pro-wallpaper) */
 var callWp = rpc.declare({ object: 'u30pro-wallpaper', method: 'get' });
 var callWpImage = rpc.declare({ object: 'u30pro-wallpaper', method: 'image' });
 
 var LINK = { network: 'admin/modem/overview', wifi: 'admin/network/wireless', battery: 'admin/status/u30pro-battery',
-	screen: 'admin/system/u30pro-device', key: 'admin/system/u30pro-device', sms: 'admin/modem/sms', system: 'admin/status/overview' };
+	screen: 'admin/system/u30pro-screen', key: 'admin/system/u30pro-buttons', sms: 'admin/modem/sms', system: 'admin/status/overview' };
 
 /* ------------------------------------------------------------------ helpers */
 function icon(name) {
@@ -108,12 +108,14 @@ var TINT = [ '#161E2C', '#1C1C1E', '#E1E8F0', null ];
 function wallpaper(ctx, wp, A) {
 	var s = wp.settings || {}, dim = (s.dim != null ? s.dim : 30) / 100, clear = (s.glass != null ? s.glass : 50) / 100;
 	var tint = TINT[s.tint || 0] ? rgb(TINT[s.tint || 0]) : A.map(function(v) { return Math.round(v * 2 / 5); });
-	if (!wp.soft) {
-		var n = Math.max(4, Math.round(240 / (4 + (s.blur != null ? s.blur : 50) / 5))), small = document.createElement('canvas');
-		small.width = small.height = n;
-		small.getContext('2d').drawImage(wp.img, 0, 0, n, n);
-		wp.soft = small;
+	if (wp.softOf !== wp.img) {
+		var n = Math.max(4, Math.round(240 / (4 + (s.blur != null ? s.blur : 50) / 5)));
+		wp.soft = wp.soft || document.createElement('canvas');
+		wp.soft.width = wp.soft.height = n;
+		wp.soft.getContext('2d').drawImage(wp.img, 0, 0, n, n);
+		wp.softOf = wp.img;
 	}
+	ctx.imageSmoothingQuality = 'high';
 	ctx.drawImage(wp.img, 0, 0, 240, 240);
 	ctx.fillStyle = 'rgba(0,0,0,' + dim + ')'; ctx.fillRect(0, 0, 240, 240);
 	ctx.save();
@@ -138,7 +140,7 @@ function drawScreen(cv) {
 	ctx.setTransform(size / 240, 0, 0, size / 240, 0, 0);
 	ctx.clearRect(0, 0, 240, 240);
 	ctx.shadowColor = 'transparent';
-	var wp = S.wp && S.wp.img && S.wp.img.complete && S.wp.img.naturalWidth ? S.wp : null;
+	var wp = S.wp && S.wp.img && (S.wp.img.naturalWidth || S.wp.img.width) ? S.wp : null;
 	if (wp) wallpaper(ctx, wp, A);
 	else {
 		/* bg_build(): a radial gradient around (120, 112) falling off with d^2 over 150 px */
@@ -307,20 +309,71 @@ function sw(onchange) {
 }
 var refreshSoon = function() {};
 
-/* the wallpaper and its look; the picture is fetched again when it changes */
+/* A live wallpaper ("U3LW": a 16-byte header with the frame rate and count, then length + JPEG per frame; see wallpaper.uc).  The overview
+ * gets the clip once through cgi-download: the 480x480 web copy, or the screen's own 240x240 clip when it was set before the web copies
+ * existed.  While it plays one frame at a time is decoded, at the clip's rate; the page's picture of the home page plays it when the
+ * screen does (wp_live 2: lock screen and home page). */
+var WP_DIR = '/mnt/data/u30pro-wallpaper/';
+function parseClip(buf) {
+	var dv = new DataView(buf), off = 16, frames = [], n, i, len;
+	if (buf.byteLength < 16 || dv.getUint32(0) !== 0x55334C57 || dv.getUint8(4) !== 1) throw new Error('not a clip');
+	n = dv.getUint32(12, true);
+	for (i = 0; i < n; i++) {
+		if (off + 4 > buf.byteLength) throw new Error('clip cut short');
+		len = dv.getUint32(off, true);
+		if (off + 4 + len > buf.byteLength) throw new Error('clip cut short');
+		frames.push([ off + 4, len ]);
+		off += 4 + len;
+	}
+	return { buf: buf, fps: dv.getUint8(5) || 15, frames: frames };
+}
+function fetchClip(path) {
+	var body = 'sessionid=' + encodeURIComponent(rpc.getSessionID()) + '&path=' + encodeURIComponent(path);
+	return fetch(L.env.cgi_base + '/cgi-download', { method: 'POST', credentials: 'same-origin',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).then(function(r) {
+		if (!r.ok) throw new Error(r.statusText);
+		return r.arrayBuffer();
+	}).then(parseClip);
+}
+function clipPlaying(wp) {
+	var live = wp && wp.settings && wp.settings.live != null ? wp.settings.live : 2;
+	return !!(wp && wp.clip && live === 2 && !document.hidden && window.createImageBitmap);
+}
+function setImg(wp, img) {
+	if (wp.img && wp.img !== wp.still && wp.img.close) wp.img.close();
+	wp.img = img;
+}
+/* show the frame of this moment (decoded in the background; the screen is drawn again when it is there) */
+function clipFrame(wp, draw) {
+	var c = wp.clip, i = Math.floor(Date.now() * c.fps / 1000) % c.frames.length, f = c.frames[i];
+	if (i === wp.cur || wp.busy) return;
+	wp.busy = true;
+	createImageBitmap(new Blob([ new Uint8Array(c.buf, f[0], f[1]) ], { type: 'image/jpeg' })).then(function(bm) {
+		if (S.wp !== wp || !clipPlaying(wp)) { bm.close(); return; }
+		setImg(wp, bm);
+		wp.cur = i;
+		draw();
+	}).catch(function() {}).then(function() { wp.busy = false; });
+}
+
+/* the wallpaper and its look; the picture (and a clip) is fetched again when it changes */
 function wpRefresh() {
 	return L.resolveDefault(callWp(), null).then(function(w) {
-		if (!w || !w.picture) { S.wp = null; return; }
-		var key = w.mtime + ':' + (w.settings ? [ w.settings.dim, w.settings.glass, w.settings.blur, w.settings.tint ].join(',') : '');
-		if (S.wp && S.wp.key === key) return;
-		if (S.wp && S.wp.mtime === w.mtime) { S.wp = { key: key, mtime: w.mtime, settings: w.settings, img: S.wp.img }; return; }
+		if (!w || !w.picture) { if (S.wp) setImg(S.wp, null); S.wp = null; return; }
+		if (S.wp && S.wp.mtime === w.mtime) { S.wp.settings = w.settings; S.wp.softOf = null; return; }
 		return L.resolveDefault(callWpImage(), null).then(function(im) {
 			if (!im || !im.data) { S.wp = null; return; }
 			var img = new Image();
 			return new Promise(function(resolve) {
 				img.onload = img.onerror = resolve;
 				img.src = 'data:' + (im.type || 'image/jpeg') + ';base64,' + im.data;
-			}).then(function() { S.wp = { key: key, mtime: w.mtime, settings: w.settings, img: img }; });
+			}).then(function() {
+				var wp = { mtime: w.mtime, settings: w.settings, img: img, still: img, cur: -1 };
+				if (S.wp) setImg(S.wp, null);
+				S.wp = wp;
+				if (w.live)
+					fetchClip(WP_DIR + (w.web_live ? 'web.live' : 'wallpaper.live')).then(function(c) { wp.clip = c; }).catch(function() {});
+			});
 		});
 	});
 }
@@ -458,13 +511,24 @@ return view.extend({
 		theme();
 		update();
 
-		/* the clock: one redraw a second, more often while the charging shimmer runs */
+		/* the clock: one redraw a second, more often while the charging shimmer runs or a live wallpaper plays */
 		var timer = null;
 		function loop() {
 			if (!document.body.contains(fig.canvas)) return;
-			drawScreen(fig.canvas);
-			var b = battery();
-			timer = b && b.charging && !document.hidden ? requestAnimationFrame(loop) : setTimeout(loop, 1000 - (Date.now() + S.skew) % 1000 + 20);
+			var wp = S.wp, b = battery();
+			/* a playing clip draws the screen when its next frame is decoded */
+			if (clipPlaying(wp))
+				clipFrame(wp, function() { drawScreen(fig.canvas); });
+			else {
+				if (wp && wp.img !== wp.still) {
+					setImg(wp, wp.still);
+					wp.cur = -1;
+				}
+				drawScreen(fig.canvas);
+			}
+			timer = b && b.charging && !document.hidden ? requestAnimationFrame(loop)
+				: clipPlaying(wp) ? setTimeout(loop, Math.max(16, 1000 / wp.clip.fps))
+				: setTimeout(loop, 1000 - (Date.now() + S.skew) % 1000 + 20);
 		}
 		setTimeout(loop, 50);
 		requestAnimationFrame(fig.centre);
