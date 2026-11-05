@@ -52,7 +52,8 @@ apk update
 | 内核 build id | 固件 | 目录 | 配置 |
 |---|---|---|---|
 | `89cf01ae97b8` | p540～p542 | `aarch64_generic/` | `kernel-p540.config` |
-| `4d35658e55ed` | p543 起 | `aarch64_generic/kmods/4d35658e55ed/` | `kernel-p543.config` |
+| `4d35658e55ed` | p543 | `aarch64_generic/kmods/4d35658e55ed/` | `kernel-p543.config` |
+| `bcfaaeebcaa3` | p544 起 | `aarch64_generic/kmods/bcfaaeebcaa3/` | `kernel-p544.config` |
 
 模块从 kernel.org 的 Linux 6.12.94 加上 U30 Pro 移植补丁编译，配置见表里的文件。
 
