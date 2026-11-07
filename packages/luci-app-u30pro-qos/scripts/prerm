@@ -1,0 +1,5 @@
+#!/bin/sh
+# the default qdiscs back, the IFB device gone
+/etc/init.d/u30pro-qos stop 2>/dev/null
+/etc/init.d/u30pro-qos disable 2>/dev/null
+exit 0

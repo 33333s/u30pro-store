@@ -1,0 +1,8 @@
+{
+  "admin/network/u30pro-qos": {
+    "title": "Cellular QoS",
+    "order": 63,
+    "action": { "type": "view", "path": "u30pro-qos/qos" },
+    "depends": { "acl": ["luci-app-u30pro-qos"] }
+  }
+}

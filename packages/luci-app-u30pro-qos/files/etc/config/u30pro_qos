@@ -1,0 +1,7 @@
+# Network > Cellular QoS: the queueing of the cellular link each way (see /usr/sbin/u30pro-qos); off both ways until switched on
+config qos 'main'
+	option up 'off'
+	option up_kbit '0'
+	option down 'off'
+	option down_kbit '0'
+	option delay '60'

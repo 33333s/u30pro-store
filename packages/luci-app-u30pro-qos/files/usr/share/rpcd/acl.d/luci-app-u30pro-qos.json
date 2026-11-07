@@ -1,0 +1,7 @@
+{
+  "luci-app-u30pro-qos": {
+    "description": "Queueing of the cellular link",
+    "read": { "uci": ["u30pro_qos"], "file": { "/run/u30pro-qos.applied": ["read"], "/run/u30pro-qos.status": ["read"] } },
+    "write": { "uci": ["u30pro_qos"] }
+  }
+}

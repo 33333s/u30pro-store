@@ -1,0 +1,6 @@
+# The qdiscs of the cellular link (/usr/sbin/u30pro-qos) when wan comes up: the device may have been made anew, without them.  Nothing to
+# do while both directions are off.
+[ "$ACTION" = ifup ] && [ "$INTERFACE" = wan ] || return 0
+[ "$(/usr/sbin/u30pro-qos plan)" = "off 0 off 0" ] && return 0
+/usr/sbin/u30pro-qos apply
+return 0

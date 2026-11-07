@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: zh_Hans\n"
+
+msgid "Cellular QoS"
+msgstr "蜂窝防卡顿"
+
+msgid "Queueing on the cellular link"
+msgstr "蜂窝链路的排队"
+
+msgid "Off by default. When the cellular link is full, its queue forms in the modem (upload) or at the base station (download), and everything else waits behind it: with a weak signal an upload delayed games and web pages by seconds. fq_codel only sorts the packets the router holds, which on a cellular link is almost never the queue that matters. cake also limits the rate a little below the link, so the queue moves to the router, where it is short and fair; with bandwidth 0 the router finds that rate itself from the round trip of a few pings, sent only while the link is busy. cake costs CPU time: on a fast download (hundreds of Mbit/s) it can take a core and limit the speed."
+msgstr "默认关闭。蜂窝链路跑满时，排队发生在基带里（上传）或基站那边（下载），其他所有包都要排在后面：信号弱时一个上传就能让游戏和网页卡上好几秒。fq_codel 只整理路由器自己手里的包，而在蜂窝链路上，真正堵的队列几乎从不在这里。cake 还会把速率限在比链路略低一点，让队列转到路由器上，在这里排得短而且公平；带宽填 0 时，路由器自己找这个速率，靠的是链路忙时才发的几个 ping 的往返时间。cake 要占 CPU：下载很快时（几百 Mbit/s）可能吃满一个核、限制速度。"
+
+msgid "Upload"
+msgstr "上传"
+
+msgid "Download"
+msgstr "下载"
+
+msgid "Off"
+msgstr "关闭"
+
+msgid "Off (default)"
+msgstr "关（默认）"
+
+msgid "Upload bandwidth (kbit/s)"
+msgstr "上传带宽（kbit/s）"
+
+msgid "Download bandwidth (kbit/s)"
+msgstr "下载带宽（kbit/s）"
+
+msgid "0 = automatic. A fixed value only helps while the link carries more than that."
+msgstr "0 = 自动。固定值只在链路实际能跑得比它快时才起作用。"
+
+msgid "Delay limit (ms)"
+msgstr "延迟上限（毫秒）"
+
+msgid "Automatic bandwidth: how much the round trip may rise while the link is busy before the rate goes down. Lower keeps games smoother, higher keeps more of the speed. 20 to 500, default 60."
+msgstr "自动带宽：链路忙时往返时间最多可以升高多少，超过就降速。越低游戏越顺，越高越保留速度。20 到 500，默认 60。"
+
+msgid "Upload queueing now"
+msgstr "当前上传排队"
+
+msgid "Download queueing now"
+msgstr "当前下载排队"
+
+msgid "Automatic: %s"
+msgstr "自动：%s"
+
+msgid "Automatic"
+msgstr "自动"

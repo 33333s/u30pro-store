@@ -1,0 +1,15 @@
+{
+  "version": "1.0-r1",
+  "arch": "aarch64_generic",
+  "description": "Queueing of the cellular link, each way off, fq_codel or cake; cake at a fixed bandwidth or an automatic one found from the round trip of pings while the link is busy (u30pro-qosd), so an upload on a weak signal no longer stalls games and web pages; LuCI page Network > Cellular QoS",
+  "external": {
+    "usr/sbin/u30pro-qosd": "build/verified/u30pro_qosd-musl-s1/u30pro-qosd"
+  },
+  "depends": [ "luci-base", "rpcd", "tc-tiny" ],
+  "scripts": {
+    "post-install": "scripts/postinst",
+    "post-upgrade": "scripts/postinst",
+    "pre-deinstall": "scripts/prerm",
+    "post-deinstall": "scripts/postrm"
+  }
+}

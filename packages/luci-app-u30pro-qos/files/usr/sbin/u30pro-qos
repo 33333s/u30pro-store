@@ -1,0 +1,83 @@
+#!/bin/sh
+# The queueing of the cellular link (Network > Cellular QoS, package luci-app-u30pro-qos), from u30pro_qos.main:
+#   up, down     off (default: the kernel's default qdisc, nothing in the way), fq_codel or cake
+#   up_kbit, down_kbit   cake's bandwidth; 0 or empty = automatic (u30pro-qosd finds it from the delay, /etc/init.d/u30pro-qos runs it)
+# The uplink's qdisc sits at the root of the cellular device, the downlink's on the IFB device ifb-wan, to which the cellular device's
+# ingress is redirected (an ingress qdisc and a matchall filter with mirred).  cake: besteffort, nat (fairness per host behind the
+# NAT), and ack-filter up (a download's ACKs take less of a thin uplink) or ingress down (the shaper counts what it drops).
+# Neither fq_codel alone nor a cake above the link's rate shortens the queue that matters on a congested cellular link: it forms in the
+# baseband (up) and at the base station (down), and only a rate a little below the link's moves it here.
+# usage: u30pro-qos apply    set up what UCI says (again after the link was re-created; called by the init script and the wan hotplug),
+#                            and record it in /run/u30pro-qos.applied (up=, up_kbit=, down=, down_kbit=; the LuCI page shows it)
+#        u30pro-qos clear    back to the default qdiscs, the IFB device gone
+#        u30pro-qos plan     print "<up> <up_kbit> <down> <down_kbit>" from UCI (the init script starts u30pro-qosd from it)
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+WAN=${U30PRO_QOS_WAN:-sipa_eth0}
+UCI=${U30PRO_QOS_UCI:-uci}	# the offline test (tests/run_qosd_offline.sh) sets these
+IFB=ifb-wan
+APPLIED=${U30PRO_QOS_APPLIED:-/run/u30pro-qos.applied}
+UP_START=20000		# kbit/s, where an automatic rate starts (u30pro-qosd moves it)
+DOWN_START=100000
+
+mode() {
+	case "$($UCI -q get u30pro_qos.main.$1)" in fq_codel) echo fq_codel ;; cake) echo cake ;; *) echo off ;; esac
+}
+
+kbit() {
+	local v
+	v=$($UCI -q get u30pro_qos.main.$1)
+	case "$v" in ''|*[!0-9]*) v=0 ;; esac
+	echo "$v"
+}
+
+plan() {
+	echo "$(mode up) $(kbit up_kbit) $(mode down) $(kbit down_kbit)"
+}
+
+clear_up() {
+	tc qdisc del dev $WAN root 2>/dev/null
+	return 0
+}
+
+clear_down() {
+	tc qdisc del dev $WAN ingress 2>/dev/null
+	ip link del $IFB 2>/dev/null
+	return 0
+}
+
+apply() {
+	local up upk down downk rate
+	set -- $(plan)
+	up=$1 upk=$2 down=$3 downk=$4
+	[ -d /sys/class/net/$WAN ] || return 0
+	case $up in
+	off) clear_up ;;
+	fq_codel) tc qdisc replace dev $WAN root fq_codel ;;
+	cake)
+		rate=$upk; [ "$rate" -gt 0 ] || rate=$UP_START
+		tc qdisc replace dev $WAN root cake bandwidth ${rate}kbit besteffort nat ack-filter ;;
+	esac
+	case $down in
+	off) clear_down ;;
+	*)
+		[ -d /sys/class/net/$IFB ] || ip link add $IFB type ifb || return 1
+		ip link set $IFB up
+		tc qdisc replace dev $WAN handle ffff: ingress
+		tc filter del dev $WAN parent ffff: 2>/dev/null
+		tc filter add dev $WAN parent ffff: protocol all matchall action mirred egress redirect dev $IFB
+		if [ $down = fq_codel ]; then
+			tc qdisc replace dev $IFB root fq_codel
+		else
+			rate=$downk; [ "$rate" -gt 0 ] || rate=$DOWN_START
+			tc qdisc replace dev $IFB root cake bandwidth ${rate}kbit besteffort nat ingress
+		fi ;;
+	esac
+	printf 'up=%s\nup_kbit=%s\ndown=%s\ndown_kbit=%s\n' $up $upk $down $downk >$APPLIED
+}
+
+case "$1" in
+apply) apply ;;
+clear) clear_up; clear_down; rm -f $APPLIED ;;
+plan) plan ;;
+*) echo "usage: $0 apply|clear|plan" >&2; exit 2 ;;
+esac
