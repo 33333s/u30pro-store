@@ -1,0 +1,1037 @@
+{
+ "url": "https://raw.githubusercontent.com/33333s/u30pro-store/main/aarch64_generic/kmods/84a271d2d09a/packages.adb",
+ "kernel": {
+  "release": "6.12.94-u30pro-p1",
+  "build_id": "84a271d2d09a09f50ad69dca4ff9a4efdf5f798e",
+  "tag": "562",
+  "modules": 242,
+  "packages": 205
+ },
+ "packages": [
+  {
+   "file": "kmod-act-gate-6.12.94_p562-r1.apk",
+   "bytes": 8006,
+   "sha256": "f2c0f967fd952cd5b5b734a47b38518c7ba376c4f512a44319589a26bf34d655"
+  },
+  {
+   "file": "kmod-act-mpls-6.12.94_p562-r1.apk",
+   "bytes": 7100,
+   "sha256": "6ea4e5f014736f8dbad89bfaa5b2065c772cfa9b32372107b4da39e14849f6d1"
+  },
+  {
+   "file": "kmod-act-nat-6.12.94_p562-r1.apk",
+   "bytes": 5649,
+   "sha256": "54ca98f6245fd62e24ea44fff943069a56d3316466afa92b573710bf8bc75d24"
+  },
+  {
+   "file": "kmod-act-simple-6.12.94_p562-r1.apk",
+   "bytes": 4676,
+   "sha256": "2c8de8605289f917e1b6a7860de3246fec1d310004f8b665a2f135036bdfdcc6"
+  },
+  {
+   "file": "kmod-act-skbmod-6.12.94_p562-r1.apk",
+   "bytes": 5510,
+   "sha256": "510fd1e58cd3a644f04409c032b3748b3ffa22159e263ddbb7c0d41f17943f79"
+  },
+  {
+   "file": "kmod-act-tunnel-key-6.12.94_p562-r1.apk",
+   "bytes": 9077,
+   "sha256": "505e9f8bfb40680c2b0111279302c1b034a009979bc53c35e0bf7da8ec74eb38"
+  },
+  {
+   "file": "kmod-algif-aead-6.12.94_p562-r1.apk",
+   "bytes": 4866,
+   "sha256": "cb1a1b694c6f406f47f0a64f03c48c39e004cb4a540f13f90fc132fd87844f5c"
+  },
+  {
+   "file": "kmod-algif-rng-6.12.94_p562-r1.apk",
+   "bytes": 3359,
+   "sha256": "7ba5160901c2a27e955b6a20ee8b29916232295950e526b56fc4fabeeee5cc98"
+  },
+  {
+   "file": "kmod-batman-adv-6.12.94_p562-r1.apk",
+   "bytes": 109905,
+   "sha256": "5bbb536216edceca9fc6f3b700d7395ecda9c0fa30fdfb9e91b3bb742c235c72"
+  },
+  {
+   "file": "kmod-bonding-6.12.94_p562-r1.apk",
+   "bytes": 76567,
+   "sha256": "c069c638f9c1b4868d14d28c044ca50397cfb5452611558fcb2c306d36661a84"
+  },
+  {
+   "file": "kmod-br-netfilter-6.12.94_p562-r1.apk",
+   "bytes": 12443,
+   "sha256": "bbbd38889da7d2fb212227868669e3c333d69da0f45dddb3fe63eff5ec025d34"
+  },
+  {
+   "file": "kmod-bsd-comp-6.12.94_p562-r1.apk",
+   "bytes": 5377,
+   "sha256": "fd064582cbb49948c64f0b9b4540c20fd81cb9134759928dcf032bc48c13317e"
+  },
+  {
+   "file": "kmod-bsg-6.12.94_p562-r1.apk",
+   "bytes": 4677,
+   "sha256": "41d6b54f030a1b0da0c85e965470cbe16b339a0dde78f6ed28974396f2c1c76b"
+  },
+  {
+   "file": "kmod-cdrom-6.12.94_p562-r1.apk",
+   "bytes": 19417,
+   "sha256": "79eb2403a42eacb0388b65c4f0569120483384e5c503939da7905fef0d3390ce"
+  },
+  {
+   "file": "kmod-cls-cgroup-6.12.94_p562-r1.apk",
+   "bytes": 4068,
+   "sha256": "0e8b232fe492c08706137ab0983b896272db3127f0ef5041862bb9d4fd119d10"
+  },
+  {
+   "file": "kmod-crypto-blake2b-6.12.94_p562-r1.apk",
+   "bytes": 6869,
+   "sha256": "d515da4fa1cc0e7ed02e687a6c60feebd039ec74f414ed13c786595bcc5e2710"
+  },
+  {
+   "file": "kmod-crypto-crc32-6.12.94_p562-r1.apk",
+   "bytes": 2593,
+   "sha256": "d533c2f7e1da07887d79f8f0c30e13db67269cbce220ff6f27bad068e206caea"
+  },
+  {
+   "file": "kmod-crypto-essiv-6.12.94_p562-r1.apk",
+   "bytes": 5631,
+   "sha256": "3207fcbfabd713c287dfab786bb5f308d6b4db6ff8fa3546438107bf04f63b18"
+  },
+  {
+   "file": "kmod-crypto-misc-6.12.94_p562-r1.apk",
+   "bytes": 58856,
+   "sha256": "e953e4f569fa7de5d00fb9e28e66b7a2f145793fca7b606c4daec3832acda8b9"
+  },
+  {
+   "file": "kmod-crypto-xts-6.12.94_p562-r1.apk",
+   "bytes": 4687,
+   "sha256": "379065f35899dfc9a953d16d16db606e7ac9869d94870a0ea533b3f47a249da2"
+  },
+  {
+   "file": "kmod-crypto-xxhash-6.12.94_p562-r1.apk",
+   "bytes": 2583,
+   "sha256": "b6d43121d482df93feea01a0973743f13cbdf4541d4aa2ef61fda298c18d6559"
+  },
+  {
+   "file": "kmod-cuse-6.12.94_p562-r1.apk",
+   "bytes": 5674,
+   "sha256": "416831992849531a1a89a0a34df5f7a25f1d58cb24b95af6af1934c78d9271d0"
+  },
+  {
+   "file": "kmod-dm-6.12.94_p562-r1.apk",
+   "bytes": 111899,
+   "sha256": "4b9682f38c3e9cd2be596635a549608d44d5320f90282212d095b21afb14fcd4"
+  },
+  {
+   "file": "kmod-dm-bio-prison-6.12.94_p562-r1.apk",
+   "bytes": 7784,
+   "sha256": "a79189501ec96a5345a5c9a4b5816820b25a9b4d7a4cb91a5d56404d2d868624"
+  },
+  {
+   "file": "kmod-dm-bufio-6.12.94_p562-r1.apk",
+   "bytes": 22035,
+   "sha256": "0f736746bc8cac6838ac91f3661174b178b3d6a5c4deb873b189e56edc22b571"
+  },
+  {
+   "file": "kmod-dm-persistent-data-6.12.94_p562-r1.apk",
+   "bytes": 35846,
+   "sha256": "49b0b9df2fc3b2bbac42cde9cfcf046bd28c5b1839e4a4eb54c9fceff12c4e4e"
+  },
+  {
+   "file": "kmod-dm-snapshot-6.12.94_p562-r1.apk",
+   "bytes": 25286,
+   "sha256": "a2c7fd68c781a6aa297d1f4f8e634d5a16c60ebe822b01c3ed757118062acdab"
+  },
+  {
+   "file": "kmod-dm-thin-pool-6.12.94_p562-r1.apk",
+   "bytes": 34755,
+   "sha256": "734c4ab2cde094a32f743c2af728f0e33975849983cb7e6c0f3c77b0a45a46b2"
+  },
+  {
+   "file": "kmod-dm-verity-6.12.94_p562-r1.apk",
+   "bytes": 14378,
+   "sha256": "45d4345a3633b9d61cfd89091bb9179bc39f773965b1ea7fe99934e7913165e0"
+  },
+  {
+   "file": "kmod-em-cmp-6.12.94_p562-r1.apk",
+   "bytes": 2449,
+   "sha256": "91f80261d360d0cdf90be66fa3156ef2f28e61c5fb98e44fecd2df3f6a756b40"
+  },
+  {
+   "file": "kmod-em-meta-6.12.94_p562-r1.apk",
+   "bytes": 5535,
+   "sha256": "671667f916476b1a350b9f4614c23e3185ad1f752bf581113e53f628d8154d34"
+  },
+  {
+   "file": "kmod-em-nbyte-6.12.94_p562-r1.apk",
+   "bytes": 2502,
+   "sha256": "deaee3b8048c74012c4b07c87d9d5b0595a16ae789842e00d9bbb5a853282a19"
+  },
+  {
+   "file": "kmod-em-text-6.12.94_p562-r1.apk",
+   "bytes": 3069,
+   "sha256": "0859c258c592f1c06a83170295cbd908cc47adb2048fa3af5dc4e32dda2b02e6"
+  },
+  {
+   "file": "kmod-em-u32-6.12.94_p562-r1.apk",
+   "bytes": 2307,
+   "sha256": "19943c7494be7582cd43fb94cc5d0addd4a9ddcfa7e586805265df8ae5e40a31"
+  },
+  {
+   "file": "kmod-erofs-6.12.94_p562-r1.apk",
+   "bytes": 40916,
+   "sha256": "37ccc7279d6e20d7a73b0a47c9354321b6243e138d9e8f6a87a1ea6dd7a15f7d"
+  },
+  {
+   "file": "kmod-fixed-phy-6.12.94_p562-r1.apk",
+   "bytes": 4998,
+   "sha256": "f60f5188fc2fb4ab159ccbacd0b4a8a934dd348e71c7cd5ac86c821d98d74c74"
+  },
+  {
+   "file": "kmod-fs-autofs4-6.12.94_p562-r1.apk",
+   "bytes": 18081,
+   "sha256": "f4ad63007a250e27df8be60e47738c9346de5be7c3e43f646420ab54c6e978c8"
+  },
+  {
+   "file": "kmod-fs-btrfs-6.12.94_p562-r1.apk",
+   "bytes": 607031,
+   "sha256": "e2c678ad50dff093db61543c287f8885ac1337f80c0e597478d64d8b0fe8ffbf"
+  },
+  {
+   "file": "kmod-fs-exfat-6.12.94_p562-r1.apk",
+   "bytes": 42816,
+   "sha256": "9ee908733b74cced2c68a4b7f970e96348236392ef21cf3709150576153d1d2b"
+  },
+  {
+   "file": "kmod-fs-f2fs-6.12.94_p562-r1.apk",
+   "bytes": 243100,
+   "sha256": "8990a5512bfefdc894a223f3a37104beeb2f1132532441c4c866fae49721a11f"
+  },
+  {
+   "file": "kmod-fs-hfs-6.12.94_p562-r1.apk",
+   "bytes": 33086,
+   "sha256": "11f7537319f244a3822de8754267c6e9623569d85cc1793f5c8170ee086affa4"
+  },
+  {
+   "file": "kmod-fs-hfsplus-6.12.94_p562-r1.apk",
+   "bytes": 59729,
+   "sha256": "b418bae32ea88a9290b81317b4a7c759a22a605f6e5cc447c9f71dba9c1bf93c"
+  },
+  {
+   "file": "kmod-fs-isofs-6.12.94_p562-r1.apk",
+   "bytes": 16385,
+   "sha256": "7b2b0f2f0dbf0b86f5df862df7c79041f8da92bbf9a1affe56fa65374cc39673"
+  },
+  {
+   "file": "kmod-fs-jfs-6.12.94_p562-r1.apk",
+   "bytes": 101048,
+   "sha256": "5da3824df474b868c4e574babb26fd97d5233abc2c8e1aea028b38d19645b641"
+  },
+  {
+   "file": "kmod-fs-msdos-6.12.94_p562-r1.apk",
+   "bytes": 6921,
+   "sha256": "e999c69b4ec8a59e91b75bbe70c649975cde28a538df7bc309e1c2adc60d56cf"
+  },
+  {
+   "file": "kmod-fs-nilfs2-6.12.94_p562-r1.apk",
+   "bytes": 101770,
+   "sha256": "c8c71eb2aac9b1313b4e9a1439b65ea28df3e8823be957e7d3ce10276f4170a3"
+  },
+  {
+   "file": "kmod-fs-ntfs3-6.12.94_p562-r1.apk",
+   "bytes": 123818,
+   "sha256": "2e09e9e7470c68198fb1ebbc10f7930459acff06f2f750f4cce41c3b6aa84f16"
+  },
+  {
+   "file": "kmod-fs-udf-6.12.94_p562-r1.apk",
+   "bytes": 52730,
+   "sha256": "c08238be371dcc65a2edb02893505ddfe41f9616cfe497c190e8ed4ef465e42b"
+  },
+  {
+   "file": "kmod-fs-xfs-6.12.94_p562-r1.apk",
+   "bytes": 405374,
+   "sha256": "1c4d929bb12b1395a279500b42678f7379f70c7101f20e697f1ac755b1cc28c5"
+  },
+  {
+   "file": "kmod-fuse-6.12.94_p562-r1.apk",
+   "bytes": 74352,
+   "sha256": "a96589eea25363470cd7d7fad7b8a92acbe59c083ab54a3f7d3d50a1e519fb64"
+  },
+  {
+   "file": "kmod-geneve-6.12.94_p562-r1.apk",
+   "bytes": 16236,
+   "sha256": "9daea2a54da692380a49a58080ffaec11c31ddc80e2c2b77128c9a963264d0b5"
+  },
+  {
+   "file": "kmod-hid-6.12.94_p562-r1.apk",
+   "bytes": 87626,
+   "sha256": "68546052b280090fd5fa1168815cf4ef65c3ec230d42f129bbca057be80b2930"
+  },
+  {
+   "file": "kmod-hid-generic-6.12.94_p562-r1.apk",
+   "bytes": 2655,
+   "sha256": "5ebc12c54bedf8d2ddb882f9403d32c5888e2030635dc6aa898689820818c03a"
+  },
+  {
+   "file": "kmod-hid-multitouch-6.12.94_p562-r1.apk",
+   "bytes": 13607,
+   "sha256": "546456472c45ddc31f2c4b3dad177e0fa63a0983e8291d55d65d700b019bad50"
+  },
+  {
+   "file": "kmod-input-uinput-6.12.94_p562-r1.apk",
+   "bytes": 8637,
+   "sha256": "008ee12faf5b8d0530aa7c805d8021457345b6b4087552ca49ca6272cb794691"
+  },
+  {
+   "file": "kmod-ip6tables-6.12.94_p562-r1.apk",
+   "bytes": 5875,
+   "sha256": "88b7cf28ba92f51b0310aec0ccaf48293927b23eb776b4982e901fa6b5ea72b6"
+  },
+  {
+   "file": "kmod-ipt-REJECT-6.12.94_p562-r1.apk",
+   "bytes": 2787,
+   "sha256": "ca3cd7ee52ff106782617cddb4d733e699a879b5c2f0db1ab177b175c9a7ce3d"
+  },
+  {
+   "file": "kmod-ipt-conntrack-extra-6.12.94_p562-r1.apk",
+   "bytes": 4028,
+   "sha256": "0295e287a21c2003f89cff42416cdb1489837e9adb7406fe9854db0bc55da9db"
+  },
+  {
+   "file": "kmod-ipt-debug-6.12.94_p562-r1.apk",
+   "bytes": 2437,
+   "sha256": "85b165d4f44563c7c5ac98de96b95d2ed9e49a88608033855cfc98b83d290de1"
+  },
+  {
+   "file": "kmod-ipt-extra-6.12.94_p562-r1.apk",
+   "bytes": 2708,
+   "sha256": "8e3393d64b2b954b061728dc457f96cc801fc55811bc0d699196512c8a9ba5ec"
+  },
+  {
+   "file": "kmod-ipt-ipsec-6.12.94_p562-r1.apk",
+   "bytes": 4385,
+   "sha256": "91e59e4256a900f4814760f710effc28f22a7887b3d7c7024ac6e68e8076ecf0"
+  },
+  {
+   "file": "kmod-ipt-nat6-6.12.94_p562-r1.apk",
+   "bytes": 3256,
+   "sha256": "37f9c54a8c6adb603948cee57aa3492195b747951dd7cd25bc0f91699b4a68cd"
+  },
+  {
+   "file": "kmod-ipt-physdev-6.12.94_p562-r1.apk",
+   "bytes": 3093,
+   "sha256": "9fc9aa28e79c2c6d3c52231fbea4a5b3b29d20e222181d7c867381bbe0f795a7"
+  },
+  {
+   "file": "kmod-ipt-raw-6.12.94_p562-r1.apk",
+   "bytes": 3135,
+   "sha256": "103187d5f8c186ffc3cdba6f556a0e3a1bd28b76fbfebb334f555d43bc5fea9f"
+  },
+  {
+   "file": "kmod-ipt-raw6-6.12.94_p562-r1.apk",
+   "bytes": 3145,
+   "sha256": "edc0661df2e61251610aa25ad17e155be2ffd2b31d2078ee43ff82a1d0ecc4ba"
+  },
+  {
+   "file": "kmod-ipt-socket-6.12.94_p562-r1.apk",
+   "bytes": 3793,
+   "sha256": "91fd5f607345a5eaaae7046a93d0877c9ba2482245267504068e61774d306373"
+  },
+  {
+   "file": "kmod-ipt-tee-6.12.94_p562-r1.apk",
+   "bytes": 4204,
+   "sha256": "aaae613969faf813506a4d2c2c7fcc397102ede669dea0774ac7c9aada0cf522"
+  },
+  {
+   "file": "kmod-ipt-u32-6.12.94_p562-r1.apk",
+   "bytes": 2943,
+   "sha256": "c00fa6d9c118e77bde3e3f87c3cb72fcae7dad10b38c9583ed4dd8b3b4d1ae7f"
+  },
+  {
+   "file": "kmod-iptable-filter-6.12.94_p562-r1.apk",
+   "bytes": 3131,
+   "sha256": "89d3dc30fe715f9e17cb86d46d78fa922bc4c1f698881614299bf06f291227f7"
+  },
+  {
+   "file": "kmod-iptable-mangle-6.12.94_p562-r1.apk",
+   "bytes": 3054,
+   "sha256": "34b89711ca7303fdf0856c1b18e129dd6d82ae8c7f8ad9ff5105a39fd909d252"
+  },
+  {
+   "file": "kmod-iptable-nat-6.12.94_p562-r1.apk",
+   "bytes": 3233,
+   "sha256": "9747d5f8759b8a9fcae3ca9652275a05c7bb6202e42a3378558d92490ba50271"
+  },
+  {
+   "file": "kmod-ipvlan-6.12.94_p562-r1.apk",
+   "bytes": 16737,
+   "sha256": "dfc2f2618399b82314d46e2f1818b3f60e485e4b263e5de44461bb7870788873"
+  },
+  {
+   "file": "kmod-lib-crc-itu-t-6.12.94_p562-r1.apk",
+   "bytes": 2608,
+   "sha256": "b48b7642b31eab84b4882f64e5e5be9bcecc5e70a7b1a0a849262f01702076f9"
+  },
+  {
+   "file": "kmod-lib-raid6-6.12.94_p562-r1.apk",
+   "bytes": 82025,
+   "sha256": "4435963febfdd33ac8a239c4f232c7ab056fb23b216221c4921b1b448df67a10"
+  },
+  {
+   "file": "kmod-lib-textsearch-6.12.94_p562-r1.apk",
+   "bytes": 6038,
+   "sha256": "94bce4d6e1b49d59b7b40a9ce9b88a820b77c76354ccbb1baf0ee01a4e256ecd"
+  },
+  {
+   "file": "kmod-lib-xor-6.12.94_p562-r1.apk",
+   "bytes": 6241,
+   "sha256": "435130c5016dcefc66e5c80e128c279395190f89962d7c6d900ce7a8b1538964"
+  },
+  {
+   "file": "kmod-libphy-6.12.94_p562-r1.apk",
+   "bytes": 58395,
+   "sha256": "5d964defdbaed084c22fec2c66c1220323a31907adcab912721a9c3c89f63e7e"
+  },
+  {
+   "file": "kmod-macsec-6.12.94_p562-r1.apk",
+   "bytes": 25588,
+   "sha256": "83a2a9c85299557c4203b3af360fd8b541ec166775e0aaf144814204eb662b60"
+  },
+  {
+   "file": "kmod-macvtap-6.12.94_p562-r1.apk",
+   "bytes": 3980,
+   "sha256": "b49a7c1d20d579d9480292e91b4fc1b0507a176c51b3334a78c5c367d888a56d"
+  },
+  {
+   "file": "kmod-md-linear-6.12.94_p562-r1.apk",
+   "bytes": 4637,
+   "sha256": "166ef3c89ec30543b0275c44ddee5e350a4a8fde9fb441cd5f34573ee0d39f8e"
+  },
+  {
+   "file": "kmod-md-mod-6.12.94_p562-r1.apk",
+   "bytes": 77499,
+   "sha256": "260ff5aaa11793f3cfb9ecf4429d0ac865ccabf0f2a78ade047fdeb1c94931a5"
+  },
+  {
+   "file": "kmod-md-raid0-6.12.94_p562-r1.apk",
+   "bytes": 7558,
+   "sha256": "4e98f7d7457ab26c5d6db034bb8105539676c862e745550305f727f1f9a15b78"
+  },
+  {
+   "file": "kmod-md-raid1-6.12.94_p562-r1.apk",
+   "bytes": 23826,
+   "sha256": "5c4a43ec682da5c68d3ac7b3f6e26765f969444bab4ee24bc83911b87c173a1c"
+  },
+  {
+   "file": "kmod-md-raid10-6.12.94_p562-r1.apk",
+   "bytes": 31080,
+   "sha256": "3270297c8101696bee0c05c3d012df90b4b94af47a08486ff9270b866cb6bfd0"
+  },
+  {
+   "file": "kmod-md-raid456-6.12.94_p562-r1.apk",
+   "bytes": 81315,
+   "sha256": "4825173786d9b7b0e67ffb2f3e8edea317a82e5c430bbd808b06d9f30a88803b"
+  },
+  {
+   "file": "kmod-mdio-devres-6.12.94_p562-r1.apk",
+   "bytes": 2865,
+   "sha256": "0acf4d6c590eaeb798f5650ccb0a1241eef343d29e8d1227df2a5b286634fa5b"
+  },
+  {
+   "file": "kmod-mii-6.12.94_p562-r1.apk",
+   "bytes": 4774,
+   "sha256": "10619831a280bd93222b6e5d01a751da2b02a80dab948ae84da23b74196e0d87"
+  },
+  {
+   "file": "kmod-mpls-6.12.94_p562-r1.apk",
+   "bytes": 2878,
+   "sha256": "cbb5f58a0387606125f607d8c84a19a1ec76a56d8220a5bf9db0c20c42b61c06"
+  },
+  {
+   "file": "kmod-nbd-6.12.94_p562-r1.apk",
+   "bytes": 20693,
+   "sha256": "e33135f61bd3297853f58ee8ab802aee45145fade35bacb617d208cf79c0aeae"
+  },
+  {
+   "file": "kmod-net-selftests-6.12.94_p562-r1.apk",
+   "bytes": 4770,
+   "sha256": "237dc8b580d441766eaa517296a71989a23af6f663638840574155e77695f37b"
+  },
+  {
+   "file": "kmod-net1080-6.12.94_p562-r1.apk",
+   "bytes": 3868,
+   "sha256": "f7dbdfbf91eaafc3a685b9bea21b050449d3edbffe64cf51390a2a2189175726"
+  },
+  {
+   "file": "kmod-netconsole-6.12.94_p562-r1.apk",
+   "bytes": 6266,
+   "sha256": "2fd2248c9dbf62447ef11a5b8a3738f77894010b202000ea4de21cdded19e353"
+  },
+  {
+   "file": "kmod-nf-ipt-6.12.94_p562-r1.apk",
+   "bytes": 10922,
+   "sha256": "cdd640004078f514706331d1c7e9dee4c1bc4a36a1ce7d166d3a293002b5ff7e"
+  },
+  {
+   "file": "kmod-nf-ipt6-6.12.94_p562-r1.apk",
+   "bytes": 10927,
+   "sha256": "feab07f131fd50b25e76e1aa4bd31ee35d0fa9901591dedb8867d184d3865b36"
+  },
+  {
+   "file": "kmod-nf-ipvs-6.12.94_p562-r1.apk",
+   "bytes": 84015,
+   "sha256": "9daa92689f8e4acc5cf04015dc489d28a120ca7b512efce42b5379b360d81356"
+  },
+  {
+   "file": "kmod-nf-ipvs-ftp-6.12.94_p562-r1.apk",
+   "bytes": 5242,
+   "sha256": "262546067aa3c4ad82708656b6c08ae413194220cdc74a0e7aa5a084ec4d6519"
+  },
+  {
+   "file": "kmod-nf-nathelper-amanda-6.12.94_p562-r1.apk",
+   "bytes": 5711,
+   "sha256": "dd3a3e12056900f9f13a4661fd4da5a498b7584fddb384575cb3bfe6668472f1"
+  },
+  {
+   "file": "kmod-nf-nathelper-h323-6.12.94_p562-r1.apk",
+   "bytes": 26134,
+   "sha256": "dc297492471698dc0f3970f7b61b0f3a7a4b118f8ceab0f49110a3b46e91349f"
+  },
+  {
+   "file": "kmod-nf-nathelper-snmp-6.12.94_p562-r1.apk",
+   "bytes": 5313,
+   "sha256": "ea8b4a42325bf99fb940c5ab9c37e2d0b1348fcbfa01438a4afa70ffc1c80338"
+  },
+  {
+   "file": "kmod-nfnetlink-osf-6.12.94_p562-r1.apk",
+   "bytes": 4986,
+   "sha256": "043391c1e864d8fbec130949efb0c580c60bdfefd5ccea54156736ba0235d6ad"
+  },
+  {
+   "file": "kmod-nft-dup-netdev-6.12.94_p562-r1.apk",
+   "bytes": 2645,
+   "sha256": "0652a02b5c4257a637cd31596834b996764386735f85b654affbd5bc214fcd22"
+  },
+  {
+   "file": "kmod-nft-osf-6.12.94_p562-r1.apk",
+   "bytes": 3363,
+   "sha256": "67d38fbb857bdad86f67c23d639d0f547ee715e4bde13715145a918729dfa639"
+  },
+  {
+   "file": "kmod-nft-tunnel-6.12.94_p562-r1.apk",
+   "bytes": 6126,
+   "sha256": "8121eeb6ef070b9e41baa765dccdc892fdafaeabca6d5a0aad60737ebe290e4a"
+  },
+  {
+   "file": "kmod-nls-cp1250-6.12.94_p562-r1.apk",
+   "bytes": 3546,
+   "sha256": "0e7eaad478a2ef43fc770b238120e4384281b205a86c29f5f0befe0784d69c0e"
+  },
+  {
+   "file": "kmod-nls-cp1251-6.12.94_p562-r1.apk",
+   "bytes": 3460,
+   "sha256": "12c06ef14edf340a653310403f40d1219de978ec22dcd275fc8120e040e40640"
+  },
+  {
+   "file": "kmod-nls-cp850-6.12.94_p562-r1.apk",
+   "bytes": 3567,
+   "sha256": "9ea5807310666defaa1846df541a580be4a7930e7f5d0b226464a9b830339ca8"
+  },
+  {
+   "file": "kmod-nls-cp852-6.12.94_p562-r1.apk",
+   "bytes": 3651,
+   "sha256": "fc574e7fa60d832c067a8e3dfcfafa746a88911b8a6f5e66d6f89d111c9041a1"
+  },
+  {
+   "file": "kmod-nls-cp862-6.12.94_p562-r1.apk",
+   "bytes": 3598,
+   "sha256": "be148ed449a7ea1780f54498f0f36e759567daf7f8ccc4313ee4b10b8b5ea917"
+  },
+  {
+   "file": "kmod-nls-cp864-6.12.94_p562-r1.apk",
+   "bytes": 3556,
+   "sha256": "281ea895296099b24b0396dc109044701d0fce7451ab4c03e58f7caea39bbe67"
+  },
+  {
+   "file": "kmod-nls-cp866-6.12.94_p562-r1.apk",
+   "bytes": 3480,
+   "sha256": "a6a80b76c27644cedeef893844d4112d885a583ee4d9df4fbd41ceeb0b962c3f"
+  },
+  {
+   "file": "kmod-nls-cp932-6.12.94_p562-r1.apk",
+   "bytes": 44158,
+   "sha256": "8045fc8cb68bff97a95e60d157ede62442b529fb4122f36f65cac4bc069ddb75"
+  },
+  {
+   "file": "kmod-nls-cp936-6.12.94_p562-r1.apk",
+   "bytes": 89665,
+   "sha256": "c18b503a2899303c32ec8e0d36215ce7117568247ef5524dd7a1cfbfa59f593b"
+  },
+  {
+   "file": "kmod-nls-cp949-6.12.94_p562-r1.apk",
+   "bytes": 77854,
+   "sha256": "44ef73d926ff05493be3ec8a8b6bd0a4bb5fe8df1fb00890c0386f9adb76faf0"
+  },
+  {
+   "file": "kmod-nls-cp950-6.12.94_p562-r1.apk",
+   "bytes": 63569,
+   "sha256": "4eb3e0e4e1d59edd6f9cb0878735697d2baefa18e6f55bf41dbb565fafa9607b"
+  },
+  {
+   "file": "kmod-nls-iso8859-13-6.12.94_p562-r1.apk",
+   "bytes": 3476,
+   "sha256": "2b9f65701ee00c2206a4ef557d804b2822783a862c3d42860f946bd45ec4b0a7"
+  },
+  {
+   "file": "kmod-nls-iso8859-15-6.12.94_p562-r1.apk",
+   "bytes": 3362,
+   "sha256": "1a14783f532af9097c3251b561045500cbeee4f4b9c3a2cd7d24329c7646f872"
+  },
+  {
+   "file": "kmod-nls-iso8859-2-6.12.94_p562-r1.apk",
+   "bytes": 3507,
+   "sha256": "63ba0ea73c4655564ce3f20c01bf2258f7a841c6771a9bc136c57efcd13c3e5a"
+  },
+  {
+   "file": "kmod-nls-iso8859-6-6.12.94_p562-r1.apk",
+   "bytes": 3156,
+   "sha256": "bfbb6798d870fc3eb2ff89e1606973795231c54b6db52fa5ba49a6d504ca1f3e"
+  },
+  {
+   "file": "kmod-nls-iso8859-8-6.12.94_p562-r1.apk",
+   "bytes": 3373,
+   "sha256": "0cde89bd3916c9cb17d10ed61c191dee2df6208dc1e09488bd898e9f1005fdfe"
+  },
+  {
+   "file": "kmod-nls-koi8r-6.12.94_p562-r1.apk",
+   "bytes": 3477,
+   "sha256": "f834bb1adce2a1b198ead162ebf24a1358bda07ec24e3633c059b427008c7cb6"
+  },
+  {
+   "file": "kmod-nsh-6.12.94_p562-r1.apk",
+   "bytes": 3760,
+   "sha256": "04fddd59a48bb553d981a35d332624df7348ecba3943f189ec3d0475fd6944a9"
+  },
+  {
+   "file": "kmod-of-mdio-6.12.94_p562-r1.apk",
+   "bytes": 7063,
+   "sha256": "c937dd9d940f9215ea7cae1abe448d0cd0a95434adc9f5afc7f5c02f3b2e1ac9"
+  },
+  {
+   "file": "kmod-openvswitch-6.12.94_p562-r1.apk",
+   "bytes": 72630,
+   "sha256": "98247f36aacac57c381c25554dfc40ff2621081aaf29efeffb11a0e8420af1ac"
+  },
+  {
+   "file": "kmod-phy-ax88796b-6.12.94_p562-r1.apk",
+   "bytes": 2881,
+   "sha256": "f7bbd9d37c443e99e96c9e0c6a68e2b29f301807de5ffbc224f03af6e593e97a"
+  },
+  {
+   "file": "kmod-phy-smsc-6.12.94_p562-r1.apk",
+   "bytes": 6112,
+   "sha256": "23ace40e186019aa892052e15d68e460f6519ec0d64cac9dc25ca00e343ae7bb"
+  },
+  {
+   "file": "kmod-phylink-6.12.94_p562-r1.apk",
+   "bytes": 20575,
+   "sha256": "dd082cb9218be7fede5a07046c8b5137e287e92e5c1f05a7377113f98ee8af8e"
+  },
+  {
+   "file": "kmod-pktgen-6.12.94_p562-r1.apk",
+   "bytes": 37997,
+   "sha256": "3ef4ba9b08d708ab35429d164951f1b20c5a2ff6f57e292fe8c289780e9536ab"
+  },
+  {
+   "file": "kmod-ppp-synctty-6.12.94_p562-r1.apk",
+   "bytes": 6744,
+   "sha256": "b25da7e1eccea824db0cd6096f2136e342db94ee7bada302b24d137c90992d2e"
+  },
+  {
+   "file": "kmod-pptp-6.12.94_p562-r1.apk",
+   "bytes": 7151,
+   "sha256": "686b7457ca5fe0d2161c0dd0720391302dd5e186051fbbff8de86fbbcbf14265"
+  },
+  {
+   "file": "kmod-r8153-ecm-6.12.94_p562-r1.apk",
+   "bytes": 3269,
+   "sha256": "1587a972512c56dd9e155d2f10da5e9e88c6601b795fede38bf92726d11b6712"
+  },
+  {
+   "file": "kmod-sch-cbs-6.12.94_p562-r1.apk",
+   "bytes": 6503,
+   "sha256": "12a4b1ebb50d1e001f305b46f25b7b336d7a6397a824061a931b6a1a3807f46a"
+  },
+  {
+   "file": "kmod-sch-choke-6.12.94_p562-r1.apk",
+   "bytes": 6253,
+   "sha256": "4268b054a6fb772329a210547e32bd3a43bc5ace169de0aeee40d89c68fa876e"
+  },
+  {
+   "file": "kmod-sch-etf-6.12.94_p562-r1.apk",
+   "bytes": 5398,
+   "sha256": "9742c1a6f5ba9e97bb33490404e34d2902864cf5c444ed5bd7784b99d04b0c40"
+  },
+  {
+   "file": "kmod-sch-gred-6.12.94_p562-r1.apk",
+   "bytes": 10341,
+   "sha256": "a1c78ff58d0e099499549fcdeff4b7c393b040ffa121c73c2e247775d80c0836"
+  },
+  {
+   "file": "kmod-sch-hhf-6.12.94_p562-r1.apk",
+   "bytes": 5874,
+   "sha256": "1c4426be7eea86ff13c80e78faa09595ac3bd60900458b6eeeb28808cc9721a2"
+  },
+  {
+   "file": "kmod-sch-multiq-6.12.94_p562-r1.apk",
+   "bytes": 5875,
+   "sha256": "c6038f72d7b97b86cbc56e012073df4c41752a7a1a8746949a556edc8c4ca82b"
+  },
+  {
+   "file": "kmod-sch-plug-6.12.94_p562-r1.apk",
+   "bytes": 3385,
+   "sha256": "b8d860a7814082cbe042d830c5334f3e61f4d28777a458eb7b5e6899e9ffcd9a"
+  },
+  {
+   "file": "kmod-sch-qfq-6.12.94_p562-r1.apk",
+   "bytes": 11706,
+   "sha256": "a9977e524bf5128cb70c50097570a1c08e1f49b0244cb933d89e71af9918b69d"
+  },
+  {
+   "file": "kmod-sch-taprio-6.12.94_p562-r1.apk",
+   "bytes": 17304,
+   "sha256": "e92f177f07f7cc9e368ae13e7d734877db4e5c3ea13ceaac9e423dbdb6130fe5"
+  },
+  {
+   "file": "kmod-sched-act-sample-6.12.94_p562-r1.apk",
+   "bytes": 9682,
+   "sha256": "157851a70d89bb5db672f0fd50230d8a8d357b123923971ca382faade63c101a"
+  },
+  {
+   "file": "kmod-sched-fq-pie-6.12.94_p562-r1.apk",
+   "bytes": 7127,
+   "sha256": "82d01677ad3f2e636bec400c03d7409e854f0a7110a1bbcf30d83681f38ab3b2"
+  },
+  {
+   "file": "kmod-sched-skbprio-6.12.94_p562-r1.apk",
+   "bytes": 4064,
+   "sha256": "e40f2b0e9f9163e4b3358864798f197522d9b1149211ef9ffd6576854ce3f9b5"
+  },
+  {
+   "file": "kmod-scsi-cdrom-6.12.94_p562-r1.apk",
+   "bytes": 12179,
+   "sha256": "d74b3f0334a0a853d70b8548e9db5dc9882ca8feb0dad8f9233b4767ebd4d343"
+  },
+  {
+   "file": "kmod-scsi-core-6.12.94_p562-r1.apk",
+   "bytes": 109031,
+   "sha256": "8ae417d0bcc1711c9e15378d4d7875de415bdbc4866ba5b60226316e3c98fa7d"
+  },
+  {
+   "file": "kmod-scsi-generic-6.12.94_p562-r1.apk",
+   "bytes": 20922,
+   "sha256": "35deb9620e33b9a7a150e142ab0647219844462125122fa9726c7742619715d3"
+  },
+  {
+   "file": "kmod-sctp-6.12.94_p562-r1.apk",
+   "bytes": 172810,
+   "sha256": "c94dabd0ddbc350235423da08910a67c438a4ea9dfd1bc340da1f88112438f64"
+  },
+  {
+   "file": "kmod-sctp-diag-6.12.94_p562-r1.apk",
+   "bytes": 5185,
+   "sha256": "335d23b6cb390ad18fc60325fd2510f7c26da15cd531927b850ebf7ca439060e"
+  },
+  {
+   "file": "kmod-spi-dev-6.12.94_p562-r1.apk",
+   "bytes": 7794,
+   "sha256": "10c263d40d54c09ebe43ab3f5058a819e74590aa27ef6f44a5bf1cd4044247b7"
+  },
+  {
+   "file": "kmod-tap-6.12.94_p562-r1.apk",
+   "bytes": 13746,
+   "sha256": "df736af60f54d6177fd5a84c4827476ed37ea8f67ad8bb7ffd5054d69dcdf5d1"
+  },
+  {
+   "file": "kmod-tcp-bic-6.12.94_p562-r1.apk",
+   "bytes": 3870,
+   "sha256": "b417cab28389e4a6943aefcb7d7afca591e75f596d5f7a12dd33c99e422e350a"
+  },
+  {
+   "file": "kmod-tcp-cdg-6.12.94_p562-r1.apk",
+   "bytes": 5147,
+   "sha256": "e4eebb2fd3bebd0a4e3503aaee1e4cf903f37fb8f1aba5bb91a5533d404c9ba0"
+  },
+  {
+   "file": "kmod-tcp-dctcp-6.12.94_p562-r1.apk",
+   "bytes": 3995,
+   "sha256": "02141ec3a370026cbf40f449e25696b8831d0f788c57d8db3a9d25bdc9035878"
+  },
+  {
+   "file": "kmod-tcp-highspeed-6.12.94_p562-r1.apk",
+   "bytes": 3188,
+   "sha256": "47fd3cf525ccd928541b178b17278144b43a8c9cb546e0b85722b0cd0bfc9621"
+  },
+  {
+   "file": "kmod-tcp-htcp-6.12.94_p562-r1.apk",
+   "bytes": 3894,
+   "sha256": "7128c2b72373c5cfa9fe53f2db3803a19ed29c6cecdac4496947c7cb80b20408"
+  },
+  {
+   "file": "kmod-tcp-hybla-6.12.94_p562-r1.apk",
+   "bytes": 3384,
+   "sha256": "1c550f81f72c2b79c81ec56a670a9e5096681ced7be1e1f4d03c16bcb8c7b0ab"
+  },
+  {
+   "file": "kmod-tcp-illinois-6.12.94_p562-r1.apk",
+   "bytes": 3556,
+   "sha256": "4828b6fe32b4c4a90840f99577cc90f9aae7a03ff4bdfe5c6a873b9090cb7026"
+  },
+  {
+   "file": "kmod-tcp-lp-6.12.94_p562-r1.apk",
+   "bytes": 2835,
+   "sha256": "875f9abd1ccb292516bdd630f0307389489b58690740d4a9a63eaab344b22573"
+  },
+  {
+   "file": "kmod-tcp-nv-6.12.94_p562-r1.apk",
+   "bytes": 4608,
+   "sha256": "bd4e38b40fcf38473c8ab9bd0a1a2537e98d6eaac06b14e8d134020161aadf9e"
+  },
+  {
+   "file": "kmod-tcp-scalable-6.12.94_p562-r1.apk",
+   "bytes": 2424,
+   "sha256": "d954618b2b9169be0d8d5c0807c550cb8230b445efa6828ec2b0a1ced136301f"
+  },
+  {
+   "file": "kmod-tcp-vegas-6.12.94_p562-r1.apk",
+   "bytes": 3919,
+   "sha256": "75f9f6d87dc6005c2fa758b9e863be28cad22645f72dd18181a28e09f85194bd"
+  },
+  {
+   "file": "kmod-tcp-veno-6.12.94_p562-r1.apk",
+   "bytes": 2970,
+   "sha256": "2b012701e6de2ff5468371b4ee36cd98e9a630cef67726a03d9b2cd79bf4890a"
+  },
+  {
+   "file": "kmod-tcp-westwood-6.12.94_p562-r1.apk",
+   "bytes": 3121,
+   "sha256": "2d9ac988dee287ceeb89766e9839eee583f98fe322644baa5bbd79001c06965d"
+  },
+  {
+   "file": "kmod-tcp-yeah-6.12.94_p562-r1.apk",
+   "bytes": 3073,
+   "sha256": "9b9be7758058d9ca3d66277dd3718a7cca12687c096c74c658ce67018fb23d50"
+  },
+  {
+   "file": "kmod-team-6.12.94_p562-r1.apk",
+   "bytes": 20661,
+   "sha256": "7b347ea6d8d4c5d8bf1251a8f5b5cb5543cb3cc09c0117a10f4a13c984077388"
+  },
+  {
+   "file": "kmod-team-mode-activebackup-6.12.94_p562-r1.apk",
+   "bytes": 2826,
+   "sha256": "dc122b7f02902753bd4aaa7e7b4311e503de3a3f823bb28bdccaa4d1a7166b0e"
+  },
+  {
+   "file": "kmod-team-mode-loadbalance-6.12.94_p562-r1.apk",
+   "bytes": 5695,
+   "sha256": "706b8b2e1949090fb8f783f5c0abe7cf0c54949fc702aec21267a5c5db3cc3a7"
+  },
+  {
+   "file": "kmod-team-mode-roundrobin-6.12.94_p562-r1.apk",
+   "bytes": 2673,
+   "sha256": "fa2da2ba777cfe3928febdf404bd1a83100e925a21ef6930ecdb44d21cf03611"
+  },
+  {
+   "file": "kmod-usb-acm-6.12.94_p562-r1.apk",
+   "bytes": 16656,
+   "sha256": "76f2c57ca51d2f39b1594115006346887f95cbc59899d1e110d2f091557f47be"
+  },
+  {
+   "file": "kmod-usb-hid-6.12.94_p562-r1.apk",
+   "bytes": 13433,
+   "sha256": "b02ff60c65598a461b123d8a65ce0abc598c840601a32062a904bdd3ce2dc405"
+  },
+  {
+   "file": "kmod-usb-net-6.12.94_p562-r1.apk",
+   "bytes": 17508,
+   "sha256": "f4d3b9ddf527389c0ef887288de6f11127851d36f90eb32426a3bba81a6160b0"
+  },
+  {
+   "file": "kmod-usb-net-asix-6.12.94_p562-r1.apk",
+   "bytes": 17468,
+   "sha256": "9c18beaf5c750f4d465b24c225edceb2ec74d71c6e08d9e460e36e790af5d4f8"
+  },
+  {
+   "file": "kmod-usb-net-asix-ax88179-6.12.94_p562-r1.apk",
+   "bytes": 14511,
+   "sha256": "54571380e8aff73d0fe352c051931cc578c9578ecd0af3c5316804efcd294b71"
+  },
+  {
+   "file": "kmod-usb-net-cdc-eem-6.12.94_p562-r1.apk",
+   "bytes": 3828,
+   "sha256": "8cfb22f5c1d4e3700612029ae91868822cab963e893909ee369565a3181595c3"
+  },
+  {
+   "file": "kmod-usb-net-cdc-ether-6.12.94_p562-r1.apk",
+   "bytes": 6558,
+   "sha256": "1890dbac7263364f0da80f1f8b2c7de17adc195942c59bf87867015198f3c72c"
+  },
+  {
+   "file": "kmod-usb-net-cdc-mbim-6.12.94_p562-r1.apk",
+   "bytes": 5996,
+   "sha256": "c8eadab743b67377df25447b695ed847d349891261cf07b3967beb4a2c0ee6d1"
+  },
+  {
+   "file": "kmod-usb-net-cdc-ncm-6.12.94_p562-r1.apk",
+   "bytes": 13814,
+   "sha256": "d0f4d087827350d6805d568c4fb28c1da53ff8745a7d14c7948f381acfa49e8e"
+  },
+  {
+   "file": "kmod-usb-net-cdc-subset-6.12.94_p562-r1.apk",
+   "bytes": 2924,
+   "sha256": "f8b598b1f606fda279e689580eee894c6b84cc4c9cab191d160a2497954256c4"
+  },
+  {
+   "file": "kmod-usb-net-huawei-cdc-ncm-6.12.94_p562-r1.apk",
+   "bytes": 3433,
+   "sha256": "6d7457f4ed4f5107e5b9057b48678cb9c45c84ad50676611a6a42a8c80d6dbf2"
+  },
+  {
+   "file": "kmod-usb-net-ipheth-6.12.94_p562-r1.apk",
+   "bytes": 6471,
+   "sha256": "a8c7465debe8bac74ef87b1140c2390ff7b3be1cb2c465975d0f7d134b41642b"
+  },
+  {
+   "file": "kmod-usb-net-qmi-wwan-6.12.94_p562-r1.apk",
+   "bytes": 17585,
+   "sha256": "6579df720a3c4682cc55054cc05c3bc5d76ace9ed400e8b162ff9cb2a8c1378f"
+  },
+  {
+   "file": "kmod-usb-net-rndis-6.12.94_p562-r1.apk",
+   "bytes": 6159,
+   "sha256": "346063407bd9dffd6474ffa6f67f69f5da47ab977eb81634d3549f76747e8a17"
+  },
+  {
+   "file": "kmod-usb-net-rtl8152-6.12.94_p562-r1.apk",
+   "bytes": 50356,
+   "sha256": "14493f0761651f9657a8b662f3933eac58cbaa24843cc00bb90c5e9548fed841"
+  },
+  {
+   "file": "kmod-usb-net-smsc95xx-6.12.94_p562-r1.apk",
+   "bytes": 16596,
+   "sha256": "cf3d3d1b75c5130da890abb51cfcda5a79f65eab85867c1cebcf48170f241cfb"
+  },
+  {
+   "file": "kmod-usb-printer-6.12.94_p562-r1.apk",
+   "bytes": 10129,
+   "sha256": "32f7cf56b587dd399dd230a0d0d76cecbe62719251e59f90e857713eb05e7999"
+  },
+  {
+   "file": "kmod-usb-serial-6.12.94_p562-r1.apk",
+   "bytes": 17407,
+   "sha256": "e86b04f7237600f9920df1e3f95ba9152de56a3446f19a15f82f9531b57c730e"
+  },
+  {
+   "file": "kmod-usb-serial-ch341-6.12.94_p562-r1.apk",
+   "bytes": 6259,
+   "sha256": "5b68fb647a479a6218e884a2ed80f43da435ff020e8c5a3ca6af151ad8e52f8d"
+  },
+  {
+   "file": "kmod-usb-serial-cp210x-6.12.94_p562-r1.apk",
+   "bytes": 13785,
+   "sha256": "9649c87f6ecfa520204b14ea2bc1c18c9f6d3b835f61d791325ff1ed92d97178"
+  },
+  {
+   "file": "kmod-usb-serial-ftdi-6.12.94_p562-r1.apk",
+   "bytes": 27209,
+   "sha256": "c2c6e5645fda4cf97f585cbbd8c37605b8bb6e8a58b688acad9b58f47776f235"
+  },
+  {
+   "file": "kmod-usb-serial-option-6.12.94_p562-r1.apk",
+   "bytes": 30565,
+   "sha256": "4e998422e73b5e1b22a256c588d742de92dcae4057de383230af8314095dd461"
+  },
+  {
+   "file": "kmod-usb-serial-pl2303-6.12.94_p562-r1.apk",
+   "bytes": 10214,
+   "sha256": "efd485012322f675e3d0c4ad5c46f02aff67b9ba6372570158df42eb3394bc15"
+  },
+  {
+   "file": "kmod-usb-serial-qualcomm-6.12.94_p562-r1.apk",
+   "bytes": 6146,
+   "sha256": "0ab82930fed1ae790dccc3caca7fcabbfb7117f497575333ed39119c8573bdf6"
+  },
+  {
+   "file": "kmod-usb-serial-sierrawireless-6.12.94_p562-r1.apk",
+   "bytes": 8612,
+   "sha256": "d02824dafbc0ba7dd19aaca955bf368d095e404c72cdee9a3d3d773779ee5bbd"
+  },
+  {
+   "file": "kmod-usb-serial-wwan-6.12.94_p562-r1.apk",
+   "bytes": 6774,
+   "sha256": "f55caa57b0597db6f9075937307cc64305ece9b61691ff75b3f495042eb0d120"
+  },
+  {
+   "file": "kmod-usb-storage-6.12.94_p562-r1.apk",
+   "bytes": 37039,
+   "sha256": "218429fef64a35ec61bb04ad07ef1f83ee5ca9c5ff44c9629f4313070114a479"
+  },
+  {
+   "file": "kmod-usb-storage-uas-6.12.94_p562-r1.apk",
+   "bytes": 13054,
+   "sha256": "dd5453d79a63e7755a7b04c035e9621da5557daf701f777a00f045ba81ccc329"
+  },
+  {
+   "file": "kmod-usb-wdm-6.12.94_p562-r1.apk",
+   "bytes": 9933,
+   "sha256": "e567585448c8e5d2d0d3c266b0932dba0bd5f61c165bfea5bc2b0e4904578c55"
+  },
+  {
+   "file": "kmod-vport-geneve-6.12.94_p562-r1.apk",
+   "bytes": 2797,
+   "sha256": "b5c8f82cfe531b9d837b9c4f03f616ae905a48d2282ec35e607b45c70b7e1255"
+  },
+  {
+   "file": "kmod-vport-gre-6.12.94_p562-r1.apk",
+   "bytes": 2632,
+   "sha256": "07d6c381408887123bdf406e6d8f01dc1b713722b9919aad1d84eb7403f453ed"
+  },
+  {
+   "file": "kmod-vport-vxlan-6.12.94_p562-r1.apk",
+   "bytes": 3143,
+   "sha256": "1ff2290828715abcad20ebbf5223985509c806d1f3e9cf0cb832fdc2904dce8d"
+  },
+  {
+   "file": "kmod-vrf-6.12.94_p562-r1.apk",
+   "bytes": 13124,
+   "sha256": "6e9e7d4e1f34fac7ec0d8e5dc33ab11bf77c688917a743a23fe56edc5e216d8f"
+  },
+  {
+   "file": "kmod-xt-HMARK-6.12.94_p562-r1.apk",
+   "bytes": 4086,
+   "sha256": "fcd7b5340aaa2db0de8c9b16b8c29546a97511f2e82f6c1c48bdaef28da2a409"
+  },
+  {
+   "file": "kmod-xt-IDLETIMER-6.12.94_p562-r1.apk",
+   "bytes": 5280,
+   "sha256": "722bf5bf110ae36dc1b2edc6d37609a1baf46cf25807848891a99492bd31bf0b"
+  },
+  {
+   "file": "kmod-xt-sctp-6.12.94_p562-r1.apk",
+   "bytes": 3222,
+   "sha256": "b6682c292b46ab492739aad04205f367384e919742cac2390fd8879a872a270f"
+  },
+  {
+   "file": "kmod-xt-string-6.12.94_p562-r1.apk",
+   "bytes": 2555,
+   "sha256": "899a2b373e8cae854017e80c05924846bc31bd5856b4992685a31b6c0bc2bc13"
+  },
+  {
+   "file": "kmod-zaurus-6.12.94_p562-r1.apk",
+   "bytes": 3983,
+   "sha256": "91dc09676099a0a15a5a714a0f5faa399c4190311c745bdba59be5b47ae284e5"
+  }
+ ]
+}
