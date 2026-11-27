@@ -59,7 +59,8 @@ apk update
 | `4f792fb3c71b` | p558～p559 | `aarch64_generic/kmods/4f792fb3c71b/` | `kernel-p558.config` |
 | `bc90f2ee384e` | p560～p561 | `aarch64_generic/kmods/bc90f2ee384e/` | `kernel-p560.config` |
 | `84a271d2d09a` | p562 | `aarch64_generic/kmods/84a271d2d09a/` | `kernel-p562.config` |
-| `970731dd47dc` | p563 起 | `aarch64_generic/kmods/970731dd47dc/` | `kernel-p563.config` |
+| `970731dd47dc` | p563 | `aarch64_generic/kmods/970731dd47dc/` | `kernel-p563.config` |
+| `9ca1e3864dd6` | p564 起 | `aarch64_generic/kmods/9ca1e3864dd6/` | `kernel-p564.config` |
 
 模块从 kernel.org 的 Linux 6.12.94 加上 U30 Pro 移植补丁编译，配置见表里的文件。
 
